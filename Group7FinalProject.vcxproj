@@ -26,10 +26,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="PaymentView.cpp" />
     <ClCompile Include="SudentDashboard.cpp" />
     <ClCompile Include="TranscriptView.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PaymentView.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="SudentDashboard.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -38,6 +42,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="PaymentView.resx">
+      <DependentUpon>PaymentView.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SudentDashboard.resx">
       <DependentUpon>SudentDashboard.h</DependentUpon>
     </EmbeddedResource>
