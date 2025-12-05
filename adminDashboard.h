@@ -1,5 +1,5 @@
 #pragma once
-
+#include "users.h"
 namespace Group7FinalProject {
 
 	using namespace System;
@@ -15,15 +15,16 @@ namespace Group7FinalProject {
 	/// </summary>
 	public ref class adminDashboard : public System::Windows::Forms::Form
 	{
+	private:
+		User^ currentUser;
 	public:
 		String^ connString = "datasource=localhost;port=3306;"
 			"username=root; password=""; database=universityDB";
-		adminDashboard(void)
+		adminDashboard(User^ User)
 		{
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
+			this->currentUser = User;
+			lblUser->Text = "Hello " + currentUser->name;
 		}
 
 		int GetCount(String^ tableName) {
@@ -140,11 +141,13 @@ namespace Group7FinalProject {
 			System::Windows::Forms::DataVisualization::Charting::Legend^ legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
 			System::Windows::Forms::DataVisualization::Charting::Series^ series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
+			this->lblUser = (gcnew System::Windows::Forms::Label());
 			this->btnCourses = (gcnew System::Windows::Forms::Button());
 			this->btnDepartment = (gcnew System::Windows::Forms::Button());
 			this->btnFaculty = (gcnew System::Windows::Forms::Button());
 			this->btnStudents = (gcnew System::Windows::Forms::Button());
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
+			this->lblWelcome = (gcnew System::Windows::Forms::Label());
 			this->panel3 = (gcnew System::Windows::Forms::Panel());
 			this->chart1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
 			this->panel6 = (gcnew System::Windows::Forms::Panel());
@@ -156,8 +159,6 @@ namespace Group7FinalProject {
 			this->panel4 = (gcnew System::Windows::Forms::Panel());
 			this->lblStudentCount = (gcnew System::Windows::Forms::Label());
 			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->lblWelcome = (gcnew System::Windows::Forms::Label());
-			this->lblUser = (gcnew System::Windows::Forms::Label());
 			this->panel1->SuspendLayout();
 			this->panel2->SuspendLayout();
 			this->panel3->SuspendLayout();
@@ -169,8 +170,7 @@ namespace Group7FinalProject {
 			// 
 			// panel1
 			// 
-			this->panel1->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(44)), static_cast<System::Int32>(static_cast<System::Byte>(62)),
-				static_cast<System::Int32>(static_cast<System::Byte>(80)));
+			this->panel1->BackColor = System::Drawing::Color::Maroon;
 			this->panel1->Controls->Add(this->lblUser);
 			this->panel1->Controls->Add(this->btnCourses);
 			this->panel1->Controls->Add(this->btnDepartment);
@@ -181,6 +181,18 @@ namespace Group7FinalProject {
 			this->panel1->Name = L"panel1";
 			this->panel1->Size = System::Drawing::Size(260, 729);
 			this->panel1->TabIndex = 0;
+			// 
+			// lblUser
+			// 
+			this->lblUser->AutoSize = true;
+			this->lblUser->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblUser->ForeColor = System::Drawing::Color::White;
+			this->lblUser->Location = System::Drawing::Point(35, 35);
+			this->lblUser->Name = L"lblUser";
+			this->lblUser->Size = System::Drawing::Size(90, 37);
+			this->lblUser->TabIndex = 5;
+			this->lblUser->Text = L"label2";
 			// 
 			// btnCourses
 			// 
@@ -252,6 +264,18 @@ namespace Group7FinalProject {
 			this->panel2->Name = L"panel2";
 			this->panel2->Size = System::Drawing::Size(994, 80);
 			this->panel2->TabIndex = 1;
+			// 
+			// lblWelcome
+			// 
+			this->lblWelcome->AutoSize = true;
+			this->lblWelcome->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblWelcome->ForeColor = System::Drawing::Color::Maroon;
+			this->lblWelcome->Location = System::Drawing::Point(283, 19);
+			this->lblWelcome->Name = L"lblWelcome";
+			this->lblWelcome->Size = System::Drawing::Size(418, 45);
+			this->lblWelcome->TabIndex = 0;
+			this->lblWelcome->Text = L"Administration Dashboard";
 			// 
 			// panel3
 			// 
@@ -385,29 +409,6 @@ namespace Group7FinalProject {
 			this->label1->Size = System::Drawing::Size(210, 37);
 			this->label1->TabIndex = 0;
 			this->label1->Text = L"Total Enrollment";
-			// 
-			// lblWelcome
-			// 
-			this->lblWelcome->AutoSize = true;
-			this->lblWelcome->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->lblWelcome->ForeColor = System::Drawing::SystemColors::HotTrack;
-			this->lblWelcome->Location = System::Drawing::Point(283, 19);
-			this->lblWelcome->Name = L"lblWelcome";
-			this->lblWelcome->Size = System::Drawing::Size(418, 45);
-			this->lblWelcome->TabIndex = 0;
-			this->lblWelcome->Text = L"Administration Dashboard";
-			// 
-			// lblUser
-			// 
-			this->lblUser->AutoSize = true;
-			this->lblUser->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->lblUser->Location = System::Drawing::Point(35, 35);
-			this->lblUser->Name = L"lblUser";
-			this->lblUser->Size = System::Drawing::Size(90, 37);
-			this->lblUser->TabIndex = 5;
-			this->lblUser->Text = L"label2";
 			// 
 			// adminDashboard
 			// 

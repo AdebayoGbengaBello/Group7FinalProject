@@ -1,5 +1,6 @@
 #pragma once
 #include "adminDashboard.h"
+#include "users.h"
 
 namespace Group7FinalProject {
 
@@ -177,7 +178,7 @@ namespace Group7FinalProject {
 			MySqlConnection^ conn = gcnew MySqlConnection(connString);
 			try {
 				conn->Open();
-				String^ query = "SELECT dbID, name FROM User WHERE email=@e AND password=@p";
+				String^ query = "SELECT dbID, firstname FROM User WHERE email=@e AND password=@p";
 				MySqlCommand^ cmd = gcnew MySqlCommand(query, conn);
 				cmd->Parameters->AddWithValue("@e", email);
 				cmd->Parameters->AddWithValue("@p", pass);
@@ -185,23 +186,27 @@ namespace Group7FinalProject {
 				MySqlDataReader^ reader = cmd->ExecuteReader();
 
 				if (reader->Read()) {
+					MessageBox::Show("Welcome");
 					int userID = Convert::ToInt32(reader["dbID"]);
-					String^ userName = reader["fname"]->ToString();
+					String^ userName = reader["firstname"]->ToString();
+					User^ user = gcnew User();
+					user->dbID = userID;
+					user->name = userName;
 					reader->Close(); 
 
 					if (CheckRole(userID, "adminstaff", conn)) {
-						MessageBox::Show("Welcome" + userName);
+						MessageBox::Show("Welcome " + userName);
 						this->Hide();
-						adminDashboard^ dash = gcnew adminDashboard();
+						adminDashboard^ dash = gcnew adminDashboard(user);
 						dash->ShowDialog();
 						this->Close();
 
 					}
 					else if (CheckRole(userID,"student",conn)) {
-						MessageBox::Show("Welcome" + userName);
+						MessageBox::Show("Welcome " + userName);
 					}
 					else if (CheckRole(userID, "faculty", conn)) {
-						MessageBox::Show("Welcome" + userName);
+						MessageBox::Show("Welcome " + userName);
 					}
 				}
 				else {
@@ -218,21 +223,22 @@ namespace Group7FinalProject {
 
 		bool CheckRole(int id, String^ tableName, MySqlConnection^ conn) {
 			String^ idColumn = "";
-			if (tableName == "AdminStaff") { 
+			if (tableName == "adminstaff") { 
 				idColumn = "staffID"; 
 			}
-			else if (tableName == "Student") { 
+			else if (tableName == "student") { 
 				idColumn = "studentID"; 
 			}
-			else if (tableName == "Faculty") { 
+			else if (tableName == "faculty") { 
 				idColumn = "facultyID"; 
 			}
 
 			String^ query = "SELECT COUNT(*) FROM " + tableName + " WHERE " + idColumn + " = @id";
 			MySqlCommand^ cmd = gcnew MySqlCommand(query, conn);
 			cmd->Parameters->AddWithValue("@id", id);
-
+			MessageBox::Show("Role");
 			int count = Convert::ToInt32(cmd->ExecuteScalar());
+			MessageBox::Show("count");
 			return count > 0;
 		}
 	
