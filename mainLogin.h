@@ -1,4 +1,5 @@
 #pragma once
+#include "adminDashboard.h"
 
 namespace Group7FinalProject {
 
@@ -185,11 +186,16 @@ namespace Group7FinalProject {
 
 				if (reader->Read()) {
 					int userID = Convert::ToInt32(reader["dbID"]);
-					String^ userName = reader["name"]->ToString();
+					String^ userName = reader["fname"]->ToString();
 					reader->Close(); 
 
 					if (CheckRole(userID, "adminstaff", conn)) {
 						MessageBox::Show("Welcome" + userName);
+						this->Hide();
+						adminDashboard^ dash = gcnew adminDashboard();
+						dash->ShowDialog();
+						this->Close();
+
 					}
 					else if (CheckRole(userID,"student",conn)) {
 						MessageBox::Show("Welcome" + userName);
@@ -229,5 +235,6 @@ namespace Group7FinalProject {
 			int count = Convert::ToInt32(cmd->ExecuteScalar());
 			return count > 0;
 		}
-	};
+	
+};
 }

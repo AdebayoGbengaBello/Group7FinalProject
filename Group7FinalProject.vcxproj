@@ -115,7 +115,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-      <ClInclude Include="mainLogin.h">
+    <ClInclude Include="mainLogin.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="adminDashboard.h">
@@ -140,11 +140,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="adminDashboard.cpp" />
-    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="adminDashboard.resx">
       <DependentUpon>adminDashboard.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="mainLogin.resx">
+      <DependentUpon>mainLogin.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
