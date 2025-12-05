@@ -257,6 +257,7 @@ namespace Group7FinalProject {
 			this->btnFaculty->Text = L"Faculty";
 			this->btnFaculty->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			this->btnFaculty->UseVisualStyleBackColor = true;
+			this->btnFaculty->Click += gcnew System::EventHandler(this, &adminDashboard::btnFaculty_Click);
 			// 
 			// btnStudents
 			// 
@@ -476,5 +477,6 @@ namespace Group7FinalProject {
 		private: System::Void btnCourses_Click(System::Object^ sender, System::EventArgs^ e);
 		private: System::Void btnDepartment_Click(System::Object^ sender, System::EventArgs^ e);
 		private: System::Void btnProgrammes_Click(System::Object^ sender, System::EventArgs^ e);
+		private: System::Void btnFaculty_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }

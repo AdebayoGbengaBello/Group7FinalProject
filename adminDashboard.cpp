@@ -2,6 +2,7 @@
 #include "adminCourses.h"
 #include "adminDepartment.h"
 #include "adminProgrammes.h"
+#include "adminFaculty.h"
 
 namespace Group7FinalProject {
 
@@ -25,5 +26,11 @@ namespace Group7FinalProject {
         progForm->ShowDialog();
 
     }
+    System::Void adminDashboard::btnFaculty_Click(System::Object^ sender, System::EventArgs^ e)
+    {
+        this->Hide();
+        adminFaculty^ facultyForm = gcnew adminFaculty(this->currentUser);
+        facultyForm->ShowDialog();
+	}
 }
 
