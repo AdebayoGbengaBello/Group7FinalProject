@@ -115,6 +115,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="adminCourses.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="adminDepartment.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="adminProgrammes.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="Database.h" />
     <ClInclude Include="mainLogin.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -135,6 +145,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="adminCourses.cpp" />
+    <ClCompile Include="adminDepartment.cpp" />
+    <ClCompile Include="adminProgrammes.cpp" />
+    <ClCompile Include="Database.cpp" />
     <ClCompile Include="mainLogin.cpp" />
     <ClCompile Include="mainProgram.cpp" />
   </ItemGroup>
@@ -142,8 +156,17 @@
     <ClCompile Include="adminDashboard.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="adminCourses.resx">
+      <DependentUpon>adminCourses.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="adminDashboard.resx">
       <DependentUpon>adminDashboard.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="adminDepartment.resx">
+      <DependentUpon>adminDepartment.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="adminProgrammes.resx">
+      <DependentUpon>adminProgrammes.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="mainLogin.resx">
       <DependentUpon>mainLogin.h</DependentUpon>

@@ -26,6 +26,8 @@ namespace Group7FinalProject {
 			//
 			//TODO: Add the constructor code here
 			//
+			txtEmail->Text = "adebayo.bello@ashesi.edu.gh";
+			txtPassword->Text = "phallusNo.1";
 		}
 
 	protected:
@@ -186,7 +188,6 @@ namespace Group7FinalProject {
 				MySqlDataReader^ reader = cmd->ExecuteReader();
 
 				if (reader->Read()) {
-					MessageBox::Show("Welcome");
 					int userID = Convert::ToInt32(reader["dbID"]);
 					String^ userName = reader["firstname"]->ToString();
 					User^ user = gcnew User();
@@ -236,9 +237,7 @@ namespace Group7FinalProject {
 			String^ query = "SELECT COUNT(*) FROM " + tableName + " WHERE " + idColumn + " = @id";
 			MySqlCommand^ cmd = gcnew MySqlCommand(query, conn);
 			cmd->Parameters->AddWithValue("@id", id);
-			MessageBox::Show("Role");
 			int count = Convert::ToInt32(cmd->ExecuteScalar());
-			MessageBox::Show("count");
 			return count > 0;
 		}
 	

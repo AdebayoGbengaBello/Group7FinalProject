@@ -1,5 +1,6 @@
 #pragma once
 #include "users.h"
+#include "Database.h"
 namespace Group7FinalProject {
 
 	using namespace System;
@@ -16,10 +17,11 @@ namespace Group7FinalProject {
 	public ref class adminDashboard : public System::Windows::Forms::Form
 	{
 	private:
+		Database^ db = gcnew Database();
 		User^ currentUser;
+	private: System::Windows::Forms::Button^ btnProgrammes;
+
 	public:
-		String^ connString = "datasource=localhost;port=3306;"
-			"username=root; password=""; database=universityDB";
 		adminDashboard(User^ User)
 		{
 			InitializeComponent();
@@ -29,41 +31,38 @@ namespace Group7FinalProject {
 
 		int GetCount(String^ tableName) {
 			int count = 0;
-			MySqlConnection^ conn = gcnew MySqlConnection(connString);
 			try {
-				conn->Open();
+				db->Open();
 				String^ query = "SELECT COUNT(*) FROM " + tableName;
-				MySqlCommand^ cmd = gcnew MySqlCommand(query, conn);
-				count = Convert::ToInt32(cmd->ExecuteScalar());
+				db->sqlCmd->CommandText = query;
+				count = Convert::ToInt32(db->sqlCmd->ExecuteScalar());
 			}
 			catch (Exception^ ex) {
 				MessageBox::Show("Error: " + ex->Message);
 			}
 			finally {
-				conn->Close();
+				db->Close();
 			}
 			return count;
 		}
 
 		void LoadChart() {
-			MySqlConnection^ conn = gcnew MySqlConnection(connString);
 			try {
-				conn->Open();
+				db->Open();
 				String^ query = "SELECT c.courseCode, COUNT(r.studentID) as Total "
 					"FROM Course c "
 					"LEFT JOIN CourseRegistration r ON c.courseID = r.courseID "
 					"GROUP BY c.courseCode LIMIT 5";
-
-				MySqlDataAdapter^ adapter = gcnew MySqlDataAdapter(query, conn);
-				DataTable^ dt = gcnew DataTable();
-				adapter->Fill(dt);
+				db->sqlCmd->CommandText = query;
+				db->sqlDA->SelectCommand = db->sqlCmd;
+				db->sqlDA->Fill(db->sqlDT);
 
 				this->chart1->Series[0]->Points->Clear();
 				this->chart1->Series[0]->Name = "Registrations";
 				this->chart1->Series[0]->Color = System::Drawing::Color::Brown; // Ashesi Red-ish
 
-				for (int i = 0; i < dt->Rows->Count; i++) {
-					DataRow^ row = dt->Rows[i];
+				for (int i = 0; i < db->sqlDT->Rows->Count; i++) {
+					DataRow^ row = db->sqlDT->Rows[i];
 					String^ code = row["courseCode"]->ToString();
 					int total = Convert::ToInt32(row["Total"]);
 					this->chart1->Series[0]->Points->AddXY(code, total);
@@ -73,7 +72,7 @@ namespace Group7FinalProject {
 				MessageBox::Show("Chart Error: " + ex->Message);
 			}
 			finally {
-				conn->Close();
+				db->Close();
 			}
 		}
 
@@ -141,6 +140,7 @@ namespace Group7FinalProject {
 			System::Windows::Forms::DataVisualization::Charting::Legend^ legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
 			System::Windows::Forms::DataVisualization::Charting::Series^ series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
+			this->btnProgrammes = (gcnew System::Windows::Forms::Button());
 			this->lblUser = (gcnew System::Windows::Forms::Label());
 			this->btnCourses = (gcnew System::Windows::Forms::Button());
 			this->btnDepartment = (gcnew System::Windows::Forms::Button());
@@ -171,6 +171,7 @@ namespace Group7FinalProject {
 			// panel1
 			// 
 			this->panel1->BackColor = System::Drawing::Color::Maroon;
+			this->panel1->Controls->Add(this->btnProgrammes);
 			this->panel1->Controls->Add(this->lblUser);
 			this->panel1->Controls->Add(this->btnCourses);
 			this->panel1->Controls->Add(this->btnDepartment);
@@ -179,8 +180,24 @@ namespace Group7FinalProject {
 			this->panel1->Dock = System::Windows::Forms::DockStyle::Left;
 			this->panel1->Location = System::Drawing::Point(0, 0);
 			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(260, 729);
+			this->panel1->Size = System::Drawing::Size(280, 729);
 			this->panel1->TabIndex = 0;
+			// 
+			// btnProgrammes
+			// 
+			this->btnProgrammes->FlatAppearance->BorderSize = 0;
+			this->btnProgrammes->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnProgrammes->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnProgrammes->ForeColor = System::Drawing::Color::White;
+			this->btnProgrammes->Location = System::Drawing::Point(26, 492);
+			this->btnProgrammes->Name = L"btnProgrammes";
+			this->btnProgrammes->Size = System::Drawing::Size(228, 68);
+			this->btnProgrammes->TabIndex = 6;
+			this->btnProgrammes->Text = L"Programmes";
+			this->btnProgrammes->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->btnProgrammes->UseVisualStyleBackColor = true;
+			this->btnProgrammes->Click += gcnew System::EventHandler(this, &adminDashboard::btnProgrammes_Click);
 			// 
 			// lblUser
 			// 
@@ -203,11 +220,12 @@ namespace Group7FinalProject {
 			this->btnCourses->ForeColor = System::Drawing::Color::White;
 			this->btnCourses->Location = System::Drawing::Point(26, 411);
 			this->btnCourses->Name = L"btnCourses";
-			this->btnCourses->Size = System::Drawing::Size(182, 50);
+			this->btnCourses->Size = System::Drawing::Size(182, 75);
 			this->btnCourses->TabIndex = 4;
 			this->btnCourses->Text = L"Courses";
 			this->btnCourses->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			this->btnCourses->UseVisualStyleBackColor = true;
+			this->btnCourses->Click += gcnew System::EventHandler(this, &adminDashboard::btnCourses_Click);
 			// 
 			// btnDepartment
 			// 
@@ -218,11 +236,12 @@ namespace Group7FinalProject {
 			this->btnDepartment->ForeColor = System::Drawing::Color::White;
 			this->btnDepartment->Location = System::Drawing::Point(26, 324);
 			this->btnDepartment->Name = L"btnDepartment";
-			this->btnDepartment->Size = System::Drawing::Size(197, 50);
+			this->btnDepartment->Size = System::Drawing::Size(228, 64);
 			this->btnDepartment->TabIndex = 3;
 			this->btnDepartment->Text = L"Departments";
 			this->btnDepartment->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			this->btnDepartment->UseVisualStyleBackColor = true;
+			this->btnDepartment->Click += gcnew System::EventHandler(this, &adminDashboard::btnDepartment_Click);
 			// 
 			// btnFaculty
 			// 
@@ -233,7 +252,7 @@ namespace Group7FinalProject {
 			this->btnFaculty->ForeColor = System::Drawing::Color::White;
 			this->btnFaculty->Location = System::Drawing::Point(26, 237);
 			this->btnFaculty->Name = L"btnFaculty";
-			this->btnFaculty->Size = System::Drawing::Size(182, 50);
+			this->btnFaculty->Size = System::Drawing::Size(182, 81);
 			this->btnFaculty->TabIndex = 2;
 			this->btnFaculty->Text = L"Faculty";
 			this->btnFaculty->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
@@ -248,7 +267,7 @@ namespace Group7FinalProject {
 			this->btnStudents->ForeColor = System::Drawing::Color::White;
 			this->btnStudents->Location = System::Drawing::Point(26, 148);
 			this->btnStudents->Name = L"btnStudents";
-			this->btnStudents->Size = System::Drawing::Size(182, 50);
+			this->btnStudents->Size = System::Drawing::Size(182, 66);
 			this->btnStudents->TabIndex = 0;
 			this->btnStudents->Text = L"Students";
 			this->btnStudents->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
@@ -260,9 +279,9 @@ namespace Group7FinalProject {
 			this->panel2->BackColor = System::Drawing::Color::White;
 			this->panel2->Controls->Add(this->lblWelcome);
 			this->panel2->Dock = System::Windows::Forms::DockStyle::Top;
-			this->panel2->Location = System::Drawing::Point(260, 0);
+			this->panel2->Location = System::Drawing::Point(280, 0);
 			this->panel2->Name = L"panel2";
-			this->panel2->Size = System::Drawing::Size(994, 80);
+			this->panel2->Size = System::Drawing::Size(974, 80);
 			this->panel2->TabIndex = 1;
 			// 
 			// lblWelcome
@@ -284,9 +303,9 @@ namespace Group7FinalProject {
 			this->panel3->Controls->Add(this->panel5);
 			this->panel3->Controls->Add(this->panel4);
 			this->panel3->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->panel3->Location = System::Drawing::Point(260, 80);
+			this->panel3->Location = System::Drawing::Point(280, 80);
 			this->panel3->Name = L"panel3";
-			this->panel3->Size = System::Drawing::Size(994, 649);
+			this->panel3->Size = System::Drawing::Size(974, 649);
 			this->panel3->TabIndex = 2;
 			this->panel3->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &adminDashboard::panel3_Paint);
 			// 
@@ -303,7 +322,7 @@ namespace Group7FinalProject {
 			series1->Legend = L"Legend1";
 			series1->Name = L"Series1";
 			this->chart1->Series->Add(series1);
-			this->chart1->Size = System::Drawing::Size(994, 300);
+			this->chart1->Size = System::Drawing::Size(974, 300);
 			this->chart1->TabIndex = 3;
 			this->chart1->Text = L"chart1";
 			// 
@@ -454,5 +473,8 @@ namespace Group7FinalProject {
 
 			LoadChart();
 		}
-	};
+		private: System::Void btnCourses_Click(System::Object^ sender, System::EventArgs^ e);
+		private: System::Void btnDepartment_Click(System::Object^ sender, System::EventArgs^ e);
+		private: System::Void btnProgrammes_Click(System::Object^ sender, System::EventArgs^ e);
+};
 }
