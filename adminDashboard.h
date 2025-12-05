@@ -8,6 +8,7 @@ namespace Group7FinalProject {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace MySql::Data::MySqlClient;
 
 	/// <summary>
 	/// Summary for adminDashboard
@@ -15,12 +16,64 @@ namespace Group7FinalProject {
 	public ref class adminDashboard : public System::Windows::Forms::Form
 	{
 	public:
+		String^ connString = "datasource=localhost;port=3306;"
+			"username=root; password=""; database=universityDB";
 		adminDashboard(void)
 		{
 			InitializeComponent();
 			//
 			//TODO: Add the constructor code here
 			//
+		}
+
+		int GetCount(String^ tableName) {
+			int count = 0;
+			MySqlConnection^ conn = gcnew MySqlConnection(connString);
+			try {
+				conn->Open();
+				String^ query = "SELECT COUNT(*) FROM " + tableName;
+				MySqlCommand^ cmd = gcnew MySqlCommand(query, conn);
+				count = Convert::ToInt32(cmd->ExecuteScalar());
+			}
+			catch (Exception^ ex) {
+				MessageBox::Show("Error: " + ex->Message);
+			}
+			finally {
+				conn->Close();
+			}
+			return count;
+		}
+
+		void LoadChart() {
+			MySqlConnection^ conn = gcnew MySqlConnection(connString);
+			try {
+				conn->Open();
+				String^ query = "SELECT c.courseCode, COUNT(r.studentID) as Total "
+					"FROM Course c "
+					"LEFT JOIN CourseRegistration r ON c.courseID = r.courseID "
+					"GROUP BY c.courseCode LIMIT 5";
+
+				MySqlDataAdapter^ adapter = gcnew MySqlDataAdapter(query, conn);
+				DataTable^ dt = gcnew DataTable();
+				adapter->Fill(dt);
+
+				this->chart1->Series[0]->Points->Clear();
+				this->chart1->Series[0]->Name = "Registrations";
+				this->chart1->Series[0]->Color = System::Drawing::Color::Brown; // Ashesi Red-ish
+
+				for (int i = 0; i < dt->Rows->Count; i++) {
+					DataRow^ row = dt->Rows[i];
+					String^ code = row["courseCode"]->ToString();
+					int total = Convert::ToInt32(row["Total"]);
+					this->chart1->Series[0]->Points->AddXY(code, total);
+				}
+			}
+			catch (Exception^ ex) {
+				MessageBox::Show("Chart Error: " + ex->Message);
+			}
+			finally {
+				conn->Close();
+			}
 		}
 
 	protected:
@@ -47,13 +100,17 @@ namespace Group7FinalProject {
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Label^ lblStudentCount;
 	private: System::Windows::Forms::Panel^ panel6;
-	private: System::Windows::Forms::Label^ lblCoursesCount;
+	private: System::Windows::Forms::Label^ lblCourseCount;
+
 
 	private: System::Windows::Forms::Label^ label5;
 	private: System::Windows::Forms::Panel^ panel5;
 	private: System::Windows::Forms::Label^ lblFacultyCount;
 
 	private: System::Windows::Forms::Label^ label3;
+	private: System::Windows::Forms::DataVisualization::Charting::Chart^ chart1;
+	private: System::Windows::Forms::Label^ lblWelcome;
+	private: System::Windows::Forms::Label^ lblUser;
 
 
 
@@ -79,33 +136,42 @@ namespace Group7FinalProject {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^ chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^ legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^ series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
+			this->btnCourses = (gcnew System::Windows::Forms::Button());
+			this->btnDepartment = (gcnew System::Windows::Forms::Button());
+			this->btnFaculty = (gcnew System::Windows::Forms::Button());
+			this->btnStudents = (gcnew System::Windows::Forms::Button());
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
 			this->panel3 = (gcnew System::Windows::Forms::Panel());
-			this->btnStudents = (gcnew System::Windows::Forms::Button());
-			this->btnFaculty = (gcnew System::Windows::Forms::Button());
-			this->btnDepartment = (gcnew System::Windows::Forms::Button());
-			this->btnCourses = (gcnew System::Windows::Forms::Button());
-			this->panel4 = (gcnew System::Windows::Forms::Panel());
-			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->lblStudentCount = (gcnew System::Windows::Forms::Label());
+			this->chart1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
+			this->panel6 = (gcnew System::Windows::Forms::Panel());
+			this->lblCourseCount = (gcnew System::Windows::Forms::Label());
+			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->panel5 = (gcnew System::Windows::Forms::Panel());
 			this->lblFacultyCount = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
-			this->panel6 = (gcnew System::Windows::Forms::Panel());
-			this->lblCoursesCount = (gcnew System::Windows::Forms::Label());
-			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->panel4 = (gcnew System::Windows::Forms::Panel());
+			this->lblStudentCount = (gcnew System::Windows::Forms::Label());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->lblWelcome = (gcnew System::Windows::Forms::Label());
+			this->lblUser = (gcnew System::Windows::Forms::Label());
 			this->panel1->SuspendLayout();
+			this->panel2->SuspendLayout();
 			this->panel3->SuspendLayout();
-			this->panel4->SuspendLayout();
-			this->panel5->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->BeginInit();
 			this->panel6->SuspendLayout();
+			this->panel5->SuspendLayout();
+			this->panel4->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// panel1
 			// 
 			this->panel1->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(44)), static_cast<System::Int32>(static_cast<System::Byte>(62)),
 				static_cast<System::Int32>(static_cast<System::Byte>(80)));
+			this->panel1->Controls->Add(this->lblUser);
 			this->panel1->Controls->Add(this->btnCourses);
 			this->panel1->Controls->Add(this->btnDepartment);
 			this->panel1->Controls->Add(this->btnFaculty);
@@ -116,26 +182,50 @@ namespace Group7FinalProject {
 			this->panel1->Size = System::Drawing::Size(260, 729);
 			this->panel1->TabIndex = 0;
 			// 
-			// panel2
+			// btnCourses
 			// 
-			this->panel2->BackColor = System::Drawing::Color::White;
-			this->panel2->Dock = System::Windows::Forms::DockStyle::Top;
-			this->panel2->Location = System::Drawing::Point(260, 0);
-			this->panel2->Name = L"panel2";
-			this->panel2->Size = System::Drawing::Size(994, 80);
-			this->panel2->TabIndex = 1;
+			this->btnCourses->FlatAppearance->BorderSize = 0;
+			this->btnCourses->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnCourses->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnCourses->ForeColor = System::Drawing::Color::White;
+			this->btnCourses->Location = System::Drawing::Point(26, 411);
+			this->btnCourses->Name = L"btnCourses";
+			this->btnCourses->Size = System::Drawing::Size(182, 50);
+			this->btnCourses->TabIndex = 4;
+			this->btnCourses->Text = L"Courses";
+			this->btnCourses->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->btnCourses->UseVisualStyleBackColor = true;
 			// 
-			// panel3
+			// btnDepartment
 			// 
-			this->panel3->Controls->Add(this->panel6);
-			this->panel3->Controls->Add(this->panel5);
-			this->panel3->Controls->Add(this->panel4);
-			this->panel3->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->panel3->Location = System::Drawing::Point(260, 80);
-			this->panel3->Name = L"panel3";
-			this->panel3->Size = System::Drawing::Size(994, 649);
-			this->panel3->TabIndex = 2;
-			this->panel3->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &adminDashboard::panel3_Paint);
+			this->btnDepartment->FlatAppearance->BorderSize = 0;
+			this->btnDepartment->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnDepartment->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnDepartment->ForeColor = System::Drawing::Color::White;
+			this->btnDepartment->Location = System::Drawing::Point(26, 324);
+			this->btnDepartment->Name = L"btnDepartment";
+			this->btnDepartment->Size = System::Drawing::Size(197, 50);
+			this->btnDepartment->TabIndex = 3;
+			this->btnDepartment->Text = L"Departments";
+			this->btnDepartment->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->btnDepartment->UseVisualStyleBackColor = true;
+			// 
+			// btnFaculty
+			// 
+			this->btnFaculty->FlatAppearance->BorderSize = 0;
+			this->btnFaculty->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnFaculty->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnFaculty->ForeColor = System::Drawing::Color::White;
+			this->btnFaculty->Location = System::Drawing::Point(26, 237);
+			this->btnFaculty->Name = L"btnFaculty";
+			this->btnFaculty->Size = System::Drawing::Size(182, 50);
+			this->btnFaculty->TabIndex = 2;
+			this->btnFaculty->Text = L"Faculty";
+			this->btnFaculty->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->btnFaculty->UseVisualStyleBackColor = true;
 			// 
 			// btnStudents
 			// 
@@ -153,84 +243,79 @@ namespace Group7FinalProject {
 			this->btnStudents->UseVisualStyleBackColor = true;
 			this->btnStudents->Click += gcnew System::EventHandler(this, &adminDashboard::btnStudents_Click);
 			// 
-			// btnFaculty
+			// panel2
 			// 
-			this->btnFaculty->FlatAppearance->BorderSize = 0;
-			this->btnFaculty->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnFaculty->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->panel2->BackColor = System::Drawing::Color::White;
+			this->panel2->Controls->Add(this->lblWelcome);
+			this->panel2->Dock = System::Windows::Forms::DockStyle::Top;
+			this->panel2->Location = System::Drawing::Point(260, 0);
+			this->panel2->Name = L"panel2";
+			this->panel2->Size = System::Drawing::Size(994, 80);
+			this->panel2->TabIndex = 1;
+			// 
+			// panel3
+			// 
+			this->panel3->Controls->Add(this->chart1);
+			this->panel3->Controls->Add(this->panel6);
+			this->panel3->Controls->Add(this->panel5);
+			this->panel3->Controls->Add(this->panel4);
+			this->panel3->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->panel3->Location = System::Drawing::Point(260, 80);
+			this->panel3->Name = L"panel3";
+			this->panel3->Size = System::Drawing::Size(994, 649);
+			this->panel3->TabIndex = 2;
+			this->panel3->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &adminDashboard::panel3_Paint);
+			// 
+			// chart1
+			// 
+			chartArea1->Name = L"ChartArea1";
+			this->chart1->ChartAreas->Add(chartArea1);
+			this->chart1->Dock = System::Windows::Forms::DockStyle::Bottom;
+			legend1->Name = L"Legend1";
+			this->chart1->Legends->Add(legend1);
+			this->chart1->Location = System::Drawing::Point(0, 349);
+			this->chart1->Name = L"chart1";
+			series1->ChartArea = L"ChartArea1";
+			series1->Legend = L"Legend1";
+			series1->Name = L"Series1";
+			this->chart1->Series->Add(series1);
+			this->chart1->Size = System::Drawing::Size(994, 300);
+			this->chart1->TabIndex = 3;
+			this->chart1->Text = L"chart1";
+			// 
+			// panel6
+			// 
+			this->panel6->BackColor = System::Drawing::Color::White;
+			this->panel6->Controls->Add(this->lblCourseCount);
+			this->panel6->Controls->Add(this->label5);
+			this->panel6->Cursor = System::Windows::Forms::Cursors::Default;
+			this->panel6->Location = System::Drawing::Point(700, 68);
+			this->panel6->Name = L"panel6";
+			this->panel6->Size = System::Drawing::Size(250, 140);
+			this->panel6->TabIndex = 2;
+			// 
+			// lblCourseCount
+			// 
+			this->lblCourseCount->AutoSize = true;
+			this->lblCourseCount->Font = (gcnew System::Drawing::Font(L"Segoe UI", 19.875F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->btnFaculty->ForeColor = System::Drawing::Color::White;
-			this->btnFaculty->Location = System::Drawing::Point(26, 237);
-			this->btnFaculty->Name = L"btnFaculty";
-			this->btnFaculty->Size = System::Drawing::Size(182, 50);
-			this->btnFaculty->TabIndex = 2;
-			this->btnFaculty->Text = L"Faculty";
-			this->btnFaculty->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
-			this->btnFaculty->UseVisualStyleBackColor = true;
+			this->lblCourseCount->Location = System::Drawing::Point(-12, 53);
+			this->lblCourseCount->Name = L"lblCourseCount";
+			this->lblCourseCount->Size = System::Drawing::Size(272, 71);
+			this->lblCourseCount->TabIndex = 1;
+			this->lblCourseCount->Text = L"Loading...";
 			// 
-			// btnDepartment
+			// label5
 			// 
-			this->btnDepartment->FlatAppearance->BorderSize = 0;
-			this->btnDepartment->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnDepartment->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->label5->AutoSize = true;
+			this->label5->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->btnDepartment->ForeColor = System::Drawing::Color::White;
-			this->btnDepartment->Location = System::Drawing::Point(26, 324);
-			this->btnDepartment->Name = L"btnDepartment";
-			this->btnDepartment->Size = System::Drawing::Size(197, 50);
-			this->btnDepartment->TabIndex = 3;
-			this->btnDepartment->Text = L"Departments";
-			this->btnDepartment->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
-			this->btnDepartment->UseVisualStyleBackColor = true;
-			// 
-			// btnCourses
-			// 
-			this->btnCourses->FlatAppearance->BorderSize = 0;
-			this->btnCourses->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnCourses->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->btnCourses->ForeColor = System::Drawing::Color::White;
-			this->btnCourses->Location = System::Drawing::Point(26, 411);
-			this->btnCourses->Name = L"btnCourses";
-			this->btnCourses->Size = System::Drawing::Size(182, 50);
-			this->btnCourses->TabIndex = 4;
-			this->btnCourses->Text = L"Courses";
-			this->btnCourses->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
-			this->btnCourses->UseVisualStyleBackColor = true;
-			// 
-			// panel4
-			// 
-			this->panel4->BackColor = System::Drawing::Color::White;
-			this->panel4->Controls->Add(this->lblStudentCount);
-			this->panel4->Controls->Add(this->label1);
-			this->panel4->Cursor = System::Windows::Forms::Cursors::Default;
-			this->panel4->Location = System::Drawing::Point(26, 68);
-			this->panel4->Name = L"panel4";
-			this->panel4->Size = System::Drawing::Size(250, 140);
-			this->panel4->TabIndex = 0;
-			// 
-			// label1
-			// 
-			this->label1->AutoSize = true;
-			this->label1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label1->ForeColor = System::Drawing::Color::Gray;
-			this->label1->Location = System::Drawing::Point(16, 16);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(210, 37);
-			this->label1->TabIndex = 0;
-			this->label1->Text = L"Total Enrollment";
-			// 
-			// lblStudentCount
-			// 
-			this->lblStudentCount->AutoSize = true;
-			this->lblStudentCount->Font = (gcnew System::Drawing::Font(L"Segoe UI", 19.875F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->lblStudentCount->Location = System::Drawing::Point(-12, 53);
-			this->lblStudentCount->Name = L"lblStudentCount";
-			this->lblStudentCount->Size = System::Drawing::Size(272, 71);
-			this->lblStudentCount->TabIndex = 1;
-			this->lblStudentCount->Text = L"Loading...";
+			this->label5->ForeColor = System::Drawing::Color::Gray;
+			this->label5->Location = System::Drawing::Point(16, 16);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(174, 37);
+			this->label5->TabIndex = 0;
+			this->label5->Text = L"Total Courses";
 			// 
 			// panel5
 			// 
@@ -267,39 +352,62 @@ namespace Group7FinalProject {
 			this->label3->Text = L"Total Faculty";
 			this->label3->Click += gcnew System::EventHandler(this, &adminDashboard::label3_Click);
 			// 
-			// panel6
+			// panel4
 			// 
-			this->panel6->BackColor = System::Drawing::Color::White;
-			this->panel6->Controls->Add(this->lblCoursesCount);
-			this->panel6->Controls->Add(this->label5);
-			this->panel6->Cursor = System::Windows::Forms::Cursors::Default;
-			this->panel6->Location = System::Drawing::Point(700, 68);
-			this->panel6->Name = L"panel6";
-			this->panel6->Size = System::Drawing::Size(250, 140);
-			this->panel6->TabIndex = 2;
+			this->panel4->BackColor = System::Drawing::Color::White;
+			this->panel4->Controls->Add(this->lblStudentCount);
+			this->panel4->Controls->Add(this->label1);
+			this->panel4->Cursor = System::Windows::Forms::Cursors::Default;
+			this->panel4->Location = System::Drawing::Point(26, 68);
+			this->panel4->Name = L"panel4";
+			this->panel4->Size = System::Drawing::Size(250, 140);
+			this->panel4->TabIndex = 0;
 			// 
-			// lblCoursesCount
+			// lblStudentCount
 			// 
-			this->lblCoursesCount->AutoSize = true;
-			this->lblCoursesCount->Font = (gcnew System::Drawing::Font(L"Segoe UI", 19.875F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->lblStudentCount->AutoSize = true;
+			this->lblStudentCount->Font = (gcnew System::Drawing::Font(L"Segoe UI", 19.875F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lblCoursesCount->Location = System::Drawing::Point(-12, 53);
-			this->lblCoursesCount->Name = L"lblCoursesCount";
-			this->lblCoursesCount->Size = System::Drawing::Size(272, 71);
-			this->lblCoursesCount->TabIndex = 1;
-			this->lblCoursesCount->Text = L"Loading...";
+			this->lblStudentCount->Location = System::Drawing::Point(-12, 53);
+			this->lblStudentCount->Name = L"lblStudentCount";
+			this->lblStudentCount->Size = System::Drawing::Size(272, 71);
+			this->lblStudentCount->TabIndex = 1;
+			this->lblStudentCount->Text = L"Loading...";
 			// 
-			// label5
+			// label1
 			// 
-			this->label5->AutoSize = true;
-			this->label5->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->label1->AutoSize = true;
+			this->label1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label5->ForeColor = System::Drawing::Color::Gray;
-			this->label5->Location = System::Drawing::Point(16, 16);
-			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(174, 37);
-			this->label5->TabIndex = 0;
-			this->label5->Text = L"Total Courses";
+			this->label1->ForeColor = System::Drawing::Color::Gray;
+			this->label1->Location = System::Drawing::Point(16, 16);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(210, 37);
+			this->label1->TabIndex = 0;
+			this->label1->Text = L"Total Enrollment";
+			// 
+			// lblWelcome
+			// 
+			this->lblWelcome->AutoSize = true;
+			this->lblWelcome->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblWelcome->ForeColor = System::Drawing::SystemColors::HotTrack;
+			this->lblWelcome->Location = System::Drawing::Point(283, 19);
+			this->lblWelcome->Name = L"lblWelcome";
+			this->lblWelcome->Size = System::Drawing::Size(418, 45);
+			this->lblWelcome->TabIndex = 0;
+			this->lblWelcome->Text = L"Administration Dashboard";
+			// 
+			// lblUser
+			// 
+			this->lblUser->AutoSize = true;
+			this->lblUser->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblUser->Location = System::Drawing::Point(35, 35);
+			this->lblUser->Name = L"lblUser";
+			this->lblUser->Size = System::Drawing::Size(90, 37);
+			this->lblUser->TabIndex = 5;
+			this->lblUser->Text = L"label2";
 			// 
 			// adminDashboard
 			// 
@@ -313,25 +421,37 @@ namespace Group7FinalProject {
 			this->Name = L"adminDashboard";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"adminDashboard";
+			this->Load += gcnew System::EventHandler(this, &adminDashboard::adminDashboard_Load);
 			this->panel1->ResumeLayout(false);
+			this->panel1->PerformLayout();
+			this->panel2->ResumeLayout(false);
+			this->panel2->PerformLayout();
 			this->panel3->ResumeLayout(false);
-			this->panel4->ResumeLayout(false);
-			this->panel4->PerformLayout();
-			this->panel5->ResumeLayout(false);
-			this->panel5->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->EndInit();
 			this->panel6->ResumeLayout(false);
 			this->panel6->PerformLayout();
+			this->panel5->ResumeLayout(false);
+			this->panel5->PerformLayout();
+			this->panel4->ResumeLayout(false);
+			this->panel4->PerformLayout();
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
-	private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e) {
-	}
-private: System::Void btnStudents_Click(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void panel3_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
-}
-private: System::Void label3_Click(System::Object^ sender, System::EventArgs^ e) {
-}
-};
+		private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e) {
+		}
+		private: System::Void btnStudents_Click(System::Object^ sender, System::EventArgs^ e) {
+		}
+		private: System::Void panel3_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
+		}
+		private: System::Void label3_Click(System::Object^ sender, System::EventArgs^ e) {
+		}
+		private: System::Void adminDashboard_Load(System::Object^ sender, System::EventArgs^ e) {
+			lblStudentCount->Text = GetCount("Student").ToString();
+			lblFacultyCount->Text = GetCount("Faculty").ToString();
+			lblCourseCount->Text = GetCount("Course").ToString();
+
+			LoadChart();
+		}
+	};
 }
