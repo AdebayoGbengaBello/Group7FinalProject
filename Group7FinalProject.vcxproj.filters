@@ -18,5 +18,13 @@
     <ClInclude Include="users.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="adminDashboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="adminDashboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
