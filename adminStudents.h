@@ -1,4 +1,6 @@
 #pragma once
+#include "users.h"
+#include "Database.h"
 
 namespace Group7FinalProject {
 
@@ -14,13 +16,46 @@ namespace Group7FinalProject {
 	/// </summary>
 	public ref class adminStudents : public System::Windows::Forms::Form
 	{
+		Database^ db = gcnew Database();
+		User^ currentUser;
+		int globalStudentID = -1;
 	public:
-		adminStudents(void)
+		adminStudents(User^ user)
 		{
+			this->currentUser = user;
 			InitializeComponent();
 			//
 			//TODO: Add the constructor code here
 			//
+			lblUser->Text = "Hello " + currentUser->name;
+			LevelBox->Items->Add("100");
+			LevelBox->Items->Add("200");
+			LevelBox->Items->Add("300");
+			LevelBox->Items->Add("400");
+			loadStudents();
+		}
+		void loadStudents() {
+			try {
+				db->Open();
+				db->sqlCmd->CommandText = "SELECT s.studentID, u.firstName, u.lastName, s.currentLevel, u.email, s.enrollmentYear, s.expectedGraduation from student s JOIN user u ON s.studentID=u.dbID ORDER by s.studentID DESC";
+				db->sqlDR = db->sqlCmd->ExecuteReader();
+				db->sqlDT->Clear();
+				db->sqlDT->Load(db->sqlDR);
+				dataGridView1->DataSource = db->sqlDT;
+				dataGridView1->Columns[0]->Width = 80;
+				dataGridView1->Columns[1]->Width = 150;
+				dataGridView1->Columns[2]->Width = 150;
+				dataGridView1->Columns[3]->Width = 100;
+				dataGridView1->Columns[4]->Width = 150;
+				dataGridView1->Columns[5]->Width = 100;
+				dataGridView1->Columns[6]->Width = 100;
+				db->sqlDR->Close();
+				db->sqlCmd->Cancel();
+				db->Close();
+			}
+			catch (Exception^ ex) {
+				MessageBox::Show(ex->Message);
+			}
 		}
 
 	protected:
@@ -34,7 +69,7 @@ namespace Group7FinalProject {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::TextBox^ txtPosition;
+
 	protected:
 	private: System::Windows::Forms::Label^ Position;
 	private: System::Windows::Forms::DateTimePicker^ dateTimePicker1;
@@ -51,10 +86,11 @@ namespace Group7FinalProject {
 	private: System::Windows::Forms::Label^ label5;
 	private: System::Windows::Forms::TextBox^ txtLastName;
 	private: System::Windows::Forms::Label^ label4;
-	private: System::Windows::Forms::Button^ btnDepartment;
+	private: System::Windows::Forms::Button^ btnLevel;
+
 	private: System::Windows::Forms::TextBox^ txtFirstName;
 	private: System::Windows::Forms::Label^ label3;
-	private: System::Windows::Forms::ComboBox^ DepartmentBox;
+
 	private: System::Windows::Forms::Button^ btnID;
 	private: System::Windows::Forms::Button^ btnName;
 	private: System::Windows::Forms::TextBox^ txtSearch;
@@ -63,7 +99,7 @@ namespace Group7FinalProject {
 	private: System::Windows::Forms::Button^ btnDelete;
 	private: System::Windows::Forms::Button^ btnUpdate;
 	private: System::Windows::Forms::Button^ btnSave;
-	private: System::Windows::Forms::Label^ label1;
+
 	private: System::Windows::Forms::Panel^ panel2;
 	private: System::Windows::Forms::Label^ lblWelcome;
 	private: System::Windows::Forms::Panel^ panel1;
@@ -73,6 +109,20 @@ namespace Group7FinalProject {
 	private: System::Windows::Forms::Button^ btnDashboard;
 	private: System::Windows::Forms::Button^ btnFaculty;
 	private: System::Windows::Forms::Button^ btnStudents;
+
+
+	private: System::Windows::Forms::TextBox^ txtEnrollment;
+
+	private: System::Windows::Forms::Label^ label8;
+	private: System::Windows::Forms::TextBox^ txtGraduation;
+
+	private: System::Windows::Forms::Label^ label9;
+	private: System::Windows::Forms::ComboBox^ LevelBox;
+
+
+
+	private: System::Windows::Forms::Button^ btnYear;
+
 
 	private:
 		/// <summary>
@@ -87,7 +137,6 @@ namespace Group7FinalProject {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->txtPosition = (gcnew System::Windows::Forms::TextBox());
 			this->Position = (gcnew System::Windows::Forms::Label());
 			this->dateTimePicker1 = (gcnew System::Windows::Forms::DateTimePicker());
 			this->txtAddress = (gcnew System::Windows::Forms::TextBox());
@@ -103,10 +152,9 @@ namespace Group7FinalProject {
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->txtLastName = (gcnew System::Windows::Forms::TextBox());
 			this->label4 = (gcnew System::Windows::Forms::Label());
-			this->btnDepartment = (gcnew System::Windows::Forms::Button());
+			this->btnLevel = (gcnew System::Windows::Forms::Button());
 			this->txtFirstName = (gcnew System::Windows::Forms::TextBox());
 			this->label3 = (gcnew System::Windows::Forms::Label());
-			this->DepartmentBox = (gcnew System::Windows::Forms::ComboBox());
 			this->btnID = (gcnew System::Windows::Forms::Button());
 			this->btnName = (gcnew System::Windows::Forms::Button());
 			this->txtSearch = (gcnew System::Windows::Forms::TextBox());
@@ -115,7 +163,6 @@ namespace Group7FinalProject {
 			this->btnDelete = (gcnew System::Windows::Forms::Button());
 			this->btnUpdate = (gcnew System::Windows::Forms::Button());
 			this->btnSave = (gcnew System::Windows::Forms::Button());
-			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
 			this->lblWelcome = (gcnew System::Windows::Forms::Label());
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
@@ -125,37 +172,34 @@ namespace Group7FinalProject {
 			this->btnDashboard = (gcnew System::Windows::Forms::Button());
 			this->btnFaculty = (gcnew System::Windows::Forms::Button());
 			this->btnStudents = (gcnew System::Windows::Forms::Button());
+			this->txtEnrollment = (gcnew System::Windows::Forms::TextBox());
+			this->label8 = (gcnew System::Windows::Forms::Label());
+			this->txtGraduation = (gcnew System::Windows::Forms::TextBox());
+			this->label9 = (gcnew System::Windows::Forms::Label());
+			this->LevelBox = (gcnew System::Windows::Forms::ComboBox());
+			this->btnYear = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->panel2->SuspendLayout();
 			this->panel1->SuspendLayout();
 			this->SuspendLayout();
-			// 
-			// txtPosition
-			// 
-			this->txtPosition->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->txtPosition->Location = System::Drawing::Point(633, 629);
-			this->txtPosition->Name = L"txtPosition";
-			this->txtPosition->Size = System::Drawing::Size(605, 43);
-			this->txtPosition->TabIndex = 92;
 			// 
 			// Position
 			// 
 			this->Position->AutoSize = true;
 			this->Position->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Position->Location = System::Drawing::Point(390, 629);
+			this->Position->Location = System::Drawing::Point(1206, 266);
 			this->Position->Name = L"Position";
-			this->Position->Size = System::Drawing::Size(118, 37);
+			this->Position->Size = System::Drawing::Size(179, 37);
 			this->Position->TabIndex = 91;
-			this->Position->Text = L"Position:";
+			this->Position->Text = L"Current Level:";
 			// 
 			// dateTimePicker1
 			// 
 			this->dateTimePicker1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->dateTimePicker1->Format = System::Windows::Forms::DateTimePickerFormat::Short;
-			this->dateTimePicker1->Location = System::Drawing::Point(635, 372);
+			this->dateTimePicker1->Location = System::Drawing::Point(575, 401);
 			this->dateTimePicker1->Name = L"dateTimePicker1";
 			this->dateTimePicker1->Size = System::Drawing::Size(445, 43);
 			this->dateTimePicker1->TabIndex = 90;
@@ -164,7 +208,7 @@ namespace Group7FinalProject {
 			// 
 			this->txtAddress->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->txtAddress->Location = System::Drawing::Point(635, 563);
+			this->txtAddress->Location = System::Drawing::Point(575, 592);
 			this->txtAddress->Name = L"txtAddress";
 			this->txtAddress->Size = System::Drawing::Size(605, 43);
 			this->txtAddress->TabIndex = 89;
@@ -174,7 +218,7 @@ namespace Group7FinalProject {
 			this->label10->AutoSize = true;
 			this->label10->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label10->Location = System::Drawing::Point(392, 563);
+			this->label10->Location = System::Drawing::Point(332, 592);
 			this->label10->Name = L"label10";
 			this->label10->Size = System::Drawing::Size(117, 37);
 			this->label10->TabIndex = 88;
@@ -184,7 +228,7 @@ namespace Group7FinalProject {
 			// 
 			this->txtGender->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->txtGender->Location = System::Drawing::Point(635, 501);
+			this->txtGender->Location = System::Drawing::Point(575, 530);
 			this->txtGender->Name = L"txtGender";
 			this->txtGender->Size = System::Drawing::Size(605, 43);
 			this->txtGender->TabIndex = 87;
@@ -194,7 +238,7 @@ namespace Group7FinalProject {
 			this->label11->AutoSize = true;
 			this->label11->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label11->Location = System::Drawing::Point(392, 501);
+			this->label11->Location = System::Drawing::Point(332, 530);
 			this->label11->Name = L"label11";
 			this->label11->Size = System::Drawing::Size(110, 37);
 			this->label11->TabIndex = 86;
@@ -204,7 +248,7 @@ namespace Group7FinalProject {
 			// 
 			this->txtPhoneNumber->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->txtPhoneNumber->Location = System::Drawing::Point(635, 433);
+			this->txtPhoneNumber->Location = System::Drawing::Point(575, 462);
 			this->txtPhoneNumber->Name = L"txtPhoneNumber";
 			this->txtPhoneNumber->Size = System::Drawing::Size(605, 43);
 			this->txtPhoneNumber->TabIndex = 85;
@@ -214,7 +258,7 @@ namespace Group7FinalProject {
 			this->label12->AutoSize = true;
 			this->label12->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label12->Location = System::Drawing::Point(392, 433);
+			this->label12->Location = System::Drawing::Point(332, 462);
 			this->label12->Name = L"label12";
 			this->label12->Size = System::Drawing::Size(202, 37);
 			this->label12->TabIndex = 84;
@@ -225,7 +269,7 @@ namespace Group7FinalProject {
 			this->label7->AutoSize = true;
 			this->label7->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label7->Location = System::Drawing::Point(392, 366);
+			this->label7->Location = System::Drawing::Point(332, 395);
 			this->label7->Name = L"label7";
 			this->label7->Size = System::Drawing::Size(172, 37);
 			this->label7->TabIndex = 83;
@@ -235,7 +279,7 @@ namespace Group7FinalProject {
 			// 
 			this->txtPassword->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->txtPassword->Location = System::Drawing::Point(635, 300);
+			this->txtPassword->Location = System::Drawing::Point(575, 329);
 			this->txtPassword->Name = L"txtPassword";
 			this->txtPassword->PasswordChar = '*';
 			this->txtPassword->Size = System::Drawing::Size(605, 43);
@@ -246,7 +290,7 @@ namespace Group7FinalProject {
 			this->label6->AutoSize = true;
 			this->label6->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label6->Location = System::Drawing::Point(392, 306);
+			this->label6->Location = System::Drawing::Point(332, 335);
 			this->label6->Name = L"label6";
 			this->label6->Size = System::Drawing::Size(134, 37);
 			this->label6->TabIndex = 81;
@@ -256,7 +300,7 @@ namespace Group7FinalProject {
 			// 
 			this->txtEmail->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->txtEmail->Location = System::Drawing::Point(635, 240);
+			this->txtEmail->Location = System::Drawing::Point(575, 269);
 			this->txtEmail->Name = L"txtEmail";
 			this->txtEmail->Size = System::Drawing::Size(605, 43);
 			this->txtEmail->TabIndex = 80;
@@ -266,7 +310,7 @@ namespace Group7FinalProject {
 			this->label5->AutoSize = true;
 			this->label5->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label5->Location = System::Drawing::Point(392, 240);
+			this->label5->Location = System::Drawing::Point(332, 269);
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(88, 37);
 			this->label5->TabIndex = 79;
@@ -276,7 +320,7 @@ namespace Group7FinalProject {
 			// 
 			this->txtLastName->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->txtLastName->Location = System::Drawing::Point(635, 178);
+			this->txtLastName->Location = System::Drawing::Point(575, 207);
 			this->txtLastName->Name = L"txtLastName";
 			this->txtLastName->Size = System::Drawing::Size(605, 43);
 			this->txtLastName->TabIndex = 78;
@@ -286,34 +330,35 @@ namespace Group7FinalProject {
 			this->label4->AutoSize = true;
 			this->label4->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label4->Location = System::Drawing::Point(392, 178);
+			this->label4->Location = System::Drawing::Point(332, 207);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(148, 37);
 			this->label4->TabIndex = 77;
 			this->label4->Text = L"Last Name:";
 			// 
-			// btnDepartment
+			// btnLevel
 			// 
-			this->btnDepartment->BackColor = System::Drawing::Color::Maroon;
-			this->btnDepartment->FlatAppearance->BorderColor = System::Drawing::Color::Maroon;
-			this->btnDepartment->FlatAppearance->BorderSize = 0;
-			this->btnDepartment->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnDepartment->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->btnLevel->BackColor = System::Drawing::Color::Maroon;
+			this->btnLevel->FlatAppearance->BorderColor = System::Drawing::Color::Maroon;
+			this->btnLevel->FlatAppearance->BorderSize = 0;
+			this->btnLevel->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnLevel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->btnDepartment->ForeColor = System::Drawing::Color::White;
-			this->btnDepartment->Location = System::Drawing::Point(1643, 1211);
-			this->btnDepartment->Name = L"btnDepartment";
-			this->btnDepartment->Size = System::Drawing::Size(236, 50);
-			this->btnDepartment->TabIndex = 76;
-			this->btnDepartment->Text = L"By Department";
-			this->btnDepartment->TextAlign = System::Drawing::ContentAlignment::TopCenter;
-			this->btnDepartment->UseVisualStyleBackColor = false;
+			this->btnLevel->ForeColor = System::Drawing::Color::White;
+			this->btnLevel->Location = System::Drawing::Point(1643, 1211);
+			this->btnLevel->Name = L"btnLevel";
+			this->btnLevel->Size = System::Drawing::Size(236, 50);
+			this->btnLevel->TabIndex = 76;
+			this->btnLevel->Text = L"By Level";
+			this->btnLevel->TextAlign = System::Drawing::ContentAlignment::TopCenter;
+			this->btnLevel->UseVisualStyleBackColor = false;
+			this->btnLevel->Click += gcnew System::EventHandler(this, &adminStudents::btnLevel_Click);
 			// 
 			// txtFirstName
 			// 
 			this->txtFirstName->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->txtFirstName->Location = System::Drawing::Point(635, 110);
+			this->txtFirstName->Location = System::Drawing::Point(575, 139);
 			this->txtFirstName->Name = L"txtFirstName";
 			this->txtFirstName->Size = System::Drawing::Size(605, 43);
 			this->txtFirstName->TabIndex = 75;
@@ -323,21 +368,11 @@ namespace Group7FinalProject {
 			this->label3->AutoSize = true;
 			this->label3->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label3->Location = System::Drawing::Point(392, 110);
+			this->label3->Location = System::Drawing::Point(332, 139);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(150, 37);
 			this->label3->TabIndex = 74;
 			this->label3->Text = L"First Name:";
-			// 
-			// DepartmentBox
-			// 
-			this->DepartmentBox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->DepartmentBox->FormattingEnabled = true;
-			this->DepartmentBox->Location = System::Drawing::Point(635, 699);
-			this->DepartmentBox->Name = L"DepartmentBox";
-			this->DepartmentBox->Size = System::Drawing::Size(603, 45);
-			this->DepartmentBox->TabIndex = 73;
 			// 
 			// btnID
 			// 
@@ -355,6 +390,7 @@ namespace Group7FinalProject {
 			this->btnID->Text = L"By ID";
 			this->btnID->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			this->btnID->UseVisualStyleBackColor = false;
+			this->btnID->Click += gcnew System::EventHandler(this, &adminStudents::btnID_Click);
 			// 
 			// btnName
 			// 
@@ -372,6 +408,7 @@ namespace Group7FinalProject {
 			this->btnName->Text = L"By Name";
 			this->btnName->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			this->btnName->UseVisualStyleBackColor = false;
+			this->btnName->Click += gcnew System::EventHandler(this, &adminStudents::btnName_Click);
 			// 
 			// txtSearch
 			// 
@@ -396,12 +433,13 @@ namespace Group7FinalProject {
 			// dataGridView1
 			// 
 			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dataGridView1->Location = System::Drawing::Point(399, 869);
+			this->dataGridView1->Location = System::Drawing::Point(331, 790);
 			this->dataGridView1->Name = L"dataGridView1";
 			this->dataGridView1->RowHeadersWidth = 82;
 			this->dataGridView1->RowTemplate->Height = 33;
-			this->dataGridView1->Size = System::Drawing::Size(1638, 297);
+			this->dataGridView1->Size = System::Drawing::Size(1797, 397);
 			this->dataGridView1->TabIndex = 68;
+			this->dataGridView1->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &adminStudents::dataGridView1_CellContentClick);
 			// 
 			// btnDelete
 			// 
@@ -412,13 +450,14 @@ namespace Group7FinalProject {
 			this->btnDelete->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->btnDelete->ForeColor = System::Drawing::Color::White;
-			this->btnDelete->Location = System::Drawing::Point(1082, 781);
+			this->btnDelete->Location = System::Drawing::Point(1730, 702);
 			this->btnDelete->Name = L"btnDelete";
-			this->btnDelete->Size = System::Drawing::Size(182, 50);
+			this->btnDelete->Size = System::Drawing::Size(182, 56);
 			this->btnDelete->TabIndex = 66;
 			this->btnDelete->Text = L"Delete";
 			this->btnDelete->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			this->btnDelete->UseVisualStyleBackColor = false;
+			this->btnDelete->Click += gcnew System::EventHandler(this, &adminStudents::btnDelete_Click);
 			// 
 			// btnUpdate
 			// 
@@ -429,13 +468,14 @@ namespace Group7FinalProject {
 			this->btnUpdate->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->btnUpdate->ForeColor = System::Drawing::Color::White;
-			this->btnUpdate->Location = System::Drawing::Point(801, 781);
+			this->btnUpdate->Location = System::Drawing::Point(1093, 702);
 			this->btnUpdate->Name = L"btnUpdate";
-			this->btnUpdate->Size = System::Drawing::Size(182, 50);
+			this->btnUpdate->Size = System::Drawing::Size(182, 56);
 			this->btnUpdate->TabIndex = 64;
 			this->btnUpdate->Text = L"Update";
 			this->btnUpdate->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			this->btnUpdate->UseVisualStyleBackColor = false;
+			this->btnUpdate->Click += gcnew System::EventHandler(this, &adminStudents::btnUpdate_Click);
 			// 
 			// btnSave
 			// 
@@ -446,24 +486,14 @@ namespace Group7FinalProject {
 			this->btnSave->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->btnSave->ForeColor = System::Drawing::Color::White;
-			this->btnSave->Location = System::Drawing::Point(522, 781);
+			this->btnSave->Location = System::Drawing::Point(500, 702);
 			this->btnSave->Name = L"btnSave";
-			this->btnSave->Size = System::Drawing::Size(182, 50);
+			this->btnSave->Size = System::Drawing::Size(182, 56);
 			this->btnSave->TabIndex = 63;
 			this->btnSave->Text = L"Save";
 			this->btnSave->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			this->btnSave->UseVisualStyleBackColor = false;
-			// 
-			// label1
-			// 
-			this->label1->AutoSize = true;
-			this->label1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label1->Location = System::Drawing::Point(392, 704);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(165, 37);
-			this->label1->TabIndex = 62;
-			this->label1->Text = L"Department:";
+			this->btnSave->Click += gcnew System::EventHandler(this, &adminStudents::btnSave_Click);
 			// 
 			// panel2
 			// 
@@ -485,9 +515,9 @@ namespace Group7FinalProject {
 			this->lblWelcome->ForeColor = System::Drawing::Color::Maroon;
 			this->lblWelcome->Location = System::Drawing::Point(369, 18);
 			this->lblWelcome->Name = L"lblWelcome";
-			this->lblWelcome->Size = System::Drawing::Size(332, 45);
+			this->lblWelcome->Size = System::Drawing::Size(343, 45);
 			this->lblWelcome->TabIndex = 0;
-			this->lblWelcome->Text = L"Faculty Management";
+			this->lblWelcome->Text = L"Student Management";
 			this->lblWelcome->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			// 
 			// panel1
@@ -561,6 +591,7 @@ namespace Group7FinalProject {
 			this->btnDashboard->Text = L"Dashboard";
 			this->btnDashboard->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			this->btnDashboard->UseVisualStyleBackColor = true;
+			this->btnDashboard->Click += gcnew System::EventHandler(this, &adminStudents::btnDashboard_Click);
 			// 
 			// btnFaculty
 			// 
@@ -592,12 +623,85 @@ namespace Group7FinalProject {
 			this->btnStudents->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			this->btnStudents->UseVisualStyleBackColor = true;
 			// 
+			// txtEnrollment
+			// 
+			this->txtEnrollment->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->txtEnrollment->Location = System::Drawing::Point(1449, 385);
+			this->txtEnrollment->Name = L"txtEnrollment";
+			this->txtEnrollment->Size = System::Drawing::Size(605, 43);
+			this->txtEnrollment->TabIndex = 96;
+			// 
+			// label8
+			// 
+			this->label8->AutoSize = true;
+			this->label8->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label8->Location = System::Drawing::Point(1206, 388);
+			this->label8->Name = L"label8";
+			this->label8->Size = System::Drawing::Size(209, 37);
+			this->label8->TabIndex = 95;
+			this->label8->Text = L"Enrollment Year:";
+			// 
+			// txtGraduation
+			// 
+			this->txtGraduation->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->txtGraduation->Location = System::Drawing::Point(1449, 506);
+			this->txtGraduation->Name = L"txtGraduation";
+			this->txtGraduation->Size = System::Drawing::Size(605, 43);
+			this->txtGraduation->TabIndex = 98;
+			// 
+			// label9
+			// 
+			this->label9->AutoSize = true;
+			this->label9->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label9->Location = System::Drawing::Point(1206, 506);
+			this->label9->Name = L"label9";
+			this->label9->Size = System::Drawing::Size(214, 37);
+			this->label9->TabIndex = 97;
+			this->label9->Text = L"Graduation Year:";
+			// 
+			// LevelBox
+			// 
+			this->LevelBox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->LevelBox->FormattingEnabled = true;
+			this->LevelBox->Location = System::Drawing::Point(1449, 266);
+			this->LevelBox->Name = L"LevelBox";
+			this->LevelBox->Size = System::Drawing::Size(603, 45);
+			this->LevelBox->TabIndex = 99;
+			// 
+			// btnYear
+			// 
+			this->btnYear->BackColor = System::Drawing::Color::Maroon;
+			this->btnYear->FlatAppearance->BorderColor = System::Drawing::Color::Maroon;
+			this->btnYear->FlatAppearance->BorderSize = 0;
+			this->btnYear->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnYear->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnYear->ForeColor = System::Drawing::Color::White;
+			this->btnYear->Location = System::Drawing::Point(1907, 1211);
+			this->btnYear->Name = L"btnYear";
+			this->btnYear->Size = System::Drawing::Size(236, 50);
+			this->btnYear->TabIndex = 101;
+			this->btnYear->Text = L"By Grad Year";
+			this->btnYear->TextAlign = System::Drawing::ContentAlignment::TopCenter;
+			this->btnYear->UseVisualStyleBackColor = false;
+			this->btnYear->Click += gcnew System::EventHandler(this, &adminStudents::btnYear_Click);
+			// 
 			// adminStudents
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(12, 25);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(2155, 1355);
-			this->Controls->Add(this->txtPosition);
+			this->Controls->Add(this->btnYear);
+			this->Controls->Add(this->LevelBox);
+			this->Controls->Add(this->txtGraduation);
+			this->Controls->Add(this->label9);
+			this->Controls->Add(this->txtEnrollment);
+			this->Controls->Add(this->label8);
 			this->Controls->Add(this->Position);
 			this->Controls->Add(this->dateTimePicker1);
 			this->Controls->Add(this->txtAddress);
@@ -613,10 +717,9 @@ namespace Group7FinalProject {
 			this->Controls->Add(this->label5);
 			this->Controls->Add(this->txtLastName);
 			this->Controls->Add(this->label4);
-			this->Controls->Add(this->btnDepartment);
+			this->Controls->Add(this->btnLevel);
 			this->Controls->Add(this->txtFirstName);
 			this->Controls->Add(this->label3);
-			this->Controls->Add(this->DepartmentBox);
 			this->Controls->Add(this->btnID);
 			this->Controls->Add(this->btnName);
 			this->Controls->Add(this->txtSearch);
@@ -625,7 +728,6 @@ namespace Group7FinalProject {
 			this->Controls->Add(this->btnDelete);
 			this->Controls->Add(this->btnUpdate);
 			this->Controls->Add(this->btnSave);
-			this->Controls->Add(this->label1);
 			this->Controls->Add(this->panel2);
 			this->Controls->Add(this->panel1);
 			this->Name = L"adminStudents";
@@ -640,5 +742,242 @@ namespace Group7FinalProject {
 
 		}
 #pragma endregion
-	};
+	private: System::Void btnDashboard_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void btnSave_Click(System::Object^ sender, System::EventArgs^ e) {
+		try {
+			String^ firstName = txtFirstName->Text;
+			String^ lastName = txtLastName->Text;
+			String^ email = txtEmail->Text;
+			String^ password = txtPassword->Text;
+			DateTime dob = dateTimePicker1->Value;
+			String^ formattedBirthDate = dob.ToString("yyyy-MM-dd");
+			String^ phoneNumber = txtPhoneNumber->Text;
+			String^ gender = txtGender->Text;
+			String^ address = txtAddress->Text;
+			String^ level = LevelBox->Text;
+			String^ enrollmentYear = txtEnrollment->Text;
+			String^ graduationYear = txtGraduation->Text;
+			
+			db->Open();
+			db->sqlCmd->CommandText = "INSERT INTO user (firstName, lastName, email, password, dateOfBirth, gender, phoneNumber, address) VALUES (@fName, @lName, @email, @pwd, @DOB, @gender, @phone, @address)";
+			db->sqlCmd->Parameters->AddWithValue("@fName", firstName);
+			db->sqlCmd->Parameters->AddWithValue("@lName", lastName);
+			db->sqlCmd->Parameters->AddWithValue("@email", email);
+			db->sqlCmd->Parameters->AddWithValue("@pwd", password);
+			db->sqlCmd->Parameters->AddWithValue("@DOB", formattedBirthDate);
+			db->sqlCmd->Parameters->AddWithValue("@gender", gender);
+			db->sqlCmd->Parameters->AddWithValue("@phone", phoneNumber);
+			db->sqlCmd->Parameters->AddWithValue("@address", address);
+			db->sqlCmd->ExecuteNonQuery();
+			db->sqlCmd->Parameters->Clear();
+			db->sqlCmd->CommandText = "INSERT INTO student (studentID, currentLevel, enrollmentYear, expectedGraduation) VALUES (LAST_INSERT_ID(), @level, @enrollYear, @gradYear)";
+			db->sqlCmd->Parameters->AddWithValue("@level", level);
+			db->sqlCmd->Parameters->AddWithValue("@enrollYear", enrollmentYear);
+			db->sqlCmd->Parameters->AddWithValue("@gradYear", graduationYear);
+			db->sqlCmd->ExecuteNonQuery();
+			db->sqlCmd->Parameters->Clear();
+			db->Close();
+			MessageBox::Show("Student saved successfully.");
+			loadStudents();
+
+		}catch(FormatException^){
+			MessageBox::Show("Invalid format. Please check your input.");
+		}
+		catch (Exception^ ex) {
+			MessageBox::Show("Error: " + ex->Message);
+		}
+	}
+	private: System::Void dataGridView1_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
+		if (e->RowIndex>=0)
+		{
+			DataGridViewRow^ row = dataGridView1->Rows[e->RowIndex];
+			txtFirstName->Text = row->Cells["firstName"]->Value->ToString();
+			txtLastName->Text = row->Cells["lastName"]->Value->ToString();
+			txtEmail->Text = row->Cells["email"]->Value->ToString();
+			LevelBox->SelectedItem = row->Cells["currentLevel"]->Value->ToString();
+			txtEnrollment->Text = row->Cells["enrollmentYear"]->Value->ToString();
+			txtGraduation->Text = row->Cells["expectedGraduation"]->Value->ToString();
+			globalStudentID = Convert::ToInt32(row->Cells["studentID"]->Value->ToString());
+			try {
+				db->Open();
+				db->sqlCmd->CommandText = "SELECT * FROM user WHERE dbID = @userID";
+				db->sqlCmd->Parameters->AddWithValue("@userID", globalStudentID);
+				db->sqlDR = db->sqlCmd->ExecuteReader();
+				db->sqlCmd->Parameters->Clear();
+				db->sqlDR->Read();
+				txtPassword->Text = db->sqlDR["password"]->ToString();
+				DateTime dob = DateTime::Parse(db->sqlDR["dateOfBirth"]->ToString());
+				dateTimePicker1->Value = dob;
+				txtPhoneNumber->Text = db->sqlDR["phoneNumber"]->ToString();
+				txtGender->Text = db->sqlDR["gender"]->ToString();
+				txtAddress->Text = db->sqlDR["address"]->ToString();
+				db->sqlDR->Close();
+
+			}
+			catch (Exception^ ex) {
+				MessageBox::Show("Error: " + ex->Message);
+			}
+		}
+	}
+	private: System::Void btnUpdate_Click(System::Object^ sender, System::EventArgs^ e) {
+		try {
+			db->Open();
+			String^ firstName = txtFirstName->Text;
+			String^ lastName = txtLastName->Text;
+			String^ email = txtEmail->Text;
+			String^ password = txtPassword->Text;
+			String^ gender = txtGender->Text;
+			String^ phoneNumber = txtPhoneNumber->Text;
+			String^ address = txtAddress->Text;
+			DateTime birthDate = dateTimePicker1->Value;
+			String^ formattedBirthDate = birthDate.ToString("yyyy-MM-dd");
+			String^ level = LevelBox->Text;
+			String^ enrollmentYear = txtEnrollment->Text;
+			String^ graduationYear = txtGraduation->Text;
+			db->sqlCmd->CommandText = "UPDATE user SET firstName=@fName, lastName=@lName, email=@email, password=@pwd, dateOfBirth=@dob, gender=@gender, phoneNumber=@phone, address=@address WHERE dbID=@userID";
+			db->sqlCmd->Parameters->AddWithValue("@fName", firstName);
+			db->sqlCmd->Parameters->AddWithValue("@lName", lastName);
+			db->sqlCmd->Parameters->AddWithValue("@email", email);
+			db->sqlCmd->Parameters->AddWithValue("@pwd", password);
+			db->sqlCmd->Parameters->AddWithValue("@dob", formattedBirthDate);
+			db->sqlCmd->Parameters->AddWithValue("@gender", gender);
+			db->sqlCmd->Parameters->AddWithValue("@phone", phoneNumber);
+			db->sqlCmd->Parameters->AddWithValue("@address", address);
+			db->sqlCmd->Parameters->AddWithValue("@userID", globalStudentID);
+			db->sqlCmd->ExecuteNonQuery();
+			db->sqlCmd->Parameters->Clear();
+			db->sqlCmd->CommandText = "UPDATE student SET currentLevel=@level, enrollmentYear=@enrollYear, expectedGraduation=@gradYear WHERE studentID=@studentID";
+			db->sqlCmd->Parameters->AddWithValue("@level", level);
+			db->sqlCmd->Parameters->AddWithValue("@enrollYear", enrollmentYear);
+			db->sqlCmd->Parameters->AddWithValue("@gradYear", graduationYear);
+			db->sqlCmd->Parameters->AddWithValue("@studentID", globalStudentID);
+			db->sqlCmd->ExecuteNonQuery();
+			db->sqlCmd->Parameters->Clear();
+			db->Close();
+			loadStudents();
+			MessageBox::Show("Student updated successfully.");
+		}
+		catch (Exception^ ex) {
+			MessageBox::Show("Error: " + ex->Message);
+		}
+	}
+	private: System::Void btnDelete_Click(System::Object^ sender, System::EventArgs^ e) {
+		try {
+			db->Open();
+			db->sqlCmd->CommandText = "DELETE FROM student WHERE studentID=@studentID";
+			db->sqlCmd->Parameters->AddWithValue("@studentID", globalStudentID);
+			db->sqlCmd->ExecuteNonQuery();
+			db->sqlCmd->Parameters->Clear();
+			db->sqlCmd->CommandText = "DELETE FROM user WHERE dbID=@userID";
+			db->sqlCmd->Parameters->AddWithValue("@userID", globalStudentID);
+			db->sqlCmd->ExecuteNonQuery();
+			db->sqlCmd->Parameters->Clear();
+			db->Close();
+			loadStudents();
+			MessageBox::Show("Student deleted successfully.");
+		}
+		catch (Exception^ ex) {
+			MessageBox::Show("Error: " + ex->Message);
+		}
+	}
+	private: System::Void btnID_Click(System::Object^ sender, System::EventArgs^ e) {
+		try {
+			int searchID = Convert::ToInt32(txtSearch->Text);
+			db->Open();
+			db->sqlCmd->CommandText = "SELECT s.studentID, u.firstName, u.lastName, u.email, s.currentLevel, s.enrollmentYear, s.expectedGraduation FROM student s JOIN user u ON s.studentID = u.dbID WHERE s.studentID = @searchID";
+			db->sqlCmd->Parameters->AddWithValue("@searchID", searchID);
+			db->sqlDR = db->sqlCmd->ExecuteReader();
+			db->sqlDT->Clear();
+			db->sqlDT->Load(db->sqlDR);
+			dataGridView1->DataSource = db->sqlDT;
+			dataGridView1->Columns[0]->Width = 80;
+			dataGridView1->Columns[1]->Width = 150;
+			dataGridView1->Columns[2]->Width = 150;
+			dataGridView1->Columns[3]->Width = 100;
+			dataGridView1->Columns[4]->Width = 150;
+			dataGridView1->Columns[5]->Width = 100;
+			dataGridView1->Columns[6]->Width = 100;
+			db->sqlCmd->Parameters->Clear();
+			db->Close();
+		} catch(FormatException^) {
+			MessageBox::Show("Invalid format. Please check your input.");
+		}
+		catch (Exception^ ex) {
+			MessageBox::Show("Error: " + ex->Message);
+		}
+	}
+	private: System::Void btnName_Click(System::Object^ sender, System::EventArgs^ e) {
+		try {
+			String^ searchName = txtSearch->Text;
+			db->Open();
+			db->sqlCmd->CommandText = "SELECT s.studentID, u.firstName, u.lastName, u.email, s.currentLevel, s.enrollmentYear, s.expectedGraduation FROM student s JOIN user u ON s.studentID = u.dbID WHERE u.firstName LIKE @searchName OR u.lastName LIKE @searchName";
+			db->sqlCmd->Parameters->AddWithValue("@searchName", "%" + searchName + "%");
+			db->sqlDR = db->sqlCmd->ExecuteReader();
+			db->sqlDT->Clear();
+			db->sqlDT->Load(db->sqlDR);
+			dataGridView1->DataSource = db->sqlDT;
+			dataGridView1->Columns[0]->Width = 80;
+			dataGridView1->Columns[1]->Width = 150;
+			dataGridView1->Columns[2]->Width = 150;
+			dataGridView1->Columns[3]->Width = 100;
+			dataGridView1->Columns[4]->Width = 150;
+			dataGridView1->Columns[5]->Width = 100;
+			dataGridView1->Columns[6]->Width = 100;
+			db->sqlCmd->Parameters->Clear();
+			db->Close();
+		}
+		catch (Exception^ ex) {
+			MessageBox::Show("Error: " + ex->Message);
+		}
+	}
+	private: System::Void btnLevel_Click(System::Object^ sender, System::EventArgs^ e) {
+		try {
+			String^ searchLevel = txtSearch->Text;
+			db->Open();
+			db->sqlCmd->CommandText = "SELECT s.studentID, u.firstName, u.lastName, u.email, s.currentLevel, s.enrollmentYear, s.expectedGraduation FROM student s JOIN user u ON s.studentID = u.dbID WHERE s.currentLevel = @searchLevel";
+			db->sqlCmd->Parameters->AddWithValue("@searchLevel", searchLevel);
+			db->sqlDR = db->sqlCmd->ExecuteReader();
+			db->sqlDT->Clear();
+			db->sqlDT->Load(db->sqlDR);
+			dataGridView1->DataSource = db->sqlDT;
+			dataGridView1->Columns[0]->Width = 80;
+			dataGridView1->Columns[1]->Width = 150;
+			dataGridView1->Columns[2]->Width = 150;
+			dataGridView1->Columns[3]->Width = 100;
+			dataGridView1->Columns[4]->Width = 150;
+			dataGridView1->Columns[5]->Width = 100;
+			dataGridView1->Columns[6]->Width = 100;
+			db->sqlCmd->Parameters->Clear();
+			db->Close();
+		}
+		catch (Exception^ ex) {
+			MessageBox::Show("Error: " + ex->Message);
+		}
+	}
+	private: System::Void btnYear_Click(System::Object^ sender, System::EventArgs^ e) {
+		try {
+			String^ searchYear = txtSearch->Text;
+			db->Open();
+			db->sqlCmd->CommandText = "SELECT s.studentID, u.firstName, u.lastName, u.email, s.currentLevel, s.enrollmentYear, s.expectedGraduation FROM student s JOIN user u ON s.studentID = u.dbID WHERE s.expectedGraduation = @searchYear";
+			db->sqlCmd->Parameters->AddWithValue("@searchYear", searchYear);
+			db->sqlDR = db->sqlCmd->ExecuteReader();
+			db->sqlDT->Clear();
+			db->sqlDT->Load(db->sqlDR);
+			dataGridView1->DataSource = db->sqlDT;
+			dataGridView1->Columns[0]->Width = 80;
+			dataGridView1->Columns[1]->Width = 150;
+			dataGridView1->Columns[2]->Width = 150;
+			dataGridView1->Columns[3]->Width = 100;
+			dataGridView1->Columns[4]->Width = 150;
+			dataGridView1->Columns[5]->Width = 100;
+			dataGridView1->Columns[6]->Width = 100;
+			db->sqlCmd->Parameters->Clear();
+			db->Close();
+		}
+		catch (Exception^ ex) {
+			MessageBox::Show("Error: " + ex->Message);
+		}
+	}
+};
 }

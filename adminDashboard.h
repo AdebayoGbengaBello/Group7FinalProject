@@ -461,8 +461,7 @@ namespace Group7FinalProject {
 #pragma endregion
 		private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e) {
 		}
-		private: System::Void btnStudents_Click(System::Object^ sender, System::EventArgs^ e) {
-		}
+		private: System::Void btnStudents_Click(System::Object^ sender, System::EventArgs^ e);
 		private: System::Void panel3_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 		}
 		private: System::Void label3_Click(System::Object^ sender, System::EventArgs^ e) {

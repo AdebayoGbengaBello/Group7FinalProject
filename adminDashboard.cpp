@@ -3,6 +3,7 @@
 #include "adminDepartment.h"
 #include "adminProgrammes.h"
 #include "adminFaculty.h"
+#include "adminStudents.h"
 
 namespace Group7FinalProject {
 
@@ -31,6 +32,12 @@ namespace Group7FinalProject {
         this->Hide();
         adminFaculty^ facultyForm = gcnew adminFaculty(this->currentUser);
         facultyForm->ShowDialog();
+	}
+    System::Void adminDashboard::btnStudents_Click(System::Object^ sender, System::EventArgs^ e)
+    {
+        this->Hide();
+        adminStudents^ studentForm = gcnew adminStudents(this->currentUser);
+        studentForm->ShowDialog();
 	}
 }
 

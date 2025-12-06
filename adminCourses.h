@@ -16,7 +16,11 @@ namespace Group7FinalProject {
 	/// </summary>
 	public ref class adminCourses : public System::Windows::Forms::Form
 	{
-		User^ currentUser;
+		Database^ db = gcnew Database();
+	private: System::Windows::Forms::ComboBox^ SemesterBox;
+
+	private: System::Windows::Forms::Label^ label7;
+		   User^ currentUser;
 	public:
 		adminCourses(User^ user)
 		{
@@ -26,6 +30,35 @@ namespace Group7FinalProject {
 			//
 			this->currentUser = user;
 			lblUser->Text = "Hello " + currentUser->name;
+			db->Open();
+			db->sqlCmd->CommandText= "SELECT progID, progName FROM programme";
+			db->sqlDR = db->sqlCmd->ExecuteReader();
+			while (db->sqlDR->Read()) {
+				ProgrammeBox->Items->Add(db->sqlDR->GetString("progName"));
+				ProgrammeBox->ValueMember = db->sqlDR->GetInt32("progID").ToString();
+				ProgrammeBox->DisplayMember = "progName";
+			}
+			db->sqlDR->Close();
+			db->Close();
+			LevelBox->Items->Add("100");
+			LevelBox->Items->Add("200");
+			LevelBox->Items->Add("300");
+			LevelBox->Items->Add("400");
+			SemesterBox->Items->Add("Spring");
+			SemesterBox->Items->Add("Fall");
+			SemesterBox->Items->Add("Summer");
+			CreditBox->Items->Add("0.5");
+			CreditBox->Items->Add("1");
+			db->Open();
+			db->sqlCmd->CommandText = "SELECT f.facultyID, u.firstName, u.lastName FROM faculty f JOIN user u ON f.facultyID=u.dbID";
+			db->sqlDR = db->sqlCmd->ExecuteReader();
+			while (db->sqlDR->Read()) {
+				FacultyBox->Items->Add(db->sqlDR->GetString("firstName") + " " + db->sqlDR->GetString("lastName"));
+				FacultyBox->ValueMember = db->sqlDR->GetInt32("facultyID").ToString();
+				FacultyBox->DisplayMember = "facultyName";
+			}
+			db->sqlDR->Close();
+			db->Close();
 		}
 
 	protected:
@@ -39,17 +72,58 @@ namespace Group7FinalProject {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Panel^ panel1;
-	protected:
-	private: System::Windows::Forms::Label^ lblUser;
-	private: System::Windows::Forms::Button^ btnDashboard;
-
 	private: System::Windows::Forms::Button^ btnDepartment;
-	private: System::Windows::Forms::Button^ btnFaculty;
-	private: System::Windows::Forms::Button^ btnStudents;
+	private: System::Windows::Forms::ComboBox^ CreditBox;
+	protected:
+
+	private: System::Windows::Forms::Label^ Program;
+	private: System::Windows::Forms::TextBox^ txtCourseCode;
+
+	private: System::Windows::Forms::Label^ label3;
+	private: System::Windows::Forms::ComboBox^ ProgrammeBox;
+	private: System::Windows::Forms::Button^ btnCode;
+	private: System::Windows::Forms::Button^ btnTitle;
+
+
+
+	private: System::Windows::Forms::TextBox^ txtSearch;
+	private: System::Windows::Forms::Label^ label2;
+	private: System::Windows::Forms::DataGridView^ dataGridView1;
+	private: System::Windows::Forms::Button^ btnDelete;
+	private: System::Windows::Forms::Button^ btnUpdate;
+	private: System::Windows::Forms::Button^ btnSave;
+	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Panel^ panel2;
 	private: System::Windows::Forms::Label^ lblWelcome;
+	private: System::Windows::Forms::Panel^ panel1;
 	private: System::Windows::Forms::Button^ btnProgrammes;
+	private: System::Windows::Forms::Label^ lblUser;
+	private: System::Windows::Forms::Button^ btnCourses;
+	private: System::Windows::Forms::Button^ btnDashboard;
+	private: System::Windows::Forms::Button^ btnFaculty;
+	private: System::Windows::Forms::Button^ btnStudents;
+	private: System::Windows::Forms::ComboBox^ LevelBox;
+
+	private: System::Windows::Forms::Label^ label4;
+	private: System::Windows::Forms::TextBox^ txtCourseTitle;
+
+	private: System::Windows::Forms::Label^ label5;
+
+	private: System::Windows::Forms::Label^ label6;
+	private: System::Windows::Forms::ComboBox^ FacultyBox;
+	private: System::Windows::Forms::Button^ btnLevel;
+
+
+	protected:
+
+
+
+
+
+
+
+
+
 
 
 	private:
@@ -65,33 +139,278 @@ namespace Group7FinalProject {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			this->btnDepartment = (gcnew System::Windows::Forms::Button());
+			this->CreditBox = (gcnew System::Windows::Forms::ComboBox());
+			this->Program = (gcnew System::Windows::Forms::Label());
+			this->txtCourseCode = (gcnew System::Windows::Forms::TextBox());
+			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->ProgrammeBox = (gcnew System::Windows::Forms::ComboBox());
+			this->btnCode = (gcnew System::Windows::Forms::Button());
+			this->btnTitle = (gcnew System::Windows::Forms::Button());
+			this->txtSearch = (gcnew System::Windows::Forms::TextBox());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
+			this->btnDelete = (gcnew System::Windows::Forms::Button());
+			this->btnUpdate = (gcnew System::Windows::Forms::Button());
+			this->btnSave = (gcnew System::Windows::Forms::Button());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->panel2 = (gcnew System::Windows::Forms::Panel());
+			this->lblWelcome = (gcnew System::Windows::Forms::Label());
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
 			this->btnProgrammes = (gcnew System::Windows::Forms::Button());
 			this->lblUser = (gcnew System::Windows::Forms::Label());
+			this->btnCourses = (gcnew System::Windows::Forms::Button());
 			this->btnDashboard = (gcnew System::Windows::Forms::Button());
-			this->btnDepartment = (gcnew System::Windows::Forms::Button());
 			this->btnFaculty = (gcnew System::Windows::Forms::Button());
 			this->btnStudents = (gcnew System::Windows::Forms::Button());
-			this->panel2 = (gcnew System::Windows::Forms::Panel());
-			this->lblWelcome = (gcnew System::Windows::Forms::Label());
-			this->panel1->SuspendLayout();
+			this->LevelBox = (gcnew System::Windows::Forms::ComboBox());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->txtCourseTitle = (gcnew System::Windows::Forms::TextBox());
+			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->label6 = (gcnew System::Windows::Forms::Label());
+			this->FacultyBox = (gcnew System::Windows::Forms::ComboBox());
+			this->btnLevel = (gcnew System::Windows::Forms::Button());
+			this->SemesterBox = (gcnew System::Windows::Forms::ComboBox());
+			this->label7 = (gcnew System::Windows::Forms::Label());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->panel2->SuspendLayout();
+			this->panel1->SuspendLayout();
 			this->SuspendLayout();
+			// 
+			// btnDepartment
+			// 
+			this->btnDepartment->BackColor = System::Drawing::Color::Maroon;
+			this->btnDepartment->FlatAppearance->BorderColor = System::Drawing::Color::Maroon;
+			this->btnDepartment->FlatAppearance->BorderSize = 0;
+			this->btnDepartment->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnDepartment->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnDepartment->ForeColor = System::Drawing::Color::White;
+			this->btnDepartment->Location = System::Drawing::Point(1643, 1147);
+			this->btnDepartment->Name = L"btnDepartment";
+			this->btnDepartment->Size = System::Drawing::Size(236, 50);
+			this->btnDepartment->TabIndex = 44;
+			this->btnDepartment->Text = L"By Programme";
+			this->btnDepartment->TextAlign = System::Drawing::ContentAlignment::TopCenter;
+			this->btnDepartment->UseVisualStyleBackColor = false;
+			// 
+			// CreditBox
+			// 
+			this->CreditBox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->CreditBox->FormattingEnabled = true;
+			this->CreditBox->Location = System::Drawing::Point(637, 419);
+			this->CreditBox->Name = L"CreditBox";
+			this->CreditBox->Size = System::Drawing::Size(167, 45);
+			this->CreditBox->TabIndex = 43;
+			// 
+			// Program
+			// 
+			this->Program->AutoSize = true;
+			this->Program->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->Program->Location = System::Drawing::Point(392, 419);
+			this->Program->Name = L"Program";
+			this->Program->Size = System::Drawing::Size(195, 37);
+			this->Program->TabIndex = 42;
+			this->Program->Text = L"Course Credits:";
+			// 
+			// txtCourseCode
+			// 
+			this->txtCourseCode->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->txtCourseCode->Location = System::Drawing::Point(637, 293);
+			this->txtCourseCode->Name = L"txtCourseCode";
+			this->txtCourseCode->Size = System::Drawing::Size(605, 43);
+			this->txtCourseCode->TabIndex = 41;
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label3->Location = System::Drawing::Point(392, 119);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(162, 37);
+			this->label3->TabIndex = 40;
+			this->label3->Text = L"Programme:";
+			// 
+			// ProgrammeBox
+			// 
+			this->ProgrammeBox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->ProgrammeBox->FormattingEnabled = true;
+			this->ProgrammeBox->Location = System::Drawing::Point(639, 111);
+			this->ProgrammeBox->Name = L"ProgrammeBox";
+			this->ProgrammeBox->Size = System::Drawing::Size(603, 45);
+			this->ProgrammeBox->TabIndex = 39;
+			// 
+			// btnCode
+			// 
+			this->btnCode->BackColor = System::Drawing::Color::Maroon;
+			this->btnCode->FlatAppearance->BorderColor = System::Drawing::Color::Maroon;
+			this->btnCode->FlatAppearance->BorderSize = 0;
+			this->btnCode->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnCode->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnCode->ForeColor = System::Drawing::Color::White;
+			this->btnCode->Location = System::Drawing::Point(1231, 1147);
+			this->btnCode->Name = L"btnCode";
+			this->btnCode->Size = System::Drawing::Size(182, 50);
+			this->btnCode->TabIndex = 38;
+			this->btnCode->Text = L"By Code";
+			this->btnCode->TextAlign = System::Drawing::ContentAlignment::TopCenter;
+			this->btnCode->UseVisualStyleBackColor = false;
+			// 
+			// btnTitle
+			// 
+			this->btnTitle->BackColor = System::Drawing::Color::Maroon;
+			this->btnTitle->FlatAppearance->BorderColor = System::Drawing::Color::Maroon;
+			this->btnTitle->FlatAppearance->BorderSize = 0;
+			this->btnTitle->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnTitle->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnTitle->ForeColor = System::Drawing::Color::White;
+			this->btnTitle->Location = System::Drawing::Point(1436, 1147);
+			this->btnTitle->Name = L"btnTitle";
+			this->btnTitle->Size = System::Drawing::Size(182, 50);
+			this->btnTitle->TabIndex = 37;
+			this->btnTitle->Text = L"By Title";
+			this->btnTitle->TextAlign = System::Drawing::ContentAlignment::TopCenter;
+			this->btnTitle->UseVisualStyleBackColor = false;
+			// 
+			// txtSearch
+			// 
+			this->txtSearch->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->txtSearch->Location = System::Drawing::Point(575, 1151);
+			this->txtSearch->Name = L"txtSearch";
+			this->txtSearch->Size = System::Drawing::Size(605, 43);
+			this->txtSearch->TabIndex = 36;
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label2->Location = System::Drawing::Point(381, 1151);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(101, 37);
+			this->label2->TabIndex = 35;
+			this->label2->Text = L"Search:";
+			// 
+			// dataGridView1
+			// 
+			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dataGridView1->Location = System::Drawing::Point(446, 639);
+			this->dataGridView1->Name = L"dataGridView1";
+			this->dataGridView1->RowHeadersWidth = 82;
+			this->dataGridView1->RowTemplate->Height = 33;
+			this->dataGridView1->Size = System::Drawing::Size(1379, 457);
+			this->dataGridView1->TabIndex = 34;
+			// 
+			// btnDelete
+			// 
+			this->btnDelete->BackColor = System::Drawing::Color::Maroon;
+			this->btnDelete->FlatAppearance->BorderColor = System::Drawing::Color::Maroon;
+			this->btnDelete->FlatAppearance->BorderSize = 0;
+			this->btnDelete->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnDelete->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnDelete->ForeColor = System::Drawing::Color::White;
+			this->btnDelete->Location = System::Drawing::Point(1060, 569);
+			this->btnDelete->Name = L"btnDelete";
+			this->btnDelete->Size = System::Drawing::Size(182, 50);
+			this->btnDelete->TabIndex = 32;
+			this->btnDelete->Text = L"Delete";
+			this->btnDelete->TextAlign = System::Drawing::ContentAlignment::TopCenter;
+			this->btnDelete->UseVisualStyleBackColor = false;
+			// 
+			// btnUpdate
+			// 
+			this->btnUpdate->BackColor = System::Drawing::Color::Maroon;
+			this->btnUpdate->FlatAppearance->BorderColor = System::Drawing::Color::Maroon;
+			this->btnUpdate->FlatAppearance->BorderSize = 0;
+			this->btnUpdate->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnUpdate->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnUpdate->ForeColor = System::Drawing::Color::White;
+			this->btnUpdate->Location = System::Drawing::Point(779, 569);
+			this->btnUpdate->Name = L"btnUpdate";
+			this->btnUpdate->Size = System::Drawing::Size(182, 50);
+			this->btnUpdate->TabIndex = 30;
+			this->btnUpdate->Text = L"Update";
+			this->btnUpdate->TextAlign = System::Drawing::ContentAlignment::TopCenter;
+			this->btnUpdate->UseVisualStyleBackColor = false;
+			// 
+			// btnSave
+			// 
+			this->btnSave->BackColor = System::Drawing::Color::Maroon;
+			this->btnSave->FlatAppearance->BorderColor = System::Drawing::Color::Maroon;
+			this->btnSave->FlatAppearance->BorderSize = 0;
+			this->btnSave->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnSave->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnSave->ForeColor = System::Drawing::Color::White;
+			this->btnSave->Location = System::Drawing::Point(500, 569);
+			this->btnSave->Name = L"btnSave";
+			this->btnSave->Size = System::Drawing::Size(182, 50);
+			this->btnSave->TabIndex = 29;
+			this->btnSave->Text = L"Save";
+			this->btnSave->TextAlign = System::Drawing::ContentAlignment::TopCenter;
+			this->btnSave->UseVisualStyleBackColor = false;
+			this->btnSave->Click += gcnew System::EventHandler(this, &adminCourses::btnSave_Click);
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label1->Location = System::Drawing::Point(392, 293);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(175, 37);
+			this->label1->TabIndex = 28;
+			this->label1->Text = L"Course Code:";
+			// 
+			// panel2
+			// 
+			this->panel2->BackColor = System::Drawing::Color::White;
+			this->panel2->Controls->Add(this->lblWelcome);
+			this->panel2->Dock = System::Windows::Forms::DockStyle::Top;
+			this->panel2->Location = System::Drawing::Point(279, 0);
+			this->panel2->Name = L"panel2";
+			this->panel2->Size = System::Drawing::Size(1866, 80);
+			this->panel2->TabIndex = 33;
+			// 
+			// lblWelcome
+			// 
+			this->lblWelcome->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->lblWelcome->AutoSize = true;
+			this->lblWelcome->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblWelcome->ForeColor = System::Drawing::Color::Maroon;
+			this->lblWelcome->Location = System::Drawing::Point(369, 18);
+			this->lblWelcome->Name = L"lblWelcome";
+			this->lblWelcome->Size = System::Drawing::Size(405, 45);
+			this->lblWelcome->TabIndex = 0;
+			this->lblWelcome->Text = L"Programme Management";
+			this->lblWelcome->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			// 
 			// panel1
 			// 
 			this->panel1->BackColor = System::Drawing::Color::Maroon;
 			this->panel1->Controls->Add(this->btnProgrammes);
 			this->panel1->Controls->Add(this->lblUser);
+			this->panel1->Controls->Add(this->btnCourses);
 			this->panel1->Controls->Add(this->btnDashboard);
-			this->panel1->Controls->Add(this->btnDepartment);
 			this->panel1->Controls->Add(this->btnFaculty);
 			this->panel1->Controls->Add(this->btnStudents);
 			this->panel1->Dock = System::Windows::Forms::DockStyle::Left;
 			this->panel1->Location = System::Drawing::Point(0, 0);
 			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(260, 1168);
-			this->panel1->TabIndex = 1;
+			this->panel1->Size = System::Drawing::Size(279, 1282);
+			this->panel1->TabIndex = 31;
 			// 
 			// btnProgrammes
 			// 
@@ -100,9 +419,9 @@ namespace Group7FinalProject {
 			this->btnProgrammes->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->btnProgrammes->ForeColor = System::Drawing::Color::White;
-			this->btnProgrammes->Location = System::Drawing::Point(26, 772);
+			this->btnProgrammes->Location = System::Drawing::Point(27, 639);
 			this->btnProgrammes->Name = L"btnProgrammes";
-			this->btnProgrammes->Size = System::Drawing::Size(197, 50);
+			this->btnProgrammes->Size = System::Drawing::Size(206, 80);
 			this->btnProgrammes->TabIndex = 6;
 			this->btnProgrammes->Text = L"Programmes";
 			this->btnProgrammes->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
@@ -114,11 +433,26 @@ namespace Group7FinalProject {
 			this->lblUser->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->lblUser->ForeColor = System::Drawing::Color::White;
-			this->lblUser->Location = System::Drawing::Point(35, 35);
+			this->lblUser->Location = System::Drawing::Point(41, 63);
 			this->lblUser->Name = L"lblUser";
 			this->lblUser->Size = System::Drawing::Size(90, 37);
 			this->lblUser->TabIndex = 5;
 			this->lblUser->Text = L"label2";
+			// 
+			// btnCourses
+			// 
+			this->btnCourses->FlatAppearance->BorderSize = 0;
+			this->btnCourses->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnCourses->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnCourses->ForeColor = System::Drawing::Color::White;
+			this->btnCourses->Location = System::Drawing::Point(27, 538);
+			this->btnCourses->Name = L"btnCourses";
+			this->btnCourses->Size = System::Drawing::Size(182, 50);
+			this->btnCourses->TabIndex = 4;
+			this->btnCourses->Text = L"Courses";
+			this->btnCourses->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->btnCourses->UseVisualStyleBackColor = true;
 			// 
 			// btnDashboard
 			// 
@@ -127,30 +461,13 @@ namespace Group7FinalProject {
 			this->btnDashboard->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->btnDashboard->ForeColor = System::Drawing::Color::White;
-			this->btnDashboard->Location = System::Drawing::Point(26, 187);
+			this->btnDashboard->Location = System::Drawing::Point(27, 201);
 			this->btnDashboard->Name = L"btnDashboard";
-			this->btnDashboard->Size = System::Drawing::Size(182, 50);
-			this->btnDashboard->TabIndex = 4;
+			this->btnDashboard->Size = System::Drawing::Size(197, 82);
+			this->btnDashboard->TabIndex = 3;
 			this->btnDashboard->Text = L"Dashboard";
 			this->btnDashboard->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			this->btnDashboard->UseVisualStyleBackColor = true;
-			this->btnDashboard->Click += gcnew System::EventHandler(this, &adminCourses::btnDashboard_Click);
-			// 
-			// btnDepartment
-			// 
-			this->btnDepartment->FlatAppearance->BorderSize = 0;
-			this->btnDepartment->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnDepartment->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->btnDepartment->ForeColor = System::Drawing::Color::White;
-			this->btnDepartment->Location = System::Drawing::Point(26, 608);
-			this->btnDepartment->Name = L"btnDepartment";
-			this->btnDepartment->Size = System::Drawing::Size(197, 50);
-			this->btnDepartment->TabIndex = 3;
-			this->btnDepartment->Text = L"Departments";
-			this->btnDepartment->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
-			this->btnDepartment->UseVisualStyleBackColor = true;
-			this->btnDepartment->Click += gcnew System::EventHandler(this, &adminCourses::btnDepartment_Click);
 			// 
 			// btnFaculty
 			// 
@@ -159,9 +476,9 @@ namespace Group7FinalProject {
 			this->btnFaculty->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->btnFaculty->ForeColor = System::Drawing::Color::White;
-			this->btnFaculty->Location = System::Drawing::Point(26, 468);
+			this->btnFaculty->Location = System::Drawing::Point(27, 409);
 			this->btnFaculty->Name = L"btnFaculty";
-			this->btnFaculty->Size = System::Drawing::Size(182, 50);
+			this->btnFaculty->Size = System::Drawing::Size(182, 86);
 			this->btnFaculty->TabIndex = 2;
 			this->btnFaculty->Text = L"Faculty";
 			this->btnFaculty->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
@@ -174,7 +491,7 @@ namespace Group7FinalProject {
 			this->btnStudents->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->btnStudents->ForeColor = System::Drawing::Color::White;
-			this->btnStudents->Location = System::Drawing::Point(26, 332);
+			this->btnStudents->Location = System::Drawing::Point(27, 317);
 			this->btnStudents->Name = L"btnStudents";
 			this->btnStudents->Size = System::Drawing::Size(182, 50);
 			this->btnStudents->TabIndex = 0;
@@ -182,49 +499,166 @@ namespace Group7FinalProject {
 			this->btnStudents->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			this->btnStudents->UseVisualStyleBackColor = true;
 			// 
-			// panel2
+			// LevelBox
 			// 
-			this->panel2->BackColor = System::Drawing::Color::White;
-			this->panel2->Controls->Add(this->lblWelcome);
-			this->panel2->Dock = System::Windows::Forms::DockStyle::Top;
-			this->panel2->Location = System::Drawing::Point(260, 0);
-			this->panel2->Name = L"panel2";
-			this->panel2->Size = System::Drawing::Size(1625, 80);
-			this->panel2->TabIndex = 2;
-			// 
-			// lblWelcome
-			// 
-			this->lblWelcome->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
-			this->lblWelcome->AutoSize = true;
-			this->lblWelcome->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->LevelBox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lblWelcome->ForeColor = System::Drawing::Color::Maroon;
-			this->lblWelcome->Location = System::Drawing::Point(614, 18);
-			this->lblWelcome->Name = L"lblWelcome";
-			this->lblWelcome->Size = System::Drawing::Size(330, 45);
-			this->lblWelcome->TabIndex = 0;
-			this->lblWelcome->Text = L"Course Management";
-			this->lblWelcome->TextAlign = System::Drawing::ContentAlignment::TopCenter;
+			this->LevelBox->FormattingEnabled = true;
+			this->LevelBox->Location = System::Drawing::Point(637, 171);
+			this->LevelBox->Name = L"LevelBox";
+			this->LevelBox->Size = System::Drawing::Size(167, 45);
+			this->LevelBox->TabIndex = 46;
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label4->Location = System::Drawing::Point(392, 171);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(84, 37);
+			this->label4->TabIndex = 45;
+			this->label4->Text = L"Level:";
+			// 
+			// txtCourseTitle
+			// 
+			this->txtCourseTitle->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->txtCourseTitle->Location = System::Drawing::Point(637, 357);
+			this->txtCourseTitle->Name = L"txtCourseTitle";
+			this->txtCourseTitle->Size = System::Drawing::Size(605, 43);
+			this->txtCourseTitle->TabIndex = 48;
+			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label5->Location = System::Drawing::Point(392, 357);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(163, 37);
+			this->label5->TabIndex = 47;
+			this->label5->Text = L"Course Title:";
+			// 
+			// label6
+			// 
+			this->label6->AutoSize = true;
+			this->label6->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label6->Location = System::Drawing::Point(392, 490);
+			this->label6->Name = L"label6";
+			this->label6->Size = System::Drawing::Size(105, 37);
+			this->label6->TabIndex = 49;
+			this->label6->Text = L"Faculty:";
+			// 
+			// FacultyBox
+			// 
+			this->FacultyBox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->FacultyBox->FormattingEnabled = true;
+			this->FacultyBox->Location = System::Drawing::Point(639, 490);
+			this->FacultyBox->Name = L"FacultyBox";
+			this->FacultyBox->Size = System::Drawing::Size(603, 45);
+			this->FacultyBox->TabIndex = 50;
+			// 
+			// btnLevel
+			// 
+			this->btnLevel->BackColor = System::Drawing::Color::Maroon;
+			this->btnLevel->FlatAppearance->BorderColor = System::Drawing::Color::Maroon;
+			this->btnLevel->FlatAppearance->BorderSize = 0;
+			this->btnLevel->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnLevel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnLevel->ForeColor = System::Drawing::Color::White;
+			this->btnLevel->Location = System::Drawing::Point(1897, 1151);
+			this->btnLevel->Name = L"btnLevel";
+			this->btnLevel->Size = System::Drawing::Size(236, 50);
+			this->btnLevel->TabIndex = 51;
+			this->btnLevel->Text = L"By Level";
+			this->btnLevel->TextAlign = System::Drawing::ContentAlignment::TopCenter;
+			this->btnLevel->UseVisualStyleBackColor = false;
+			// 
+			// SemesterBox
+			// 
+			this->SemesterBox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->SemesterBox->FormattingEnabled = true;
+			this->SemesterBox->Location = System::Drawing::Point(637, 238);
+			this->SemesterBox->Name = L"SemesterBox";
+			this->SemesterBox->Size = System::Drawing::Size(233, 45);
+			this->SemesterBox->TabIndex = 53;
+			// 
+			// label7
+			// 
+			this->label7->AutoSize = true;
+			this->label7->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label7->Location = System::Drawing::Point(392, 238);
+			this->label7->Name = L"label7";
+			this->label7->Size = System::Drawing::Size(131, 37);
+			this->label7->TabIndex = 52;
+			this->label7->Text = L"Semester:";
 			// 
 			// adminCourses
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(12, 25);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1885, 1168);
+			this->ClientSize = System::Drawing::Size(2145, 1282);
+			this->Controls->Add(this->SemesterBox);
+			this->Controls->Add(this->label7);
+			this->Controls->Add(this->btnLevel);
+			this->Controls->Add(this->FacultyBox);
+			this->Controls->Add(this->label6);
+			this->Controls->Add(this->txtCourseTitle);
+			this->Controls->Add(this->label5);
+			this->Controls->Add(this->LevelBox);
+			this->Controls->Add(this->label4);
+			this->Controls->Add(this->btnDepartment);
+			this->Controls->Add(this->CreditBox);
+			this->Controls->Add(this->Program);
+			this->Controls->Add(this->txtCourseCode);
+			this->Controls->Add(this->label3);
+			this->Controls->Add(this->ProgrammeBox);
+			this->Controls->Add(this->btnCode);
+			this->Controls->Add(this->btnTitle);
+			this->Controls->Add(this->txtSearch);
+			this->Controls->Add(this->label2);
+			this->Controls->Add(this->dataGridView1);
+			this->Controls->Add(this->btnDelete);
+			this->Controls->Add(this->btnUpdate);
+			this->Controls->Add(this->btnSave);
+			this->Controls->Add(this->label1);
 			this->Controls->Add(this->panel2);
 			this->Controls->Add(this->panel1);
 			this->Name = L"adminCourses";
 			this->Text = L"adminCourses";
-			this->panel1->ResumeLayout(false);
-			this->panel1->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
 			this->panel2->ResumeLayout(false);
 			this->panel2->PerformLayout();
+			this->panel1->ResumeLayout(false);
+			this->panel1->PerformLayout();
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
 		private: System::Void btnDashboard_Click(System::Object^ sender, System::EventArgs^ e);
 		private: System::Void btnDepartment_Click(System::Object^ sender, System::EventArgs^ e);
+		private: System::Void btnSave_Click(System::Object^ sender, System::EventArgs^ e) {
+			try {
+				int programmeID = Convert::ToInt32(ProgrammeBox->SelectedValue);
+				int courseLevel = Convert::ToInt32(LevelBox->SelectedItem);
+				int facultyID = Convert::ToInt32(FacultyBox->SelectedValue);
+				String^ courseCode = txtCourseCode->Text;
+				String^ courseTitle = txtCourseTitle->Text;
+				int courseCredits = Convert::ToInt32(CreditBox->SelectedItem);
+				String^ semester = SemesterBox->SelectedItem->ToString();
+
+				db->Open();
+
+			} catch (System::Exception^ ex) {
+				MessageBox::Show(ex->Message, L"Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			}
+		}
 	};
 }
