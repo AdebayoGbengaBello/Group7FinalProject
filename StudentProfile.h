@@ -17,12 +17,15 @@ namespace Group7FinalProject {
 	public:
 		Database^ db = gcnew Database();
 
-		StudentProfile(void)
+		int currentStudentID = 2;
+		StudentProfile(/*int userID*/)
 		{
+			//currentStudentID = userID/*;*/
 			InitializeComponent();
 			//
 			//TODO: Add the constructor code here
 			//
+			LoadProfileData();
 		}
 
 	protected:
@@ -96,20 +99,7 @@ namespace Group7FinalProject {
 
 
 
-	protected:
-
-
-
-
-
-
-
-
-
-
-
-
-
+	//protected:
 	private:
 		/// <summary>
 		/// Required designer variable.
@@ -123,21 +113,20 @@ namespace Group7FinalProject {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			this->AutoScroll = true;
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
-			this->panel2 = (gcnew System::Windows::Forms::Panel());
-			this->panel3 = (gcnew System::Windows::Forms::Panel());
-			this->panel4 = (gcnew System::Windows::Forms::Panel());
-			this->label3 = (gcnew System::Windows::Forms::Label());
-			this->label4 = (gcnew System::Windows::Forms::Label());
-			this->label5 = (gcnew System::Windows::Forms::Label());
-			this->label6 = (gcnew System::Windows::Forms::Label());
-			this->btnEditPersonal = (gcnew System::Windows::Forms::Button());
-			this->txtFirstName = (gcnew System::Windows::Forms::Label());
-			this->txtLastName = (gcnew System::Windows::Forms::Label());
-			this->txtGender = (gcnew System::Windows::Forms::Label());
 			this->txtDOB = (gcnew System::Windows::Forms::Label());
+			this->txtGender = (gcnew System::Windows::Forms::Label());
+			this->txtLastName = (gcnew System::Windows::Forms::Label());
+			this->txtFirstName = (gcnew System::Windows::Forms::Label());
+			this->btnEditPersonal = (gcnew System::Windows::Forms::Button());
+			this->label6 = (gcnew System::Windows::Forms::Label());
+			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->panel2 = (gcnew System::Windows::Forms::Panel());
 			this->txtAddress = (gcnew System::Windows::Forms::Label());
 			this->txtPhone = (gcnew System::Windows::Forms::Label());
 			this->txtEmail = (gcnew System::Windows::Forms::Label());
@@ -146,6 +135,13 @@ namespace Group7FinalProject {
 			this->label13 = (gcnew System::Windows::Forms::Label());
 			this->label14 = (gcnew System::Windows::Forms::Label());
 			this->label15 = (gcnew System::Windows::Forms::Label());
+			this->panel3 = (gcnew System::Windows::Forms::Panel());
+			this->txtLastChanged = (gcnew System::Windows::Forms::Label());
+			this->label9 = (gcnew System::Windows::Forms::Label());
+			this->btnChangePwd = (gcnew System::Windows::Forms::Button());
+			this->label7 = (gcnew System::Windows::Forms::Label());
+			this->label8 = (gcnew System::Windows::Forms::Label());
+			this->panel4 = (gcnew System::Windows::Forms::Panel());
 			this->txtYear = (gcnew System::Windows::Forms::Label());
 			this->txtGraduationYear = (gcnew System::Windows::Forms::Label());
 			this->txtProgram = (gcnew System::Windows::Forms::Label());
@@ -155,11 +151,6 @@ namespace Group7FinalProject {
 			this->label17 = (gcnew System::Windows::Forms::Label());
 			this->label18 = (gcnew System::Windows::Forms::Label());
 			this->label19 = (gcnew System::Windows::Forms::Label());
-			this->label7 = (gcnew System::Windows::Forms::Label());
-			this->label8 = (gcnew System::Windows::Forms::Label());
-			this->btnChangePwd = (gcnew System::Windows::Forms::Button());
-			this->label9 = (gcnew System::Windows::Forms::Label());
-			this->txtLastChanged = (gcnew System::Windows::Forms::Label());
 			this->panel1->SuspendLayout();
 			this->panel2->SuspendLayout();
 			this->panel3->SuspendLayout();
@@ -173,7 +164,7 @@ namespace Group7FinalProject {
 				static_cast<System::Byte>(0)));
 			this->label1->Location = System::Drawing::Point(36, 35);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(116, 38);
+			this->label1->Size = System::Drawing::Size(121, 39);
 			this->label1->TabIndex = 0;
 			this->label1->Text = L"Profile";
 			// 
@@ -190,7 +181,8 @@ namespace Group7FinalProject {
 			// 
 			// panel1
 			// 
-			this->panel1->BackColor = System::Drawing::SystemColors::ControlLight;
+			this->panel1->BackColor = System::Drawing::SystemColors::ControlLightLight;
+			this->panel1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->panel1->Controls->Add(this->txtDOB);
 			this->panel1->Controls->Add(this->txtGender);
 			this->panel1->Controls->Add(this->txtLastName);
@@ -206,9 +198,103 @@ namespace Group7FinalProject {
 			this->panel1->Size = System::Drawing::Size(985, 272);
 			this->panel1->TabIndex = 2;
 			// 
+			// txtDOB
+			// 
+			this->txtDOB->AutoSize = true;
+			this->txtDOB->Location = System::Drawing::Point(17, 212);
+			this->txtDOB->Name = L"txtDOB";
+			this->txtDOB->Size = System::Drawing::Size(159, 25);
+			this->txtDOB->TabIndex = 10;
+			this->txtDOB->Text = L"January 15,2003";
+			this->txtDOB->Click += gcnew System::EventHandler(this, &StudentProfile::label10_Click);
+			// 
+			// txtGender
+			// 
+			this->txtGender->AutoSize = true;
+			this->txtGender->Location = System::Drawing::Point(576, 212);
+			this->txtGender->Name = L"txtGender";
+			this->txtGender->Size = System::Drawing::Size(55, 25);
+			this->txtGender->TabIndex = 9;
+			this->txtGender->Text = L"Male";
+			// 
+			// txtLastName
+			// 
+			this->txtLastName->AutoSize = true;
+			this->txtLastName->Location = System::Drawing::Point(576, 119);
+			this->txtLastName->Name = L"txtLastName";
+			this->txtLastName->Size = System::Drawing::Size(88, 25);
+			this->txtLastName->TabIndex = 8;
+			this->txtLastName->Text = L"Johnson";
+			// 
+			// txtFirstName
+			// 
+			this->txtFirstName->AutoSize = true;
+			this->txtFirstName->Location = System::Drawing::Point(26, 119);
+			this->txtFirstName->Name = L"txtFirstName";
+			this->txtFirstName->Size = System::Drawing::Size(51, 25);
+			this->txtFirstName->TabIndex = 7;
+			this->txtFirstName->Text = L"Alex";
+			// 
+			// btnEditPersonal
+			// 
+			this->btnEditPersonal->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->btnEditPersonal->BackColor = System::Drawing::Color::Transparent;
+			this->btnEditPersonal->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->btnEditPersonal->ForeColor = System::Drawing::Color::Brown;
+			this->btnEditPersonal->Location = System::Drawing::Point(881, 14);
+			this->btnEditPersonal->Name = L"btnEditPersonal";
+			this->btnEditPersonal->Size = System::Drawing::Size(88, 37);
+			this->btnEditPersonal->TabIndex = 6;
+			this->btnEditPersonal->Text = L"✏️ Edit";
+			this->btnEditPersonal->UseVisualStyleBackColor = false;
+			this->btnEditPersonal->Click += gcnew System::EventHandler(this, &StudentProfile::btnEditPersonal_Click);
+			// 
+			// label6
+			// 
+			this->label6->AutoSize = true;
+			this->label6->ForeColor = System::Drawing::SystemColors::GrayText;
+			this->label6->Location = System::Drawing::Point(576, 172);
+			this->label6->Name = L"label6";
+			this->label6->Size = System::Drawing::Size(77, 25);
+			this->label6->TabIndex = 5;
+			this->label6->Text = L"Gender";
+			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->ForeColor = System::Drawing::SystemColors::GrayText;
+			this->label5->Location = System::Drawing::Point(576, 75);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(106, 25);
+			this->label5->TabIndex = 4;
+			this->label5->Text = L"Last Name";
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->ForeColor = System::Drawing::SystemColors::GrayText;
+			this->label4->Location = System::Drawing::Point(17, 75);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(106, 25);
+			this->label4->TabIndex = 3;
+			this->label4->Text = L"Fisrt Name";
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->ForeColor = System::Drawing::SystemColors::GrayText;
+			this->label3->Location = System::Drawing::Point(17, 172);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(118, 25);
+			this->label3->TabIndex = 2;
+			this->label3->Text = L"Date of Birth";
+			// 
 			// panel2
 			// 
-			this->panel2->BackColor = System::Drawing::SystemColors::ControlLight;
+			this->panel2->BackColor = System::Drawing::SystemColors::ControlLightLight;
+			this->panel2->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->panel2->Controls->Add(this->txtAddress);
 			this->panel2->Controls->Add(this->txtPhone);
 			this->panel2->Controls->Add(this->txtEmail);
@@ -222,124 +308,6 @@ namespace Group7FinalProject {
 			this->panel2->Size = System::Drawing::Size(985, 256);
 			this->panel2->TabIndex = 3;
 			this->panel2->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &StudentProfile::panel2_Paint);
-			// 
-			// panel3
-			// 
-			this->panel3->BackColor = System::Drawing::SystemColors::ControlLight;
-			this->panel3->Controls->Add(this->txtLastChanged);
-			this->panel3->Controls->Add(this->label9);
-			this->panel3->Controls->Add(this->btnChangePwd);
-			this->panel3->Controls->Add(this->label7);
-			this->panel3->Controls->Add(this->label8);
-			this->panel3->Location = System::Drawing::Point(71, 1052);
-			this->panel3->Name = L"panel3";
-			this->panel3->Size = System::Drawing::Size(985, 210);
-			this->panel3->TabIndex = 4;
-			// 
-			// panel4
-			// 
-			this->panel4->BackColor = System::Drawing::SystemColors::ControlLight;
-			this->panel4->Controls->Add(this->txtYear);
-			this->panel4->Controls->Add(this->txtGraduationYear);
-			this->panel4->Controls->Add(this->txtProgram);
-			this->panel4->Controls->Add(this->txtSID);
-			this->panel4->Controls->Add(this->label12);
-			this->panel4->Controls->Add(this->label16);
-			this->panel4->Controls->Add(this->label17);
-			this->panel4->Controls->Add(this->label18);
-			this->panel4->Controls->Add(this->label19);
-			this->panel4->Location = System::Drawing::Point(71, 736);
-			this->panel4->Name = L"panel4";
-			this->panel4->Size = System::Drawing::Size(985, 273);
-			this->panel4->TabIndex = 5;
-			// 
-			// label3
-			// 
-			this->label3->AutoSize = true;
-			this->label3->ForeColor = System::Drawing::SystemColors::GrayText;
-			this->label3->Location = System::Drawing::Point(17, 172);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(118, 25);
-			this->label3->TabIndex = 2;
-			this->label3->Text = L"Date of Birth";
-			// 
-			// label4
-			// 
-			this->label4->AutoSize = true;
-			this->label4->ForeColor = System::Drawing::SystemColors::GrayText;
-			this->label4->Location = System::Drawing::Point(17, 75);
-			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(106, 25);
-			this->label4->TabIndex = 3;
-			this->label4->Text = L"Fisrt Name";
-			// 
-			// label5
-			// 
-			this->label5->AutoSize = true;
-			this->label5->ForeColor = System::Drawing::SystemColors::GrayText;
-			this->label5->Location = System::Drawing::Point(576, 75);
-			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(106, 25);
-			this->label5->TabIndex = 4;
-			this->label5->Text = L"Last Name";
-			// 
-			// label6
-			// 
-			this->label6->AutoSize = true;
-			this->label6->ForeColor = System::Drawing::SystemColors::GrayText;
-			this->label6->Location = System::Drawing::Point(576, 172);
-			this->label6->Name = L"label6";
-			this->label6->Size = System::Drawing::Size(77, 25);
-			this->label6->TabIndex = 5;
-			this->label6->Text = L"Gender";
-			// 
-			// btnEditPersonal
-			// 
-			this->btnEditPersonal->BackColor = System::Drawing::Color::Transparent;
-			this->btnEditPersonal->ForeColor = System::Drawing::Color::Brown;
-			this->btnEditPersonal->Location = System::Drawing::Point(881, 14);
-			this->btnEditPersonal->Name = L"btnEditPersonal";
-			this->btnEditPersonal->Size = System::Drawing::Size(88, 37);
-			this->btnEditPersonal->TabIndex = 6;
-			this->btnEditPersonal->Text = L"✏️ Edit";
-			this->btnEditPersonal->UseVisualStyleBackColor = false;
-			// 
-			// txtFirstName
-			// 
-			this->txtFirstName->AutoSize = true;
-			this->txtFirstName->Location = System::Drawing::Point(26, 119);
-			this->txtFirstName->Name = L"txtFirstName";
-			this->txtFirstName->Size = System::Drawing::Size(51, 25);
-			this->txtFirstName->TabIndex = 7;
-			this->txtFirstName->Text = L"Alex";
-			// 
-			// txtLastName
-			// 
-			this->txtLastName->AutoSize = true;
-			this->txtLastName->Location = System::Drawing::Point(576, 119);
-			this->txtLastName->Name = L"txtLastName";
-			this->txtLastName->Size = System::Drawing::Size(88, 25);
-			this->txtLastName->TabIndex = 8;
-			this->txtLastName->Text = L"Johnson";
-			// 
-			// txtGender
-			// 
-			this->txtGender->AutoSize = true;
-			this->txtGender->Location = System::Drawing::Point(576, 212);
-			this->txtGender->Name = L"txtGender";
-			this->txtGender->Size = System::Drawing::Size(55, 25);
-			this->txtGender->TabIndex = 9;
-			this->txtGender->Text = L"Male";
-			// 
-			// txtDOB
-			// 
-			this->txtDOB->AutoSize = true;
-			this->txtDOB->Location = System::Drawing::Point(17, 212);
-			this->txtDOB->Name = L"txtDOB";
-			this->txtDOB->Size = System::Drawing::Size(159, 25);
-			this->txtDOB->TabIndex = 10;
-			this->txtDOB->Text = L"January 15,2003";
-			this->txtDOB->Click += gcnew System::EventHandler(this, &StudentProfile::label10_Click);
 			// 
 			// txtAddress
 			// 
@@ -370,7 +338,11 @@ namespace Group7FinalProject {
 			// 
 			// btnEditDetails
 			// 
+			this->btnEditDetails->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
 			this->btnEditDetails->BackColor = System::Drawing::Color::Transparent;
+			this->btnEditDetails->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->btnEditDetails->ForeColor = System::Drawing::Color::Brown;
 			this->btnEditDetails->Location = System::Drawing::Point(880, 10);
 			this->btnEditDetails->Name = L"btnEditDetails";
@@ -378,6 +350,7 @@ namespace Group7FinalProject {
 			this->btnEditDetails->TabIndex = 16;
 			this->btnEditDetails->Text = L"✏️ Edit";
 			this->btnEditDetails->UseVisualStyleBackColor = false;
+			this->btnEditDetails->Click += gcnew System::EventHandler(this, &StudentProfile::btnEditDetails_Click);
 			// 
 			// label11
 			// 
@@ -419,6 +392,96 @@ namespace Group7FinalProject {
 			this->label15->Size = System::Drawing::Size(215, 31);
 			this->label15->TabIndex = 11;
 			this->label15->Text = L"Contact Details";
+			// 
+			// panel3
+			// 
+			this->panel3->BackColor = System::Drawing::SystemColors::ControlLightLight;
+			this->panel3->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->panel3->Controls->Add(this->txtLastChanged);
+			this->panel3->Controls->Add(this->label9);
+			this->panel3->Controls->Add(this->btnChangePwd);
+			this->panel3->Controls->Add(this->label7);
+			this->panel3->Controls->Add(this->label8);
+			this->panel3->Location = System::Drawing::Point(71, 1052);
+			this->panel3->Name = L"panel3";
+			this->panel3->Size = System::Drawing::Size(985, 210);
+			this->panel3->TabIndex = 4;
+			// 
+			// txtLastChanged
+			// 
+			this->txtLastChanged->AutoSize = true;
+			this->txtLastChanged->ForeColor = System::Drawing::SystemColors::GrayText;
+			this->txtLastChanged->Location = System::Drawing::Point(163, 137);
+			this->txtLastChanged->Name = L"txtLastChanged";
+			this->txtLastChanged->Size = System::Drawing::Size(132, 25);
+			this->txtLastChanged->TabIndex = 19;
+			this->txtLastChanged->Text = L"March 1,2024";
+			// 
+			// label9
+			// 
+			this->label9->AutoSize = true;
+			this->label9->ForeColor = System::Drawing::SystemColors::GrayText;
+			this->label9->Location = System::Drawing::Point(18, 137);
+			this->label9->Name = L"label9";
+			this->label9->Size = System::Drawing::Size(141, 25);
+			this->label9->TabIndex = 18;
+			this->label9->Text = L"Last changed :";
+			// 
+			// btnChangePwd
+			// 
+			this->btnChangePwd->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->btnChangePwd->BackColor = System::Drawing::Color::Transparent;
+			this->btnChangePwd->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->btnChangePwd->ForeColor = System::Drawing::Color::Brown;
+			this->btnChangePwd->Location = System::Drawing::Point(769, 104);
+			this->btnChangePwd->Name = L"btnChangePwd";
+			this->btnChangePwd->Size = System::Drawing::Size(200, 58);
+			this->btnChangePwd->TabIndex = 17;
+			this->btnChangePwd->Text = L"Change Password";
+			this->btnChangePwd->UseVisualStyleBackColor = false;
+			this->btnChangePwd->Click += gcnew System::EventHandler(this, &StudentProfile::btnChangePwd_Click);
+			// 
+			// label7
+			// 
+			this->label7->AutoSize = true;
+			this->label7->ForeColor = System::Drawing::SystemColors::Desktop;
+			this->label7->Location = System::Drawing::Point(18, 93);
+			this->label7->Name = L"label7";
+			this->label7->Size = System::Drawing::Size(98, 25);
+			this->label7->TabIndex = 15;
+			this->label7->Text = L"Password";
+			this->label7->Click += gcnew System::EventHandler(this, &StudentProfile::label7_Click);
+			// 
+			// label8
+			// 
+			this->label8->AutoSize = true;
+			this->label8->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.14286F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label8->Location = System::Drawing::Point(17, 35);
+			this->label8->Name = L"label8";
+			this->label8->Size = System::Drawing::Size(236, 31);
+			this->label8->TabIndex = 14;
+			this->label8->Text = L"Security Settings";
+			// 
+			// panel4
+			// 
+			this->panel4->BackColor = System::Drawing::SystemColors::ControlLightLight;
+			this->panel4->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->panel4->Controls->Add(this->txtYear);
+			this->panel4->Controls->Add(this->txtGraduationYear);
+			this->panel4->Controls->Add(this->txtProgram);
+			this->panel4->Controls->Add(this->txtSID);
+			this->panel4->Controls->Add(this->label12);
+			this->panel4->Controls->Add(this->label16);
+			this->panel4->Controls->Add(this->label17);
+			this->panel4->Controls->Add(this->label18);
+			this->panel4->Controls->Add(this->label19);
+			this->panel4->Location = System::Drawing::Point(71, 736);
+			this->panel4->Name = L"panel4";
+			this->panel4->Size = System::Drawing::Size(985, 273);
+			this->panel4->TabIndex = 5;
 			// 
 			// txtYear
 			// 
@@ -507,59 +570,6 @@ namespace Group7FinalProject {
 			this->label19->TabIndex = 11;
 			this->label19->Text = L"Academic Program";
 			// 
-			// label7
-			// 
-			this->label7->AutoSize = true;
-			this->label7->ForeColor = System::Drawing::SystemColors::Desktop;
-			this->label7->Location = System::Drawing::Point(18, 93);
-			this->label7->Name = L"label7";
-			this->label7->Size = System::Drawing::Size(98, 25);
-			this->label7->TabIndex = 15;
-			this->label7->Text = L"Password";
-			this->label7->Click += gcnew System::EventHandler(this, &StudentProfile::label7_Click);
-			// 
-			// label8
-			// 
-			this->label8->AutoSize = true;
-			this->label8->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.14286F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label8->Location = System::Drawing::Point(17, 35);
-			this->label8->Name = L"label8";
-			this->label8->Size = System::Drawing::Size(236, 31);
-			this->label8->TabIndex = 14;
-			this->label8->Text = L"Security Settings";
-			// 
-			// btnChangePwd
-			// 
-			this->btnChangePwd->BackColor = System::Drawing::Color::Transparent;
-			this->btnChangePwd->ForeColor = System::Drawing::Color::Brown;
-			this->btnChangePwd->Location = System::Drawing::Point(769, 104);
-			this->btnChangePwd->Name = L"btnChangePwd";
-			this->btnChangePwd->Size = System::Drawing::Size(200, 58);
-			this->btnChangePwd->TabIndex = 17;
-			this->btnChangePwd->Text = L"Change Password";
-			this->btnChangePwd->UseVisualStyleBackColor = false;
-			// 
-			// label9
-			// 
-			this->label9->AutoSize = true;
-			this->label9->ForeColor = System::Drawing::SystemColors::GrayText;
-			this->label9->Location = System::Drawing::Point(18, 137);
-			this->label9->Name = L"label9";
-			this->label9->Size = System::Drawing::Size(141, 25);
-			this->label9->TabIndex = 18;
-			this->label9->Text = L"Last changed :";
-			// 
-			// txtLastChanged
-			// 
-			this->txtLastChanged->AutoSize = true;
-			this->txtLastChanged->ForeColor = System::Drawing::SystemColors::GrayText;
-			this->txtLastChanged->Location = System::Drawing::Point(163, 137);
-			this->txtLastChanged->Name = L"txtLastChanged";
-			this->txtLastChanged->Size = System::Drawing::Size(132, 25);
-			this->txtLastChanged->TabIndex = 19;
-			this->txtLastChanged->Text = L"March 1,2024";
-			// 
 			// StudentProfile
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(11, 24);
@@ -592,6 +602,196 @@ namespace Group7FinalProject {
 private: System::Void panel2_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 }
 private: System::Void label7_Click(System::Object^ sender, System::EventArgs^ e) {
+}
+
+private: void LoadProfileData() {
+	try {
+		db->Open();
+
+		// 1. QUERY: Get User Details + Student Details
+		// We join User and Student tables
+		String^ query = "SELECT u.firstName, u.lastName, u.gender, s.dateOfBirth, "
+			"u.email, u.phoneNumber, u.address, "
+			"s.studentID, s.enrollmentYear, s.expectedGraduation "
+			"FROM User u "
+			"JOIN Student s ON u.dbID = s.studentID "
+			"WHERE u.dbID = " + currentStudentID;
+
+		db->sqlCmd->CommandText = query;
+		db->sqlDR = db->sqlCmd->ExecuteReader();
+
+		if (db->sqlDR->Read()) {
+			// --- Personal Info ---
+			txtFirstName->Text = db->sqlDR["firstName"]->ToString();
+			txtLastName->Text = db->sqlDR["lastName"]->ToString();
+			txtGender->Text = db->sqlDR["gender"]->ToString();
+
+			// Format Date: "January 15, 2003"
+			if (db->sqlDR["dateOfBirth"] != DBNull::Value) {
+				DateTime dob = Convert::ToDateTime(db->sqlDR["dateOfBirth"]);
+				txtDOB->Text = dob.ToString("MMMM dd, yyyy");
+			}
+
+			// --- Contact Details ---
+			txtEmail->Text = db->sqlDR["email"]->ToString();
+			txtPhone->Text = db->sqlDR["phoneNumber"]->ToString();
+			txtAddress->Text = db->sqlDR["address"]->ToString();
+
+			// --- Academic Program ---
+			txtSID->Text = db->sqlDR["studentID"]->ToString();
+			txtYear->Text = db->sqlDR["enrollmentYear"]->ToString();
+			txtGraduationYear->Text = db->sqlDR["expectedGraduation"]->ToString();
+		}
+		db->Close();
+
+		// 2. QUERY: Get Program Name 
+
+		db->Open();
+		String^ progQuery = "SELECT p.progName FROM CourseRegistration cr "
+			"JOIN Course c ON cr.courseID = c.courseID "
+			"JOIN Programme p ON c.progID = p.progID "
+			"WHERE cr.studentID = " + currentStudentID + " LIMIT 1";
+
+		db->sqlCmd->CommandText = progQuery;
+		Object^ result = db->sqlCmd->ExecuteScalar();
+
+		if (result != nullptr) {
+			txtProgram->Text = result->ToString();
+		}
+		else {
+			txtProgram->Text = "Not Assigned";
+		}
+		db->Close();
+
+	}
+	catch (Exception^ ex) {
+		MessageBox::Show("Error loading profile: " + ex->Message);
+		if (db->sqlConn->State == ConnectionState::Open) db->Close();
+	}
+}
+private: System::Void btnEditPersonal_Click(System::Object^ sender, System::EventArgs^ e) {
+	Form^ editForm = gcnew Form();
+	editForm->Text = "Edit Personal Info";
+	editForm->Size = System::Drawing::Size(350, 250);
+	editForm->StartPosition = FormStartPosition::CenterParent;
+
+	Label^ l1 = gcnew Label(); l1->Text = "First Name:"; l1->Top = 20; l1->Left = 20;
+	TextBox^ t1 = gcnew TextBox(); t1->Top = 45; t1->Left = 20; t1->Width = 280; t1->Text = txtFirstName->Text;
+
+	Label^ l2 = gcnew Label(); l2->Text = "Last Name:"; l2->Top = 85; l2->Left = 20;
+	TextBox^ t2 = gcnew TextBox(); t2->Top = 110; t2->Left = 20; t2->Width = 280; t2->Text = txtLastName->Text;
+
+	Button^ btnSave = gcnew Button(); btnSave->Text = "Save"; btnSave->Top = 160; btnSave->Left = 100; btnSave->DialogResult = System::Windows::Forms::DialogResult::OK;
+
+	editForm->Controls->Add(l1); editForm->Controls->Add(t1);
+	editForm->Controls->Add(l2); editForm->Controls->Add(t2);
+	editForm->Controls->Add(btnSave);
+
+	if (editForm->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
+		try {
+			db->Open();
+			String^ updateQuery = "UPDATE User SET firstName = '" + t1->Text + "', lastName = '" + t2->Text + "' WHERE dbID = " + currentStudentID;
+			db->sqlCmd->CommandText = updateQuery;
+			db->sqlCmd->ExecuteNonQuery();
+			db->Close();
+			LoadProfileData(); // Refresh UI
+		}
+		catch (Exception^ ex) {
+			MessageBox::Show(ex->Message);
+			db->Close();
+		}
+	}
+}
+private: System::Void btnEditDetails_Click(System::Object^ sender, System::EventArgs^ e) {
+	Form^ editForm = gcnew Form();
+	editForm->Text = "Edit Contact Info";
+	editForm->Size = System::Drawing::Size(350, 300);
+	editForm->StartPosition = FormStartPosition::CenterParent;
+
+	Label^ l1 = gcnew Label(); l1->Text = "Email:"; l1->Top = 20; l1->Left = 20;
+	TextBox^ t1 = gcnew TextBox(); t1->Top = 45; t1->Left = 20; t1->Width = 280; t1->Text = txtEmail->Text;
+
+	Label^ l2 = gcnew Label(); l2->Text = "Phone:"; l2->Top = 85; l2->Left = 20;
+	TextBox^ t2 = gcnew TextBox(); t2->Top = 110; t2->Left = 20; t2->Width = 280; t2->Text = txtPhone->Text;
+
+	Label^ l3 = gcnew Label(); l3->Text = "Address:"; l3->Top = 150; l3->Left = 20;
+	TextBox^ t3 = gcnew TextBox(); t3->Top = 175; t3->Left = 20; t3->Width = 280; t3->Text = txtAddress->Text;
+
+	Button^ btnSave = gcnew Button(); btnSave->Text = "Save"; btnSave->Top = 220; btnSave->Left = 100; btnSave->DialogResult = System::Windows::Forms::DialogResult::OK;
+
+	editForm->Controls->Add(l1); editForm->Controls->Add(t1);
+	editForm->Controls->Add(l2); editForm->Controls->Add(t2);
+	editForm->Controls->Add(l3); editForm->Controls->Add(t3);
+	editForm->Controls->Add(btnSave);
+
+	if (editForm->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
+		try {
+			db->Open();
+			String^ updateQuery = "UPDATE User SET email='" + t1->Text + "', phoneNumber='" + t2->Text + "', address='" + t3->Text + "' WHERE dbID = " + currentStudentID;
+			db->sqlCmd->CommandText = updateQuery;
+			db->sqlCmd->ExecuteNonQuery();
+			db->Close();
+			LoadProfileData(); // Refresh UI
+		}
+		catch (Exception^ ex) {
+			MessageBox::Show(ex->Message);
+			db->Close();
+		}
+	}
+}
+private: System::Void btnChangePwd_Click(System::Object^ sender, System::EventArgs^ e) {
+	Form^ pwdForm = gcnew Form();
+	pwdForm->Text = "Change Password";
+	pwdForm->Size = System::Drawing::Size(350, 300);
+	pwdForm->StartPosition = FormStartPosition::CenterParent;
+
+	Label^ lblOld = gcnew Label(); lblOld->Text = "Old Password:"; lblOld->Top = 20; lblOld->Left = 20;
+	TextBox^ txtOld = gcnew TextBox(); txtOld->Top = 45; txtOld->Left = 20; txtOld->Width = 280; txtOld->PasswordChar = '*';
+
+	Label^ lblNew = gcnew Label(); lblNew->Text = "New Password:"; lblNew->Top = 85; lblNew->Left = 20;
+	TextBox^ txtNew = gcnew TextBox(); txtNew->Top = 110; txtNew->Left = 20; txtNew->Width = 280; txtNew->PasswordChar = '*';
+
+	Label^ lblConf = gcnew Label(); lblConf->Text = "Confirm Password:"; lblConf->Top = 150; lblConf->Left = 20;
+	TextBox^ txtConf = gcnew TextBox(); txtConf->Top = 175; txtConf->Left = 20; txtConf->Width = 280; txtConf->PasswordChar = '*';
+
+	Button^ btnSave = gcnew Button(); btnSave->Text = "Update"; btnSave->Top = 220; btnSave->Left = 100; btnSave->DialogResult = System::Windows::Forms::DialogResult::OK;
+
+	pwdForm->Controls->Add(lblOld); pwdForm->Controls->Add(txtOld);
+	pwdForm->Controls->Add(lblNew); pwdForm->Controls->Add(txtNew);
+	pwdForm->Controls->Add(lblConf); pwdForm->Controls->Add(txtConf);
+	pwdForm->Controls->Add(btnSave);
+
+	if (pwdForm->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
+		try {
+			db->Open();
+			// Check old password
+			String^ verifyQuery = "SELECT password FROM User WHERE dbID = " + currentStudentID;
+			db->sqlCmd->CommandText = verifyQuery;
+			String^ currentDbPass = db->sqlCmd->ExecuteScalar()->ToString();
+
+			if (currentDbPass != txtOld->Text) {
+				MessageBox::Show("Old password is incorrect!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			}
+			else if (txtNew->Text != txtConf->Text) {
+				MessageBox::Show("New passwords do not match!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			}
+			else {
+				// Update Password
+				String^ updateQuery = "UPDATE User SET password = '" + txtNew->Text + "' WHERE dbID = " + currentStudentID;
+				db->sqlCmd->CommandText = updateQuery;
+				db->sqlCmd->ExecuteNonQuery();
+				MessageBox::Show("Password updated successfully!");
+
+				// Update Timestamp Label
+				txtLastChanged->Text = DateTime::Now.ToString("MMMM dd, yyyy");
+			}
+			db->Close();
+		}
+		catch (Exception^ ex) {
+			MessageBox::Show("Error: " + ex->Message);
+			db->Close();
+		}
+	}
 }
 };
 }

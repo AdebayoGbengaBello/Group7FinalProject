@@ -40,10 +40,13 @@
     <ClCompile Include="TranscriptView.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Course.h" />
     <ClInclude Include="Database.h" />
+    <ClInclude Include="Grade.h" />
     <ClInclude Include="PaymentView.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Student.h" />
     <ClInclude Include="StudentCourses.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -57,9 +60,6 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="StudentSignupForm.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
-    <ClInclude Include="SudentDashboard.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="TranscriptView.h">
@@ -84,9 +84,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="StudentSignupForm.resx">
       <DependentUpon>StudentSignupForm.h</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SudentDashboard.resx">
-      <DependentUpon>SudentDashboard.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TranscriptView.resx">
       <DependentUpon>TranscriptView.h</DependentUpon>

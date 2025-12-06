@@ -13,8 +13,9 @@ int main(array<String^>^ args) {
 
 	Group7FinalProject::StudentLoginForm loginForm;
 	Group7FinalProject::StudentSignupForm signupForm;
-	loginForm.ShowDialog();
-
+	//loginForm.ShowDialog();
+     
+	Application::Run(% loginForm);
 
 	// create a student Class For this part 
 
