@@ -110,11 +110,24 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies />
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>Main</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Reference Include="MySql.Data">
       <HintPath>..\..\..\Documents\Libraries\v45\mysql.data.dll</HintPath>
+=======
+    <ClInclude Include="mainLogin.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="users.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MySql.Data">
+      <HintPath>..\..\..\..\..\mysql-for-visualstudio-2.0.5-noinstall\v461\mysql.data.dll</HintPath>
+>>>>>>> origin/master
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -123,6 +136,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <ClCompile Include="facultyDashboard.cpp" />
     <ClCompile Include="facultyView.cpp" />
     <ClCompile Include="gradeSub.cpp" />
@@ -155,6 +169,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="myCourses.resx">
       <DependentUpon>myCourses.h</DependentUpon>
+=======
+    <ClCompile Include="mainLogin.cpp" />
+    <ClCompile Include="mainProgram.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="mainLogin.resx">
+      <DependentUpon>mainLogin.h</DependentUpon>
+>>>>>>> origin/master
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
