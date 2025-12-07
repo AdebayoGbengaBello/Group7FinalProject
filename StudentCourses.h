@@ -18,11 +18,11 @@ namespace Group7FinalProject {
 	public:
 		Database^ db = gcnew Database();
 		DataTable^ dtCourses = gcnew DataTable();
-		int currentStudentID = 2;
+		int currentStudentID;
 
-		StudentCourses(/*int userID*/)
+		StudentCourses(int userID)
 		{
-			//currentStudentID = userID;
+			currentStudentID = userID;
 			InitializeComponent();
 			//
 			//TODO: Add the constructor code here
@@ -61,7 +61,6 @@ namespace Group7FinalProject {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->AutoScroll = true;
 			this->cmbSemester = (gcnew System::Windows::Forms::ComboBox());
 			this->txtSearch = (gcnew System::Windows::Forms::TextBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
@@ -107,9 +106,11 @@ namespace Group7FinalProject {
 			// 
 			// dataGridView1
 			// 
+			this->dataGridView1->AllowUserToDeleteRows = false;
 			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
 			this->dataGridView1->Location = System::Drawing::Point(54, 234);
 			this->dataGridView1->Name = L"dataGridView1";
+			this->dataGridView1->ReadOnly = true;
 			this->dataGridView1->RowHeadersWidth = 72;
 			this->dataGridView1->RowTemplate->Height = 31;
 			this->dataGridView1->Size = System::Drawing::Size(1035, 565);
@@ -125,12 +126,12 @@ namespace Group7FinalProject {
 			this->label2->Size = System::Drawing::Size(55, 39);
 			this->label2->TabIndex = 14;
 			this->label2->Text = L"🔍";
-
 			// 
 			// StudentCourses
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(11, 24);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->AutoScroll = true;
 			this->ClientSize = System::Drawing::Size(1148, 1066);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->cmbSemester);

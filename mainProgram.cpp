@@ -19,4 +19,5 @@ int main(array<String^>^ args) {
 	// Put the logic to redirect the student to his custome dashboard and not print the 
 	// successfull Auth message but print it when the auth goes bad
 
+	return 0;
 };

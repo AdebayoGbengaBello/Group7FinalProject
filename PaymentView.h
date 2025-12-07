@@ -19,10 +19,11 @@ namespace Group7FinalProject {
 
 		Database^ db = gcnew Database();
 
-		int currentStudentID = 2;
+		int currentStudentID;
 
-		PaymentView(void)
+		PaymentView(int userID)
 		{
+			currentStudentID = userID;
 			InitializeComponent();
 			//
 			//TODO: Add the constructor code here
@@ -324,9 +325,12 @@ namespace Group7FinalProject {
 			// 
 			// dataGridView1
 			// 
+			this->dataGridView1->AllowUserToAddRows = false;
+			this->dataGridView1->AllowUserToDeleteRows = false;
 			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
 			this->dataGridView1->Location = System::Drawing::Point(43, 537);
 			this->dataGridView1->Name = L"dataGridView1";
+			this->dataGridView1->ReadOnly = true;
 			this->dataGridView1->RowHeadersWidth = 72;
 			this->dataGridView1->RowTemplate->Height = 31;
 			this->dataGridView1->Size = System::Drawing::Size(820, 614);
@@ -381,6 +385,7 @@ namespace Group7FinalProject {
 			this->AutoScaleDimensions = System::Drawing::SizeF(11, 24);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoScroll = true;
+			this->BackColor = System::Drawing::Color::Snow;
 			this->ClientSize = System::Drawing::Size(1392, 1230);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->panel3);

@@ -26,7 +26,7 @@ namespace Group7FinalProject {
 
 		// Hardcoded for now to show User 1 (Alex)
 		// In the future, you will pass this ID from the Login screen
-		int currentStudentID = 2; 
+		int currentStudentID; 
 
 		StudentMain(int userID)
 		{
@@ -86,10 +86,11 @@ namespace Group7FinalProject {
 		{
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(StudentMain::typeid));
 			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
+			this->profileToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->courseRegistrationToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->toolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->toolStripMenuItem2 = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->toolStripMenuItem3 = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->profileToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->systemSetUpToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->txtSemester2 = (gcnew System::Windows::Forms::Label());
 			this->panel4 = (gcnew System::Windows::Forms::Panel());
@@ -109,7 +110,6 @@ namespace Group7FinalProject {
 			this->txtCGPA = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
-			this->courseRegistrationToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->menuStrip1->SuspendLayout();
 			this->panel4->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->profilePictureBox))->BeginInit();
@@ -134,6 +134,20 @@ namespace Group7FinalProject {
 			this->menuStrip1->TabIndex = 1;
 			this->menuStrip1->Text = L"menuStrip1";
 			// 
+			// profileToolStripMenuItem
+			// 
+			this->profileToolStripMenuItem->Name = L"profileToolStripMenuItem";
+			this->profileToolStripMenuItem->Size = System::Drawing::Size(119, 34);
+			this->profileToolStripMenuItem->Text = L"👤Profile";
+			this->profileToolStripMenuItem->Click += gcnew System::EventHandler(this, &StudentMain::profileToolStripMenuItem_Click);
+			// 
+			// courseRegistrationToolStripMenuItem
+			// 
+			this->courseRegistrationToolStripMenuItem->Name = L"courseRegistrationToolStripMenuItem";
+			this->courseRegistrationToolStripMenuItem->Size = System::Drawing::Size(246, 34);
+			this->courseRegistrationToolStripMenuItem->Text = L"📖 Course Registration";
+			this->courseRegistrationToolStripMenuItem->Click += gcnew System::EventHandler(this, &StudentMain::courseRegistrationToolStripMenuItem_Click);
+			// 
 			// toolStripMenuItem1
 			// 
 			this->toolStripMenuItem1->Name = L"toolStripMenuItem1";
@@ -154,13 +168,6 @@ namespace Group7FinalProject {
 			this->toolStripMenuItem3->Size = System::Drawing::Size(178, 34);
 			this->toolStripMenuItem3->Text = L"💳Fee Payment";
 			this->toolStripMenuItem3->Click += gcnew System::EventHandler(this, &StudentMain::toolStripMenuItem3_Click);
-			// 
-			// profileToolStripMenuItem
-			// 
-			this->profileToolStripMenuItem->Name = L"profileToolStripMenuItem";
-			this->profileToolStripMenuItem->Size = System::Drawing::Size(119, 34);
-			this->profileToolStripMenuItem->Text = L"👤Profile";
-			this->profileToolStripMenuItem->Click += gcnew System::EventHandler(this, &StudentMain::profileToolStripMenuItem_Click);
 			// 
 			// systemSetUpToolStripMenuItem
 			// 
@@ -359,20 +366,16 @@ namespace Group7FinalProject {
 			// 
 			// dataGridView1
 			// 
+			this->dataGridView1->AllowUserToAddRows = false;
+			this->dataGridView1->AllowUserToDeleteRows = false;
 			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
 			this->dataGridView1->Location = System::Drawing::Point(37, 674);
 			this->dataGridView1->Name = L"dataGridView1";
+			this->dataGridView1->ReadOnly = true;
 			this->dataGridView1->RowHeadersWidth = 72;
 			this->dataGridView1->RowTemplate->Height = 31;
 			this->dataGridView1->Size = System::Drawing::Size(1035, 565);
 			this->dataGridView1->TabIndex = 9;
-			// 
-			// courseRegistrationToolStripMenuItem
-			// 
-			this->courseRegistrationToolStripMenuItem->Name = L"courseRegistrationToolStripMenuItem";
-			this->courseRegistrationToolStripMenuItem->Size = System::Drawing::Size(246, 34);
-			this->courseRegistrationToolStripMenuItem->Text = L"📖 Course Registration";
-			this->courseRegistrationToolStripMenuItem->Click += gcnew System::EventHandler(this, &StudentMain::courseRegistrationToolStripMenuItem_Click);
 			// 
 			// StudentMain
 			// 
@@ -409,25 +412,25 @@ namespace Group7FinalProject {
 		}
 #pragma endregion
 	private: System::Void toolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e) {
-		Group7FinalProject::StudentCourses studentCourses;
+		Group7FinalProject::StudentCourses studentCourses(currentStudentID);
 		studentCourses.ShowDialog();
 		this->LoadDashboardData();
 	}
 
 	private: System::Void toolStripMenuItem2_Click(System::Object^ sender, System::EventArgs^ e) {
-		Group7FinalProject::TranscriptView transcriptView;
+		Group7FinalProject::TranscriptView transcriptView(currentStudentID);
 		transcriptView.ShowDialog();
 		this->LoadDashboardData();
 	}
 
 	private: System::Void toolStripMenuItem3_Click(System::Object^ sender, System::EventArgs^ e) {
-		Group7FinalProject::PaymentView paymentView;
+		Group7FinalProject::PaymentView paymentView(currentStudentID);
 		paymentView.ShowDialog();
 		this->LoadDashboardData();
 	}
 
 	private: System::Void profileToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-		Group7FinalProject::StudentProfile studentProfile;
+		Group7FinalProject::StudentProfile studentProfile(currentStudentID);
 		studentProfile.ShowDialog();
 		this->LoadDashboardData();
 	}
@@ -472,7 +475,7 @@ namespace Group7FinalProject {
 			}
 			db->Close(); // Close reader before starting next query
 
-			// PART 2: LOAD COURSES GRID (The Fix is Here)
+			// LOAD COURSES GRID
 			db->Open();
 			String^ courseQuery = "SELECT c.courseCode AS 'Code', c.courseTitle AS 'Title', "
 				"facUser.lastName AS 'Instructor', c.credit AS 'Credits', cr.status AS 'Status' "
@@ -492,7 +495,6 @@ namespace Group7FinalProject {
 		}
 		catch (Exception^ ex) {
 			MessageBox::Show("Error loading dashboard: " + ex->Message);
-			// Ensure connection is closed even if error occurs
 			if (db->sqlConn->State == ConnectionState::Open) db->Close();
 		}
 	}

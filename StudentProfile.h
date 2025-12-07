@@ -17,10 +17,10 @@ namespace Group7FinalProject {
 	public:
 		Database^ db = gcnew Database();
 
-		int currentStudentID = 2;
-		StudentProfile(/*int userID*/)
+		int currentStudentID ;
+		StudentProfile(int userID)
 		{
-			//currentStudentID = userID/*;*/
+			currentStudentID = userID;
 			InitializeComponent();
 			//
 			//TODO: Add the constructor code here
