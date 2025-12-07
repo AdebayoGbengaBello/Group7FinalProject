@@ -4,6 +4,7 @@
 #include "TranscriptView.h"
 #include "StudentCourses.h"
 #include "PaymentView.h"
+#include "CourseRegistration.h"
 
 using namespace System;
 using namespace System::ComponentModel;
@@ -20,6 +21,8 @@ namespace Group7FinalProject {
 	public:
 		// Create the database instance
 		Database^ db = gcnew Database();
+	private: System::Windows::Forms::ToolStripMenuItem^ courseRegistrationToolStripMenuItem;
+	public:
 
 		// Hardcoded for now to show User 1 (Alex)
 		// In the future, you will pass this ID from the Login screen
@@ -36,18 +39,7 @@ namespace Group7FinalProject {
 			
 		}
 
-	/*private: void StyleCourseGrid() {
-		dataGridView1->AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode::Fill;
-		dataGridView1->BackgroundColor = Color::White;
-		dataGridView1->BorderStyle = System::Windows::Forms::BorderStyle::None;
-		dataGridView1->RowHeadersVisible = false;
-		dataGridView1->AlternatingRowsDefaultCellStyle->BackColor = Color::FromArgb(240, 240, 240);
-		dataGridView1->DefaultCellStyle->Font = gcnew System::Drawing::Font("Arial", 10);
-		dataGridView1->ColumnHeadersDefaultCellStyle->Font = gcnew System::Drawing::Font("Arial", 10, FontStyle::Bold);
-		dataGridView1->ColumnHeadersDefaultCellStyle->BackColor = Color::FromArgb(50, 50, 50);
-		dataGridView1->ColumnHeadersDefaultCellStyle->ForeColor = Color::Black;
-		dataGridView1->EnableHeadersVisualStyles = false;
-	}*/
+
 
 	protected:
 		~StudentMain()
@@ -117,6 +109,7 @@ namespace Group7FinalProject {
 			this->txtCGPA = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
+			this->courseRegistrationToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->menuStrip1->SuspendLayout();
 			this->panel4->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->profilePictureBox))->BeginInit();
@@ -131,9 +124,9 @@ namespace Group7FinalProject {
 			this->menuStrip1->BackColor = System::Drawing::SystemColors::ButtonFace;
 			this->menuStrip1->GripMargin = System::Windows::Forms::Padding(2, 2, 0, 2);
 			this->menuStrip1->ImageScalingSize = System::Drawing::Size(28, 28);
-			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(5) {
-				this->toolStripMenuItem1,
-					this->toolStripMenuItem2, this->toolStripMenuItem3, this->profileToolStripMenuItem, this->systemSetUpToolStripMenuItem
+			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(6) {
+				this->profileToolStripMenuItem,
+					this->courseRegistrationToolStripMenuItem, this->toolStripMenuItem1, this->toolStripMenuItem2, this->toolStripMenuItem3, this->systemSetUpToolStripMenuItem
 			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
@@ -374,6 +367,13 @@ namespace Group7FinalProject {
 			this->dataGridView1->Size = System::Drawing::Size(1035, 565);
 			this->dataGridView1->TabIndex = 9;
 			// 
+			// courseRegistrationToolStripMenuItem
+			// 
+			this->courseRegistrationToolStripMenuItem->Name = L"courseRegistrationToolStripMenuItem";
+			this->courseRegistrationToolStripMenuItem->Size = System::Drawing::Size(246, 34);
+			this->courseRegistrationToolStripMenuItem->Text = L"📖 Course Registration";
+			this->courseRegistrationToolStripMenuItem->Click += gcnew System::EventHandler(this, &StudentMain::courseRegistrationToolStripMenuItem_Click);
+			// 
 			// StudentMain
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(11, 24);
@@ -434,7 +434,6 @@ namespace Group7FinalProject {
 		try {
 			db->Open();
 
-			// PART 1: LOAD PROFILE STATS (Name, CGPA, Fees)
 			String^ query = "SELECT u.firstName, u.lastName, u.profileImage, s.creditsEarned, t.cgpa, f.balance "
 				"FROM User u "
 				"JOIN Student s ON u.dbID = s.studentID "
@@ -446,13 +445,11 @@ namespace Group7FinalProject {
 			db->sqlDR = db->sqlCmd->ExecuteReader();
 
 			if (db->sqlDR->Read()) {
-				// 1. Name
+
 				txtUserName->Text = db->sqlDR["firstName"]->ToString() + " " + db->sqlDR["lastName"]->ToString();
 
-				// 2. Credits
 				txtCredit->Text = db->sqlDR["creditsEarned"]->ToString();
 
-				// 3. CGPA (Handle DBNull to prevent crash if new student)
 				if (db->sqlDR["cgpa"] != DBNull::Value) {
 					double cgpa = Convert::ToDouble(db->sqlDR["cgpa"]);
 					txtCGPA->Text = cgpa.ToString("F2");
@@ -461,7 +458,6 @@ namespace Group7FinalProject {
 					txtCGPA->Text = "0.00";
 				}
 
-				// 4. Fees (Handle DBNull)
 				if (db->sqlDR["balance"] != DBNull::Value) {
 					double balance = Convert::ToDouble(db->sqlDR["balance"]);
 					txtFee->Text = "$ "+balance.ToString("N2");
@@ -482,7 +478,6 @@ namespace Group7FinalProject {
 				"LEFT JOIN User facUser ON fac.facultyID = facUser.dbID "
 				"WHERE cr.studentID = " + currentStudentID;
 
-			// FIX: Initialize the adapter WITH the query and connection
 			db->sqlDA = gcnew MySqlDataAdapter(courseQuery, db->sqlConn);
 
 			DataTable^ dt = gcnew DataTable();
@@ -498,5 +493,9 @@ namespace Group7FinalProject {
 		}
 	}
 
+private: System::Void courseRegistrationToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	Group7FinalProject::CourseRegistration^ regForm = gcnew CourseRegistration(currentStudentID);
+	regForm->ShowDialog();
+}
 };
 }

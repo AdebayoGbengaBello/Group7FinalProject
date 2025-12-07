@@ -42,6 +42,9 @@
     <ClCompile Include="StudentSignupForm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CourseRegistration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TranscriptView.h">
@@ -65,16 +68,13 @@
     <ClInclude Include="StudentCourses.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StudentLoginForm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StudentMain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StudentProfile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StudentSignupForm.h">
+    <ClInclude Include="CourseRegistration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

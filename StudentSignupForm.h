@@ -23,6 +23,9 @@ namespace Group7FinalProject {
 			//
 			//TODO: Add the constructor code here
 			//
+			this->comboBox1->SelectedIndexChanged += gcnew System::EventHandler(this, &StudentSignupForm::OnRoleChanged);
+
+			ToggleStudentFields(false);
 		}
 
 	protected:
@@ -37,24 +40,43 @@ namespace Group7FinalProject {
 			}
 		}
 	private: System::Windows::Forms::Label^ label1;
+	private: System::Windows::Forms::Panel^ panel1;
+	private: System::Windows::Forms::LinkLabel^ linkSwitch;
+	private: System::Windows::Forms::TextBox^ textBoxName;
+	private: System::Windows::Forms::Label^ labelName;
+	private: System::Windows::Forms::Button^ button1;
+
+	private: System::Windows::Forms::TextBox^ textBox2;
+	private: System::Windows::Forms::TextBox^ textBox1;
+	private: System::Windows::Forms::Label^ label4;
+	private: System::Windows::Forms::Label^ label3;
+
+	private: System::Windows::Forms::TextBox^ textBox3;
+	private: System::Windows::Forms::Label^ label2;
+	private: System::Windows::Forms::ComboBox^ comboBox1;
+	private: System::Windows::Forms::Label^ label5;
+	private: System::Windows::Forms::TextBox^ textBox4;
+	private: System::Windows::Forms::Label^ label7;
+	private: System::Windows::Forms::TextBox^ txtSID;
+	private: System::Windows::Forms::Label^ label6;
 	protected:
 
-	private: System::Windows::Forms::Button^ button2;
-	private: System::Windows::Forms::Button^ btnCancel;
 
-	private: System::Windows::Forms::Label^ label2;
-	private: System::Windows::Forms::Label^ label3;
-	private: System::Windows::Forms::Label^ label4;
-	private: System::Windows::Forms::Label^ label5;
-	private: System::Windows::Forms::Label^ label6;
-	private: System::Windows::Forms::Label^ label7;
-	private: System::Windows::Forms::Label^ label8;
+
+
+
+
+
+
+
+
+
 
 	private:
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -63,138 +85,205 @@ namespace Group7FinalProject {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(StudentSignupForm::typeid));
 			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->button2 = (gcnew System::Windows::Forms::Button());
-			this->btnCancel = (gcnew System::Windows::Forms::Button());
-			this->label2 = (gcnew System::Windows::Forms::Label());
-			this->label3 = (gcnew System::Windows::Forms::Label());
-			this->label4 = (gcnew System::Windows::Forms::Label());
-			this->label5 = (gcnew System::Windows::Forms::Label());
-			this->label6 = (gcnew System::Windows::Forms::Label());
+			this->panel1 = (gcnew System::Windows::Forms::Panel());
+			this->textBox4 = (gcnew System::Windows::Forms::TextBox());
 			this->label7 = (gcnew System::Windows::Forms::Label());
-			this->label8 = (gcnew System::Windows::Forms::Label());
+			this->txtSID = (gcnew System::Windows::Forms::TextBox());
+			this->label6 = (gcnew System::Windows::Forms::Label());
+			this->comboBox1 = (gcnew System::Windows::Forms::ComboBox());
+			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->textBox3 = (gcnew System::Windows::Forms::TextBox());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->linkSwitch = (gcnew System::Windows::Forms::LinkLabel());
+			this->textBoxName = (gcnew System::Windows::Forms::TextBox());
+			this->labelName = (gcnew System::Windows::Forms::Label());
+			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
+			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->panel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// label1
 			// 
-			this->label1->AutoSize = true;
-			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label1->Location = System::Drawing::Point(414, 39);
+			resources->ApplyResources(this->label1, L"label1");
+			this->label1->BackColor = System::Drawing::Color::Transparent;
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(284, 64);
-			this->label1->TabIndex = 0;
-			this->label1->Text = L"Welcome ";
+			this->label1->Text = L"Create Your Account";
 			// 
-			// button2
+			// panel1
 			// 
-			this->button2->Location = System::Drawing::Point(189, 1028);
-			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(280, 52);
-			this->button2->TabIndex = 2;
-			this->button2->Text = L"Sign Up ";
-			this->button2->UseVisualStyleBackColor = true;
+			resources->ApplyResources(this->panel1, L"panel1");
+			this->panel1->BackColor = System::Drawing::Color::White;
+			this->panel1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->panel1->Controls->Add(this->textBox4);
+			this->panel1->Controls->Add(this->label7);
+			this->panel1->Controls->Add(this->txtSID);
+			this->panel1->Controls->Add(this->label6);
+			this->panel1->Controls->Add(this->comboBox1);
+			this->panel1->Controls->Add(this->label5);
+			this->panel1->Controls->Add(this->textBox3);
+			this->panel1->Controls->Add(this->label2);
+			this->panel1->Controls->Add(this->linkSwitch);
+			this->panel1->Controls->Add(this->textBoxName);
+			this->panel1->Controls->Add(this->labelName);
+			this->panel1->Controls->Add(this->button1);
+			this->panel1->Controls->Add(this->textBox2);
+			this->panel1->Controls->Add(this->textBox1);
+			this->panel1->Controls->Add(this->label4);
+			this->panel1->Controls->Add(this->label3);
+			this->panel1->Name = L"panel1";
+			this->panel1->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &StudentSignupForm::panel1_Paint);
 			// 
-			// btnCancel
+			// textBox4
 			// 
-			this->btnCancel->Location = System::Drawing::Point(601, 1028);
-			this->btnCancel->Name = L"btnCancel";
-			this->btnCancel->Size = System::Drawing::Size(280, 52);
-			this->btnCancel->TabIndex = 3;
-			this->btnCancel->Text = L"Cancel";
-			this->btnCancel->UseVisualStyleBackColor = true;
-			this->btnCancel->Click += gcnew System::EventHandler(this, &StudentSignupForm::btnCancel_Click);
-			// 
-			// label2
-			// 
-			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(106, 180);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(64, 25);
-			this->label2->TabIndex = 4;
-			this->label2->Text = L"label2";
-			// 
-			// label3
-			// 
-			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(106, 535);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(64, 25);
-			this->label3->TabIndex = 5;
-			this->label3->Text = L"label3";
-			// 
-			// label4
-			// 
-			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(106, 420);
-			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(64, 25);
-			this->label4->TabIndex = 6;
-			this->label4->Text = L"label4";
-			// 
-			// label5
-			// 
-			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(106, 315);
-			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(64, 25);
-			this->label5->TabIndex = 7;
-			this->label5->Text = L"label5";
-			// 
-			// label6
-			// 
-			this->label6->AutoSize = true;
-			this->label6->Location = System::Drawing::Point(106, 653);
-			this->label6->Name = L"label6";
-			this->label6->Size = System::Drawing::Size(64, 25);
-			this->label6->TabIndex = 8;
-			this->label6->Text = L"label6";
+			resources->ApplyResources(this->textBox4, L"textBox4");
+			this->textBox4->Name = L"textBox4";
 			// 
 			// label7
 			// 
-			this->label7->AutoSize = true;
-			this->label7->Location = System::Drawing::Point(106, 786);
+			resources->ApplyResources(this->label7, L"label7");
 			this->label7->Name = L"label7";
-			this->label7->Size = System::Drawing::Size(64, 25);
-			this->label7->TabIndex = 9;
-			this->label7->Text = L"label7";
 			// 
-			// label8
+			// txtSID
 			// 
-			this->label8->AutoSize = true;
-			this->label8->Location = System::Drawing::Point(106, 910);
-			this->label8->Name = L"label8";
-			this->label8->Size = System::Drawing::Size(64, 25);
-			this->label8->TabIndex = 10;
-			this->label8->Text = L"label8";
+			resources->ApplyResources(this->txtSID, L"txtSID");
+			this->txtSID->Name = L"txtSID";
+			// 
+			// label6
+			// 
+			resources->ApplyResources(this->label6, L"label6");
+			this->label6->Name = L"label6";
+			// 
+			// comboBox1
+			// 
+			resources->ApplyResources(this->comboBox1, L"comboBox1");
+			this->comboBox1->FormattingEnabled = true;
+			this->comboBox1->Items->AddRange(gcnew cli::array< System::Object^  >(3) {
+				resources->GetString(L"comboBox1.Items"), resources->GetString(L"comboBox1.Items1"),
+					resources->GetString(L"comboBox1.Items2")
+			});
+			this->comboBox1->Name = L"comboBox1";
+			// 
+			// label5
+			// 
+			resources->ApplyResources(this->label5, L"label5");
+			this->label5->BackColor = System::Drawing::Color::Transparent;
+			this->label5->Name = L"label5";
+			// 
+			// textBox3
+			// 
+			resources->ApplyResources(this->textBox3, L"textBox3");
+			this->textBox3->Name = L"textBox3";
+			// 
+			// label2
+			// 
+			resources->ApplyResources(this->label2, L"label2");
+			this->label2->BackColor = System::Drawing::Color::Transparent;
+			this->label2->Name = L"label2";
+			// 
+			// linkSwitch
+			// 
+			resources->ApplyResources(this->linkSwitch, L"linkSwitch");
+			this->linkSwitch->BackColor = System::Drawing::Color::Transparent;
+			this->linkSwitch->LinkColor = System::Drawing::Color::Brown;
+			this->linkSwitch->Name = L"linkSwitch";
+			this->linkSwitch->TabStop = true;
+			// 
+			// textBoxName
+			// 
+			resources->ApplyResources(this->textBoxName, L"textBoxName");
+			this->textBoxName->Name = L"textBoxName";
+			// 
+			// labelName
+			// 
+			resources->ApplyResources(this->labelName, L"labelName");
+			this->labelName->BackColor = System::Drawing::Color::Transparent;
+			this->labelName->Name = L"labelName";
+			// 
+			// button1
+			// 
+			this->button1->BackColor = System::Drawing::Color::Brown;
+			this->button1->ForeColor = System::Drawing::Color::White;
+			resources->ApplyResources(this->button1, L"button1");
+			this->button1->Name = L"button1";
+			this->button1->UseVisualStyleBackColor = false;
+			// 
+			// textBox2
+			// 
+			resources->ApplyResources(this->textBox2, L"textBox2");
+			this->textBox2->Name = L"textBox2";
+			// 
+			// textBox1
+			// 
+			resources->ApplyResources(this->textBox1, L"textBox1");
+			this->textBox1->Name = L"textBox1";
+			// 
+			// label4
+			// 
+			resources->ApplyResources(this->label4, L"label4");
+			this->label4->BackColor = System::Drawing::Color::Transparent;
+			this->label4->Name = L"label4";
+			// 
+			// label3
+			// 
+			resources->ApplyResources(this->label3, L"label3");
+			this->label3->BackColor = System::Drawing::Color::Transparent;
+			this->label3->Name = L"label3";
 			// 
 			// StudentSignupForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(11, 24);
+			resources->ApplyResources(this, L"$this");
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackColor = System::Drawing::Color::Brown;
-			this->ClientSize = System::Drawing::Size(1154, 1158);
-			this->Controls->Add(this->label8);
-			this->Controls->Add(this->label7);
-			this->Controls->Add(this->label6);
-			this->Controls->Add(this->label5);
-			this->Controls->Add(this->label4);
-			this->Controls->Add(this->label3);
-			this->Controls->Add(this->label2);
-			this->Controls->Add(this->btnCancel);
-			this->Controls->Add(this->button2);
+			this->BackColor = System::Drawing::Color::Snow;
+			this->Controls->Add(this->panel1);
 			this->Controls->Add(this->label1);
 			this->Name = L"StudentSignupForm";
-			this->Text = L"StudentSignupForm";
+			this->panel1->ResumeLayout(false);
+			this->panel1->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
+
+	private: void ToggleStudentFields(bool isVisible) {
+		// Student ID Field and Label
+		this->txtSID->Visible = isVisible;
+		this->label6->Visible = isVisible;
+
+		// Program Field and Label
+		this->textBox4->Visible = isVisible;
+		this->label7->Visible = isVisible;
+	}
+
+	private: System::Void OnRoleChanged(System::Object^ sender, System::EventArgs^ e) {
+		if (this->comboBox1->SelectedItem == nullptr) return;
+
+		String^ selectedRole = this->comboBox1->SelectedItem->ToString();
+
+		// If you want fields to SHOW only when Student is picked:
+		if (selectedRole == "Student") {
+			ToggleStudentFields(true);
+		}
+		else {
+			ToggleStudentFields(false);
+		}
+	}
+
+
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	}
-private: System::Void btnCancel_Click(System::Object^ sender, System::EventArgs^ e) {
-	this->Close();
+	private: System::Void btnCancel_Click(System::Object^ sender, System::EventArgs^ e) {
+		this->Close();
+	}
+
+	private: System::Void panel1_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
+	}
+
+	};
 }
-};
-}
+

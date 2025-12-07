@@ -90,8 +90,6 @@ namespace Group7FinalProject {
 		void InitializeComponent(void)
 
 		{
-			// to make the form scrollable
-			this->AutoScroll = true;
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(PaymentView::typeid));
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
 			this->txtDueDate = (gcnew System::Windows::Forms::Label());
@@ -382,6 +380,7 @@ namespace Group7FinalProject {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(11, 24);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->AutoScroll = true;
 			this->ClientSize = System::Drawing::Size(1392, 1230);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->panel3);
@@ -393,6 +392,7 @@ namespace Group7FinalProject {
 			this->MinimizeBox = false;
 			this->Name = L"PaymentView";
 			this->Text = L"Payment";
+			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &PaymentView::PaymentView_FormClosed);
 			this->panel1->ResumeLayout(false);
 			this->panel1->PerformLayout();
 			this->panel2->ResumeLayout(false);
@@ -511,5 +511,10 @@ private: void LoadTransactionHistory() {
 }
 
 
+private: System::Void PaymentView_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e) {
+	/*Group7FinalProject::StudentMain^ parentForm = (Group7FinalProject::StudentMain^)this->Owner;
+	parentForm->LoadDashboardData();*/
+	this->Close();
+}
 };
 }
