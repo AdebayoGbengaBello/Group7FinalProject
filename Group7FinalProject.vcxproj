@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -17,6 +17,72 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MySql.Data">
+      <HintPath>..\..\..\Downloads\mysql-for-visualstudio-2.0.5-noinstall (1)\v46\mysql.data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CourseRegistration.cpp" />
+    <ClCompile Include="mainProgram.cpp" />
+    <ClCompile Include="PaymentView.cpp" />
+    <ClCompile Include="StudentCourses.cpp" />
+    <ClCompile Include="StudentLoginForm.cpp" />
+    <ClCompile Include="StudentMain.cpp" />
+    <ClCompile Include="StudentProfile.cpp" />
+    <ClCompile Include="StudentSignupForm.cpp" />
+    <ClCompile Include="SudentDashboard.cpp" />
+    <ClCompile Include="TranscriptView.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Course.h" />
+    <ClInclude Include="CourseRegistration.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="Database.h" />
+    <ClInclude Include="Grade.h" />
+    <ClInclude Include="PaymentView.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="Student.h" />
+    <ClInclude Include="StudentCourses.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="StudentMain.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="StudentProfile.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="TranscriptView.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CourseRegistration.resx">
+      <DependentUpon>CourseRegistration.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PaymentView.resx">
+      <DependentUpon>PaymentView.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StudentCourses.resx">
+      <DependentUpon>StudentCourses.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StudentMain.resx">
+      <DependentUpon>StudentMain.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StudentProfile.resx">
+      <DependentUpon>StudentProfile.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TranscriptView.resx">
+      <DependentUpon>TranscriptView.h</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -114,6 +180,7 @@
       <EntryPointSymbol>Main</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
+<<<<<<< HEAD
   <ItemGroup>
     <ClInclude Include="adminCourses.h">
       <FileType>CppForm</FileType>
@@ -224,6 +291,8 @@
       <FileType>CppForm</FileType>
     </ClInclude>
   </ItemGroup>
+=======
+>>>>>>> Student_View
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

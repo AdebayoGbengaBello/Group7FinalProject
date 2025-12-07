@@ -1,5 +1,8 @@
 #pragma once
+<<<<<<< HEAD
 #pragma once
+=======
+>>>>>>> Student_View
 
 using namespace System;
 using namespace System::Data;
