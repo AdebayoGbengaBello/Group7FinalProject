@@ -190,15 +190,15 @@ namespace Group7FinalProject {
 
 				if (reader->Read()) {
 					String^ userName = reader["firstName"]->ToString();
+					int userID = Convert::ToInt32(reader["dbID"]);
 					User^ currentUser = gcnew User();
 					currentUser->dbID = userID;
 					currentUser->name = userName;
 					reader->Close(); 
 
 					if (CheckRole(userID, "adminstaff", conn)) {
-						MessageBox::Show("Welcome " + userName);
 						this->Hide();
-						adminDashboard^ dash = gcnew adminDashboard(user);
+						adminDashboard^ dash = gcnew adminDashboard(currentUser);
 						dash->ShowDialog();
 						this->Close();
 
@@ -207,9 +207,10 @@ namespace Group7FinalProject {
 						MessageBox::Show("Welcome " + userName);
 					}
 					else if (CheckRole(userID, "faculty", conn)) {
-						MessageBox::Show("Welcome " + userName);
+						this->Hide();
 						facultyView^ facultyForm = gcnew facultyView(currentUser);
 						facultyForm->ShowDialog();
+						this->Close();
 					}
 				}
 				else {

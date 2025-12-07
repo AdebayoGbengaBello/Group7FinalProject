@@ -42,7 +42,7 @@ namespace Group7FinalProject {
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::ComboBox^ comboBoxCourse;
-	private: System::Windows::Forms::Button^ button1;
+
 
 
 
@@ -74,7 +74,6 @@ namespace Group7FinalProject {
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->comboBoxCourse = (gcnew System::Windows::Forms::ComboBox());
-			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
 			this->label3 = (gcnew System::Windows::Forms::Label());
@@ -87,9 +86,10 @@ namespace Group7FinalProject {
 			this->label1->AutoSize = true;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20.25F));
 			this->label1->ForeColor = System::Drawing::SystemColors::ControlLightLight;
-			this->label1->Location = System::Drawing::Point(12, 18);
+			this->label1->Location = System::Drawing::Point(24, 35);
+			this->label1->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(369, 31);
+			this->label1->Size = System::Drawing::Size(733, 63);
 			this->label1->TabIndex = 0;
 			this->label1->Text = L"Course Content Management";
 			// 
@@ -98,45 +98,40 @@ namespace Group7FinalProject {
 			this->label2->AutoSize = true;
 			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.25F));
 			this->label2->ForeColor = System::Drawing::SystemColors::ControlLightLight;
-			this->label2->Location = System::Drawing::Point(15, 60);
+			this->label2->Location = System::Drawing::Point(30, 115);
+			this->label2->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(100, 17);
+			this->label2->Size = System::Drawing::Size(200, 32);
 			this->label2->TabIndex = 1;
 			this->label2->Text = L"Select Course:";
 			// 
 			// comboBoxCourse
 			// 
 			this->comboBoxCourse->FormattingEnabled = true;
-			this->comboBoxCourse->Location = System::Drawing::Point(18, 80);
+			this->comboBoxCourse->Location = System::Drawing::Point(36, 154);
+			this->comboBoxCourse->Margin = System::Windows::Forms::Padding(6, 6, 6, 6);
 			this->comboBoxCourse->Name = L"comboBoxCourse";
-			this->comboBoxCourse->Size = System::Drawing::Size(233, 21);
+			this->comboBoxCourse->Size = System::Drawing::Size(462, 33);
 			this->comboBoxCourse->TabIndex = 2;
 			this->comboBoxCourse->SelectedIndexChanged += gcnew System::EventHandler(this, &myCourses::comboBoxCourse_SelectedIndexChanged);
-			// 
-			// button1
-			// 
-			this->button1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F));
-			this->button1->Location = System::Drawing::Point(498, 24);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(174, 30);
-			this->button1->TabIndex = 3;
-			this->button1->Text = L"+ Add New Material";
-			this->button1->UseVisualStyleBackColor = true;
 			// 
 			// panel1
 			// 
 			this->panel1->Controls->Add(this->dataGridView1);
-			this->panel1->Location = System::Drawing::Point(20, 164);
+			this->panel1->Location = System::Drawing::Point(40, 315);
+			this->panel1->Margin = System::Windows::Forms::Padding(6, 6, 6, 6);
 			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(651, 293);
+			this->panel1->Size = System::Drawing::Size(1302, 563);
 			this->panel1->TabIndex = 5;
 			// 
 			// dataGridView1
 			// 
 			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dataGridView1->Location = System::Drawing::Point(5, 7);
+			this->dataGridView1->Location = System::Drawing::Point(10, 13);
+			this->dataGridView1->Margin = System::Windows::Forms::Padding(6, 6, 6, 6);
 			this->dataGridView1->Name = L"dataGridView1";
-			this->dataGridView1->Size = System::Drawing::Size(645, 283);
+			this->dataGridView1->RowHeadersWidth = 82;
+			this->dataGridView1->Size = System::Drawing::Size(1290, 544);
 			this->dataGridView1->TabIndex = 0;
 			// 
 			// label3
@@ -144,25 +139,26 @@ namespace Group7FinalProject {
 			this->label3->AutoSize = true;
 			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.25F));
 			this->label3->ForeColor = System::Drawing::SystemColors::ControlLightLight;
-			this->label3->Location = System::Drawing::Point(22, 144);
+			this->label3->Location = System::Drawing::Point(44, 277);
+			this->label3->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(215, 17);
+			this->label3->Size = System::Drawing::Size(429, 32);
 			this->label3->TabIndex = 6;
 			this->label3->Text = L"Enrolled Students of this Course:";
 			// 
 			// myCourses
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(12, 25);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::Maroon;
-			this->ClientSize = System::Drawing::Size(684, 549);
+			this->ClientSize = System::Drawing::Size(1368, 1056);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->panel1);
-			this->Controls->Add(this->button1);
 			this->Controls->Add(this->comboBoxCourse);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->label1);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
+			this->Margin = System::Windows::Forms::Padding(6, 6, 6, 6);
 			this->Name = L"myCourses";
 			this->Text = L"My Courses";
 			this->Load += gcnew System::EventHandler(this, &myCourses::myCourses_Load);
@@ -203,7 +199,6 @@ private: void LoadLecturerCourses() {
 		System::Data::DataTable^ dt = gcnew System::Data::DataTable();
 
 
-		// Use 'using' to ensure connection is closed/disposed
 		{
 			MySqlConnection^ conn = gcnew MySqlConnection(connStr);
 			MySqlCommand^ cmd = gcnew MySqlCommand(sql, conn);
@@ -213,7 +208,6 @@ private: void LoadLecturerCourses() {
 			da->Fill(dt);
 		}
 
-		// Add display column
 		if (!dt->Columns->Contains("display"))
 		{
 			dt->Columns->Add("display", String::typeid);
@@ -268,11 +262,11 @@ private: System::Void comboBoxCourse_SelectedIndexChanged(System::Object^ sender
 
 	String^ sql =
 		"SELECT u.dbID AS StudentDbID, u.firstName, u.lastName, "
-		"s.currentLevel, cr.semester, cr.status "
+		"s.currentLevel, cr.semester"
 		"FROM courseregistration cr "
 		"INNER JOIN student s ON cr.studentID = s.studentID "
 		"INNER JOIN user u ON s.studentID = u.dbID "
-		"WHERE cr.courseID = @courseID;";
+		"WHERE cr.courseID = @courseID AND cr.status='Approved';";
 
 	try
 	{

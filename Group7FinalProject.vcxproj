@@ -165,7 +165,6 @@
     <ClCompile Include="adminProgrammes.cpp" />
     <ClCompile Include="adminStudents.cpp" />
     <ClCompile Include="Database.cpp" />
-    <ClCompile Include="facultyDashboard.cpp" />
     <ClCompile Include="facultyView.cpp" />
     <ClCompile Include="gradeSub.cpp" />
     <ClCompile Include="mainLogin.cpp" />
@@ -197,11 +196,8 @@
     <EmbeddedResource Include="adminProgrammes.resx">
       <DependentUpon>adminProgrammes.h</DependentUpon>
     </EmbeddedResource>
-	<EmbeddedResource Include="adminStudents.resx">
-	 <DependentUpon>adminStudents.h</DependentUpon>
-	</EmbeddedResource>
-    <EmbeddedResource Include="facultyDashboard.resx">
-      <DependentUpon>facultyDashboard.h</DependentUpon>
+    <EmbeddedResource Include="adminStudents.resx">
+      <DependentUpon>adminStudents.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="facultyView.resx">
       <DependentUpon>facultyView.h</DependentUpon>
@@ -217,9 +213,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="facultyDashboard.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
     <ClInclude Include="facultyView.h">
       <FileType>CppForm</FileType>
     </ClInclude>
