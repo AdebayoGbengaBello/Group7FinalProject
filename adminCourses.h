@@ -18,12 +18,13 @@ namespace Group7FinalProject {
 	{
 		Database^ db = gcnew Database();
 		int globalCourseID = -1;
-	private: System::Windows::Forms::ComboBox^ SemesterBox;
+
 
 	private: System::Windows::Forms::Label^ label7;
 	private: System::Windows::Forms::Button^ btnPayments;
 	private: System::Windows::Forms::Button^ btnEnrollment;
 	private: System::Windows::Forms::Button^ btnDepartment;
+	private: System::Windows::Forms::TextBox^ txtSemester;
 		   User^ currentUser;
 	public:
 		adminCourses(User^ user)
@@ -48,9 +49,6 @@ namespace Group7FinalProject {
 			LevelBox->Items->Add("200");
 			LevelBox->Items->Add("300");
 			LevelBox->Items->Add("400");
-			SemesterBox->Items->Add("Spring");
-			SemesterBox->Items->Add("Fall");
-			SemesterBox->Items->Add("Summer");
 			CreditBox->Items->Add("1");
 			CreditBox->Items->Add("2");
 			CreditBox->Items->Add("3");
@@ -209,8 +207,8 @@ namespace Group7FinalProject {
 			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->FacultyBox = (gcnew System::Windows::Forms::ComboBox());
 			this->btnLevel = (gcnew System::Windows::Forms::Button());
-			this->SemesterBox = (gcnew System::Windows::Forms::ComboBox());
 			this->label7 = (gcnew System::Windows::Forms::Label());
+			this->txtSemester = (gcnew System::Windows::Forms::TextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->panel2->SuspendLayout();
 			this->panel1->SuspendLayout();
@@ -663,16 +661,6 @@ namespace Group7FinalProject {
 			this->btnLevel->UseVisualStyleBackColor = false;
 			this->btnLevel->Click += gcnew System::EventHandler(this, &adminCourses::btnLevel_Click);
 			// 
-			// SemesterBox
-			// 
-			this->SemesterBox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->SemesterBox->FormattingEnabled = true;
-			this->SemesterBox->Location = System::Drawing::Point(637, 238);
-			this->SemesterBox->Name = L"SemesterBox";
-			this->SemesterBox->Size = System::Drawing::Size(233, 45);
-			this->SemesterBox->TabIndex = 53;
-			// 
 			// label7
 			// 
 			this->label7->AutoSize = true;
@@ -684,12 +672,21 @@ namespace Group7FinalProject {
 			this->label7->TabIndex = 52;
 			this->label7->Text = L"Semester:";
 			// 
+			// txtSemester
+			// 
+			this->txtSemester->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.125F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->txtSemester->Location = System::Drawing::Point(637, 235);
+			this->txtSemester->Name = L"txtSemester";
+			this->txtSemester->Size = System::Drawing::Size(605, 43);
+			this->txtSemester->TabIndex = 53;
+			// 
 			// adminCourses
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(12, 25);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(2145, 1282);
-			this->Controls->Add(this->SemesterBox);
+			this->Controls->Add(this->txtSemester);
 			this->Controls->Add(this->label7);
 			this->Controls->Add(this->btnLevel);
 			this->Controls->Add(this->FacultyBox);
@@ -737,7 +734,7 @@ namespace Group7FinalProject {
 				String^ courseCode = txtCourseCode->Text;
 				String^ courseTitle = txtCourseTitle->Text;
 				int courseCredits = Convert::ToInt32(CreditBox->Text);
-				String^ semester = SemesterBox->Text->ToString();
+				String^ semester = txtSemester->Text;
 
 				db->Open();
 				db->sqlCmd->CommandText = "INSERT INTO course (progID, facultyID, courseCode, courseTitle, level, semester, credit) VALUES (@progID, @facultyID, @cCode, @cTitle, @level, @sem, @credit)";
@@ -766,7 +763,7 @@ namespace Group7FinalProject {
 				String^ courseCode = txtCourseCode->Text;
 				String^ courseTitle = txtCourseTitle->Text;
 				int courseCredits = Convert::ToInt32(CreditBox->Text);
-				String^ semester = SemesterBox->Text->ToString();
+				String^ semester = txtSemester->Text;
 				db->Open();
 				db->sqlCmd->CommandText = "UPDATE course SET progID=@progID, facultyID=@facultyID, courseTitle=@cTitle, level=@level, semester=@sem, credit=@credit WHERE courseCode=@cCode";
 				db->sqlCmd->Parameters->AddWithValue("@progID", programmeID);
@@ -797,7 +794,7 @@ namespace Group7FinalProject {
 				CreditBox->Text = row->Cells["credit"]->Value->ToString();
 				ProgrammeBox->SelectedValue = row->Cells["progID"]->Value->ToString();
 				FacultyBox->SelectedValue = row->Cells["facultyID"]->Value->ToString();
-				SemesterBox->Text = row->Cells["semester"]->Value->ToString();
+				txtSemester->Text = row->Cells["semester"]->Value->ToString();
 			}
 		}
 	private: System::Void btnDelete_Click(System::Object^ sender, System::EventArgs^ e) {
