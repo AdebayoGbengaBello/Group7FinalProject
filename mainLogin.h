@@ -1,6 +1,7 @@
 #pragma once
 #include "adminDashboard.h"
 #include "facultyView.h"
+#include "StudentMain.h"
 #include "users.h"
 
 namespace Group7FinalProject {
@@ -204,7 +205,11 @@ namespace Group7FinalProject {
 
 					}
 					else if (CheckRole(userID,"student",conn)) {
-						MessageBox::Show("Welcome " + userName);
+						this->Hide();
+						StudentMain^ studentForm = gcnew StudentMain(currentUser->dbID);
+						studentForm->ShowDialog();
+						this->Close();
+
 					}
 					else if (CheckRole(userID, "faculty", conn)) {
 						this->Hide();
