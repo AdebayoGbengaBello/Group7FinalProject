@@ -21,6 +21,7 @@ namespace Group7FinalProject {
 		User^ currentUser;
 	private: System::Windows::Forms::Button^ btnPayments;
 	private: System::Windows::Forms::Button^ btnEnrollment;
+	private: System::Windows::Forms::Button^ btnFees;
 	private: System::Windows::Forms::Button^ btnProgrammes;
 
 	public:
@@ -163,6 +164,7 @@ namespace Group7FinalProject {
 			this->panel4 = (gcnew System::Windows::Forms::Panel());
 			this->lblStudentCount = (gcnew System::Windows::Forms::Label());
 			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->btnFees = (gcnew System::Windows::Forms::Button());
 			this->panel1->SuspendLayout();
 			this->panel2->SuspendLayout();
 			this->panel3->SuspendLayout();
@@ -175,6 +177,7 @@ namespace Group7FinalProject {
 			// panel1
 			// 
 			this->panel1->BackColor = System::Drawing::Color::Maroon;
+			this->panel1->Controls->Add(this->btnFees);
 			this->panel1->Controls->Add(this->btnPayments);
 			this->panel1->Controls->Add(this->btnEnrollment);
 			this->panel1->Controls->Add(this->btnProgrammes);
@@ -469,6 +472,22 @@ namespace Group7FinalProject {
 			this->label1->TabIndex = 0;
 			this->label1->Text = L"Total Enrollment";
 			// 
+			// btnFees
+			// 
+			this->btnFees->FlatAppearance->BorderSize = 0;
+			this->btnFees->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnFees->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnFees->ForeColor = System::Drawing::Color::White;
+			this->btnFees->Location = System::Drawing::Point(26, 746);
+			this->btnFees->Name = L"btnFees";
+			this->btnFees->Size = System::Drawing::Size(228, 68);
+			this->btnFees->TabIndex = 9;
+			this->btnFees->Text = L"Fees";
+			this->btnFees->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->btnFees->UseVisualStyleBackColor = true;
+			this->btnFees->Click += gcnew System::EventHandler(this, &adminDashboard::btnFees_Click);
+			// 
 			// adminDashboard
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(12, 25);
@@ -520,5 +539,6 @@ namespace Group7FinalProject {
 		}
 		private: System::Void btnEnrollment_Click(System::Object^ sender, System::EventArgs^ e); 
 		private: System::Void btnPayments_Click(System::Object^ sender, System::EventArgs^ e);
+		private: System::Void btnFees_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }
