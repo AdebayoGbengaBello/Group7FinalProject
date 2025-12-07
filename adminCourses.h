@@ -17,6 +17,7 @@ namespace Group7FinalProject {
 	public ref class adminCourses : public System::Windows::Forms::Form
 	{
 		Database^ db = gcnew Database();
+		int globalCourseID = -1;
 	private: System::Windows::Forms::ComboBox^ SemesterBox;
 
 	private: System::Windows::Forms::Label^ label7;
@@ -33,11 +34,11 @@ namespace Group7FinalProject {
 			db->Open();
 			db->sqlCmd->CommandText= "SELECT progID, progName FROM programme";
 			db->sqlDR = db->sqlCmd->ExecuteReader();
-			while (db->sqlDR->Read()) {
-				ProgrammeBox->Items->Add(db->sqlDR->GetString("progName"));
-				ProgrammeBox->ValueMember = db->sqlDR->GetInt32("progID").ToString();
-				ProgrammeBox->DisplayMember = "progName";
-			}
+			DataTable^ progTable = gcnew DataTable();
+			progTable->Load(db->sqlDR);
+			ProgrammeBox->DataSource = progTable;
+			ProgrammeBox->ValueMember = "progID";
+			ProgrammeBox->DisplayMember = "progName";
 			db->sqlDR->Close();
 			db->Close();
 			LevelBox->Items->Add("100");
@@ -47,18 +48,49 @@ namespace Group7FinalProject {
 			SemesterBox->Items->Add("Spring");
 			SemesterBox->Items->Add("Fall");
 			SemesterBox->Items->Add("Summer");
-			CreditBox->Items->Add("0.5");
 			CreditBox->Items->Add("1");
+			CreditBox->Items->Add("2");
+			CreditBox->Items->Add("3");
+			CreditBox->Items->Add("4");
 			db->Open();
-			db->sqlCmd->CommandText = "SELECT f.facultyID, u.firstName, u.lastName FROM faculty f JOIN user u ON f.facultyID=u.dbID";
+			db->sqlCmd->CommandText = "SELECT f.facultyID, concat(u.firstName, ' ',u.lastName) as fName FROM faculty f JOIN user u ON f.facultyID=u.dbID";
 			db->sqlDR = db->sqlCmd->ExecuteReader();
-			while (db->sqlDR->Read()) {
-				FacultyBox->Items->Add(db->sqlDR->GetString("firstName") + " " + db->sqlDR->GetString("lastName"));
-				FacultyBox->ValueMember = db->sqlDR->GetInt32("facultyID").ToString();
-				FacultyBox->DisplayMember = "facultyName";
-			}
+			DataTable^ facultyTable = gcnew DataTable();
+			facultyTable->Load(db->sqlDR);
+			FacultyBox->DataSource = facultyTable;
+			FacultyBox->ValueMember = "facultyID";
+			FacultyBox->DisplayMember = "fName";
 			db->sqlDR->Close();
 			db->Close();
+			loadCourses();
+		}
+		void loadCourses() {
+			try
+			{
+				db->Open();
+				db->sqlCmd->CommandText = "SELECT c.courseID,c.courseCode, c.CourseTitle, c.level, p.progName, concat(u.firstName, ' ', u.lastName) as Faculty, c.semester, c.credit, c.progID, c.facultyID FROM course c JOIN programme p ON c.progID=p.progID JOIN user u ON u.dbID=c.facultyID";
+				db->sqlDR = db->sqlCmd->ExecuteReader();
+				db->sqlDT->Clear();
+				db->sqlDT->Load(db->sqlDR);
+				dataGridView1->DataSource = db->sqlDT;
+				dataGridView1->Columns[0]->Visible = false;
+				dataGridView1->Columns[1]->Width = 80;
+				dataGridView1->Columns[2]->Width = 150;
+				dataGridView1->Columns[3]->Width = 50;
+				dataGridView1->Columns[4]->Width = 200;
+				dataGridView1->Columns[5]->Width = 150;
+				dataGridView1->Columns[6]->Width = 80;
+				dataGridView1->Columns[7]->Width = 50;
+				dataGridView1->Columns[8]->Visible = false;
+				dataGridView1->Columns[9]->Visible = false;
+				db->sqlDR->Close();
+				db->sqlCmd->Cancel();
+				db->Close();
+			}
+			catch (Exception^ e)
+			{
+				MessageBox::Show("Error: " + e->Message);
+			}
 		}
 
 	protected:
@@ -72,7 +104,9 @@ namespace Group7FinalProject {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Button^ btnDepartment;
+	private: System::Windows::Forms::Button^ btnProgram;
+	protected:
+
 	private: System::Windows::Forms::ComboBox^ CreditBox;
 	protected:
 
@@ -139,7 +173,7 @@ namespace Group7FinalProject {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->btnDepartment = (gcnew System::Windows::Forms::Button());
+			this->btnProgram = (gcnew System::Windows::Forms::Button());
 			this->CreditBox = (gcnew System::Windows::Forms::ComboBox());
 			this->Program = (gcnew System::Windows::Forms::Label());
 			this->txtCourseCode = (gcnew System::Windows::Forms::TextBox());
@@ -177,22 +211,23 @@ namespace Group7FinalProject {
 			this->panel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
-			// btnDepartment
+			// btnProgram
 			// 
-			this->btnDepartment->BackColor = System::Drawing::Color::Maroon;
-			this->btnDepartment->FlatAppearance->BorderColor = System::Drawing::Color::Maroon;
-			this->btnDepartment->FlatAppearance->BorderSize = 0;
-			this->btnDepartment->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnDepartment->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->btnProgram->BackColor = System::Drawing::Color::Maroon;
+			this->btnProgram->FlatAppearance->BorderColor = System::Drawing::Color::Maroon;
+			this->btnProgram->FlatAppearance->BorderSize = 0;
+			this->btnProgram->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnProgram->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->btnDepartment->ForeColor = System::Drawing::Color::White;
-			this->btnDepartment->Location = System::Drawing::Point(1643, 1147);
-			this->btnDepartment->Name = L"btnDepartment";
-			this->btnDepartment->Size = System::Drawing::Size(236, 50);
-			this->btnDepartment->TabIndex = 44;
-			this->btnDepartment->Text = L"By Programme";
-			this->btnDepartment->TextAlign = System::Drawing::ContentAlignment::TopCenter;
-			this->btnDepartment->UseVisualStyleBackColor = false;
+			this->btnProgram->ForeColor = System::Drawing::Color::White;
+			this->btnProgram->Location = System::Drawing::Point(1643, 1147);
+			this->btnProgram->Name = L"btnProgram";
+			this->btnProgram->Size = System::Drawing::Size(236, 50);
+			this->btnProgram->TabIndex = 44;
+			this->btnProgram->Text = L"By Programme";
+			this->btnProgram->TextAlign = System::Drawing::ContentAlignment::TopCenter;
+			this->btnProgram->UseVisualStyleBackColor = false;
+			this->btnProgram->Click += gcnew System::EventHandler(this, &adminCourses::btnProgram_Click);
 			// 
 			// CreditBox
 			// 
@@ -261,6 +296,7 @@ namespace Group7FinalProject {
 			this->btnCode->Text = L"By Code";
 			this->btnCode->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			this->btnCode->UseVisualStyleBackColor = false;
+			this->btnCode->Click += gcnew System::EventHandler(this, &adminCourses::btnCode_Click);
 			// 
 			// btnTitle
 			// 
@@ -278,6 +314,7 @@ namespace Group7FinalProject {
 			this->btnTitle->Text = L"By Title";
 			this->btnTitle->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			this->btnTitle->UseVisualStyleBackColor = false;
+			this->btnTitle->Click += gcnew System::EventHandler(this, &adminCourses::btnTitle_Click);
 			// 
 			// txtSearch
 			// 
@@ -302,12 +339,13 @@ namespace Group7FinalProject {
 			// dataGridView1
 			// 
 			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dataGridView1->Location = System::Drawing::Point(446, 639);
+			this->dataGridView1->Location = System::Drawing::Point(399, 639);
 			this->dataGridView1->Name = L"dataGridView1";
 			this->dataGridView1->RowHeadersWidth = 82;
 			this->dataGridView1->RowTemplate->Height = 33;
-			this->dataGridView1->Size = System::Drawing::Size(1379, 457);
+			this->dataGridView1->Size = System::Drawing::Size(1678, 457);
 			this->dataGridView1->TabIndex = 34;
+			this->dataGridView1->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &adminCourses::dataGridView1_CellContentClick);
 			// 
 			// btnDelete
 			// 
@@ -325,6 +363,7 @@ namespace Group7FinalProject {
 			this->btnDelete->Text = L"Delete";
 			this->btnDelete->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			this->btnDelete->UseVisualStyleBackColor = false;
+			this->btnDelete->Click += gcnew System::EventHandler(this, &adminCourses::btnDelete_Click);
 			// 
 			// btnUpdate
 			// 
@@ -342,6 +381,7 @@ namespace Group7FinalProject {
 			this->btnUpdate->Text = L"Update";
 			this->btnUpdate->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			this->btnUpdate->UseVisualStyleBackColor = false;
+			this->btnUpdate->Click += gcnew System::EventHandler(this, &adminCourses::btnUpdate_Click);
 			// 
 			// btnSave
 			// 
@@ -570,13 +610,14 @@ namespace Group7FinalProject {
 			this->btnLevel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->btnLevel->ForeColor = System::Drawing::Color::White;
-			this->btnLevel->Location = System::Drawing::Point(1897, 1151);
+			this->btnLevel->Location = System::Drawing::Point(1902, 1147);
 			this->btnLevel->Name = L"btnLevel";
-			this->btnLevel->Size = System::Drawing::Size(236, 50);
+			this->btnLevel->Size = System::Drawing::Size(175, 50);
 			this->btnLevel->TabIndex = 51;
 			this->btnLevel->Text = L"By Level";
 			this->btnLevel->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			this->btnLevel->UseVisualStyleBackColor = false;
+			this->btnLevel->Click += gcnew System::EventHandler(this, &adminCourses::btnLevel_Click);
 			// 
 			// SemesterBox
 			// 
@@ -613,7 +654,7 @@ namespace Group7FinalProject {
 			this->Controls->Add(this->label5);
 			this->Controls->Add(this->LevelBox);
 			this->Controls->Add(this->label4);
-			this->Controls->Add(this->btnDepartment);
+			this->Controls->Add(this->btnProgram);
 			this->Controls->Add(this->CreditBox);
 			this->Controls->Add(this->Program);
 			this->Controls->Add(this->txtCourseCode);
@@ -647,18 +688,192 @@ namespace Group7FinalProject {
 		private: System::Void btnSave_Click(System::Object^ sender, System::EventArgs^ e) {
 			try {
 				int programmeID = Convert::ToInt32(ProgrammeBox->SelectedValue);
-				int courseLevel = Convert::ToInt32(LevelBox->SelectedItem);
+				int courseLevel = Convert::ToInt32(LevelBox->Text);
 				int facultyID = Convert::ToInt32(FacultyBox->SelectedValue);
 				String^ courseCode = txtCourseCode->Text;
 				String^ courseTitle = txtCourseTitle->Text;
-				int courseCredits = Convert::ToInt32(CreditBox->SelectedItem);
-				String^ semester = SemesterBox->SelectedItem->ToString();
+				int courseCredits = Convert::ToInt32(CreditBox->Text);
+				String^ semester = SemesterBox->Text->ToString();
 
 				db->Open();
+				db->sqlCmd->CommandText = "INSERT INTO course (progID, facultyID, courseCode, courseTitle, level, semester, credit) VALUES (@progID, @facultyID, @cCode, @cTitle, @level, @sem, @credit)";
+				db->sqlCmd->Parameters->AddWithValue("@progID",programmeID);
+				db->sqlCmd->Parameters->AddWithValue("@facultyID", facultyID);
+				db->sqlCmd->Parameters->AddWithValue("@cCode", courseCode);
+				db->sqlCmd->Parameters->AddWithValue("@cTitle", courseTitle);
+				db->sqlCmd->Parameters->AddWithValue("@level", courseLevel);
+				db->sqlCmd->Parameters->AddWithValue("@sem", semester);
+				db->sqlCmd->Parameters->AddWithValue("@credit", courseCredits);
+				db->sqlCmd->ExecuteNonQuery();
+				db->sqlCmd->Parameters->Clear();
+				db->Close();
+				loadCourses();
+				MessageBox::Show("Course saved successfully.");
 
 			} catch (System::Exception^ ex) {
-				MessageBox::Show(ex->Message, L"Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				MessageBox::Show(ex->Message, L"Error:", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			}
 		}
-	};
+		private: System::Void btnUpdate_Click(System::Object^ sender, System::EventArgs^ e) {
+			try {
+				int programmeID = Convert::ToInt32(ProgrammeBox->SelectedValue);
+				int courseLevel = Convert::ToInt32(LevelBox->Text);
+				int facultyID = Convert::ToInt32(FacultyBox->SelectedValue);
+				String^ courseCode = txtCourseCode->Text;
+				String^ courseTitle = txtCourseTitle->Text;
+				int courseCredits = Convert::ToInt32(CreditBox->Text);
+				String^ semester = SemesterBox->Text->ToString();
+				db->Open();
+				db->sqlCmd->CommandText = "UPDATE course SET progID=@progID, facultyID=@facultyID, courseTitle=@cTitle, level=@level, semester=@sem, credit=@credit WHERE courseCode=@cCode";
+				db->sqlCmd->Parameters->AddWithValue("@progID", programmeID);
+				db->sqlCmd->Parameters->AddWithValue("@facultyID", facultyID);
+				db->sqlCmd->Parameters->AddWithValue("@cCode", courseCode);
+				db->sqlCmd->Parameters->AddWithValue("@cTitle", courseTitle);
+				db->sqlCmd->Parameters->AddWithValue("@level", courseLevel);
+				db->sqlCmd->Parameters->AddWithValue("@sem", semester);
+				db->sqlCmd->Parameters->AddWithValue("@credit", courseCredits);
+				db->sqlCmd->ExecuteNonQuery();
+				db->sqlCmd->Parameters->Clear();
+				db->Close();
+				loadCourses();
+				MessageBox::Show("Course updated successfully.");
+			}
+			catch (System::Exception^ ex) {
+				MessageBox::Show(ex->Message, L"Error:", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			}
+		}
+		private: System::Void dataGridView1_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
+			if (e->RowIndex>=0)
+			{
+				DataGridViewRow^ row = this->dataGridView1->Rows[e->RowIndex];
+				globalCourseID = Convert::ToInt32(row->Cells["courseID"]->Value->ToString());
+				LevelBox->Text = row->Cells["level"]->Value->ToString();
+				txtCourseCode->Text = row->Cells["courseCode"]->Value->ToString();
+				txtCourseTitle->Text = row->Cells["courseTitle"]->Value->ToString();
+				CreditBox->Text = row->Cells["credit"]->Value->ToString();
+				ProgrammeBox->SelectedValue = row->Cells["progID"]->Value->ToString();
+				FacultyBox->SelectedValue = row->Cells["facultyID"]->Value->ToString();
+				SemesterBox->Text = row->Cells["semester"]->Value->ToString();
+			}
+		}
+	private: System::Void btnDelete_Click(System::Object^ sender, System::EventArgs^ e) {
+		try {
+			db->Open();
+			db->sqlCmd->CommandText = "DELETE FROM course WHERE courseID=@cID";
+			db->sqlCmd->Parameters->AddWithValue("@cID", globalCourseID);
+			db->sqlCmd->ExecuteNonQuery();
+			db->sqlCmd->Parameters->Clear();
+			db->Close();
+			loadCourses();
+			MessageBox::Show("Course deleted successfully.");
+		}
+		catch (System::Exception^ ex) {
+			MessageBox::Show(ex->Message, L"Error:", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+	}
+	private: System::Void btnCode_Click(System::Object^ sender, System::EventArgs^ e) {
+		try {
+			String^ searchTerm = txtSearch->Text;
+			db->Open();
+			db->sqlCmd->CommandText = "SELECT c.courseID, c.courseCode, c.CourseTitle, c.level, p.progName, concat(u.firstName, ' ', u.lastName) as Faculty, c.semester, c.credit, c.progID, c.facultyID FROM course c JOIN programme p ON c.progID = p.progID JOIN user u ON u.dbID = c.facultyID WHERE c.courseCode LIKE @searchTerm";
+			db->sqlCmd->Parameters->AddWithValue("@searchTerm", "%" + searchTerm + "%");
+			db->sqlDA->SelectCommand = db->sqlCmd;
+			db->sqlDA->Fill(db->sqlDT);
+			dataGridView1->DataSource = db->sqlDT;
+			dataGridView1->Columns[0]->Visible = false;
+			dataGridView1->Columns[1]->Width = 80;
+			dataGridView1->Columns[2]->Width = 150;
+			dataGridView1->Columns[3]->Width = 50;
+			dataGridView1->Columns[4]->Width = 200;
+			dataGridView1->Columns[5]->Width = 150;
+			dataGridView1->Columns[6]->Width = 80;
+			dataGridView1->Columns[7]->Width = 50;
+			dataGridView1->Columns[8]->Visible = false;
+			dataGridView1->Columns[9]->Visible = false;
+			db->sqlCmd->Parameters->Clear();
+			db->Close();
+		}
+		catch (System::Exception^ ex) {
+			MessageBox::Show(ex->Message, L"Error:", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+	}
+	private: System::Void btnTitle_Click(System::Object^ sender, System::EventArgs^ e) {
+		try {
+			String^ searchTerm = txtSearch->Text;
+			db->Open();
+			db->sqlCmd->CommandText = "SELECT c.courseID, c.courseCode, c.CourseTitle, c.level, p.progName, concat(u.firstName, ' ', u.lastName) as Faculty, c.semester, c.credit, c.progID, c.facultyID FROM course c JOIN programme p ON c.progID = p.progID JOIN user u ON u.dbID = c.facultyID WHERE c.courseTitle LIKE @searchTerm";
+			db->sqlCmd->Parameters->AddWithValue("@searchTerm", "%" + searchTerm + "%");
+			db->sqlDA->SelectCommand = db->sqlCmd;
+			db->sqlDA->Fill(db->sqlDT);
+			dataGridView1->DataSource = db->sqlDT;
+			dataGridView1->Columns[0]->Visible = false;
+			dataGridView1->Columns[1]->Width = 80;
+			dataGridView1->Columns[2]->Width = 150;
+			dataGridView1->Columns[3]->Width = 50;
+			dataGridView1->Columns[4]->Width = 200;
+			dataGridView1->Columns[5]->Width = 150;
+			dataGridView1->Columns[6]->Width = 80;
+			dataGridView1->Columns[7]->Width = 50;
+			dataGridView1->Columns[8]->Visible = false;
+			dataGridView1->Columns[9]->Visible = false;
+			db->sqlCmd->Parameters->Clear();
+			db->Close();
+		}
+		catch (System::Exception^ ex) {
+			MessageBox::Show(ex->Message, L"Error:", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+	}
+	private: System::Void btnProgram_Click(System::Object^ sender, System::EventArgs^ e) {
+		try {
+			String^ searchTerm = txtSearch->Text;
+			db->Open();
+			db->sqlCmd->CommandText = "SELECT c.courseID, c.courseCode, c.CourseTitle, c.level, p.progName, concat(u.firstName, ' ', u.lastName) as Faculty, c.semester, c.credit, c.progID, c.facultyID FROM course c JOIN programme p ON c.progID = p.progID JOIN user u ON u.dbID = c.facultyID WHERE p.progName LIKE @searchTerm";
+			db->sqlCmd->Parameters->AddWithValue("@searchTerm", "%" + searchTerm + "%");
+			db->sqlDA->SelectCommand = db->sqlCmd;
+			db->sqlDA->Fill(db->sqlDT);
+			dataGridView1->DataSource = db->sqlDT;
+			dataGridView1->Columns[0]->Visible = false;
+			dataGridView1->Columns[1]->Width = 80;
+			dataGridView1->Columns[2]->Width = 150;
+			dataGridView1->Columns[3]->Width = 50;
+			dataGridView1->Columns[4]->Width = 200;
+			dataGridView1->Columns[5]->Width = 150;
+			dataGridView1->Columns[6]->Width = 80;
+			dataGridView1->Columns[7]->Width = 50;
+			dataGridView1->Columns[8]->Visible = false;
+			dataGridView1->Columns[9]->Visible = false;
+			db->sqlCmd->Parameters->Clear();
+			db->Close();
+		}
+		catch (System::Exception^ ex) {
+			MessageBox::Show(ex->Message, L"Error:", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+	}
+	private: System::Void btnLevel_Click(System::Object^ sender, System::EventArgs^ e) {
+		try {
+			String^ searchTerm = txtSearch->Text;
+			db->Open();
+			db->sqlCmd->CommandText = "SELECT c.courseID, c.courseCode, c.CourseTitle, c.level, p.progName, concat(u.firstName, ' ', u.lastName) as Faculty, c.semester, c.credit, c.progID, c.facultyID FROM course c JOIN programme p ON c.progID = p.progID JOIN user u ON u.dbID = c.facultyID WHERE c.level LIKE @searchTerm";
+			db->sqlCmd->Parameters->AddWithValue("@searchTerm", "%" + searchTerm + "%");
+			db->sqlDA->SelectCommand = db->sqlCmd;
+			db->sqlDA->Fill(db->sqlDT);
+			dataGridView1->DataSource = db->sqlDT;
+			dataGridView1->Columns[0]->Visible = false;
+			dataGridView1->Columns[1]->Width = 80;
+			dataGridView1->Columns[2]->Width = 150;
+			dataGridView1->Columns[3]->Width = 50;
+			dataGridView1->Columns[4]->Width = 200;
+			dataGridView1->Columns[5]->Width = 150;
+			dataGridView1->Columns[6]->Width = 80;
+			dataGridView1->Columns[7]->Width = 50;
+			dataGridView1->Columns[8]->Visible = false;
+			dataGridView1->Columns[9]->Visible = false;
+			db->sqlCmd->Parameters->Clear();
+			db->Close();
+		}
+		catch (System::Exception^ ex) {
+			MessageBox::Show(ex->Message, L"Error:", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+	}
+};
 }
