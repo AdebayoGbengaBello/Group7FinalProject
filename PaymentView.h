@@ -392,7 +392,6 @@ namespace Group7FinalProject {
 			this->MinimizeBox = false;
 			this->Name = L"PaymentView";
 			this->Text = L"Payment";
-			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &PaymentView::PaymentView_FormClosed);
 			this->panel1->ResumeLayout(false);
 			this->panel1->PerformLayout();
 			this->panel2->ResumeLayout(false);
@@ -510,11 +509,5 @@ private: void LoadTransactionHistory() {
 	}
 }
 
-
-private: System::Void PaymentView_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e) {
-	/*Group7FinalProject::StudentMain^ parentForm = (Group7FinalProject::StudentMain^)this->Owner;
-	parentForm->LoadDashboardData();*/
-	this->Close();
-}
 };
 }

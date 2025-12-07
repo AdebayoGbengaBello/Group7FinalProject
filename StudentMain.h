@@ -411,21 +411,25 @@ namespace Group7FinalProject {
 	private: System::Void toolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e) {
 		Group7FinalProject::StudentCourses studentCourses;
 		studentCourses.ShowDialog();
+		this->LoadDashboardData();
 	}
 
 	private: System::Void toolStripMenuItem2_Click(System::Object^ sender, System::EventArgs^ e) {
 		Group7FinalProject::TranscriptView transcriptView;
 		transcriptView.ShowDialog();
+		this->LoadDashboardData();
 	}
 
 	private: System::Void toolStripMenuItem3_Click(System::Object^ sender, System::EventArgs^ e) {
 		Group7FinalProject::PaymentView paymentView;
 		paymentView.ShowDialog();
+		this->LoadDashboardData();
 	}
 
 	private: System::Void profileToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 		Group7FinalProject::StudentProfile studentProfile;
 		studentProfile.ShowDialog();
+		this->LoadDashboardData();
 	}
 
      // this code is used to load the  dashboard data
@@ -496,6 +500,7 @@ namespace Group7FinalProject {
 private: System::Void courseRegistrationToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	Group7FinalProject::CourseRegistration^ regForm = gcnew CourseRegistration(currentStudentID);
 	regForm->ShowDialog();
+	this->LoadDashboardData();
 }
 };
 }
