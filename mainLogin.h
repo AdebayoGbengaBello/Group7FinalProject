@@ -1,4 +1,6 @@
 #pragma once
+#include "facultyView.h"
+#include "users.h"
 
 namespace Group7FinalProject {
 
@@ -176,7 +178,7 @@ namespace Group7FinalProject {
 			MySqlConnection^ conn = gcnew MySqlConnection(connString);
 			try {
 				conn->Open();
-				String^ query = "SELECT dbID, name FROM User WHERE email=@e AND password=@p";
+				String^ query = "SELECT dbID, firstName FROM User WHERE email=@e AND password=@p";
 				MySqlCommand^ cmd = gcnew MySqlCommand(query, conn);
 				cmd->Parameters->AddWithValue("@e", email);
 				cmd->Parameters->AddWithValue("@p", pass);
@@ -185,17 +187,23 @@ namespace Group7FinalProject {
 
 				if (reader->Read()) {
 					int userID = Convert::ToInt32(reader["dbID"]);
-					String^ userName = reader["name"]->ToString();
+					String^ userName = reader["firstName"]->ToString();
+					User^ currentUser = gcnew User();
+					currentUser->dbID = userID;
+					currentUser->name = userName;
+					
 					reader->Close(); 
 
 					if (CheckRole(userID, "adminstaff", conn)) {
 						MessageBox::Show("Welcome" + userName);
 					}
 					else if (CheckRole(userID,"student",conn)) {
-						MessageBox::Show("Welcome" + userName);
+						MessageBox::Show("Welcome " + userName);
 					}
 					else if (CheckRole(userID, "faculty", conn)) {
-						MessageBox::Show("Welcome" + userName);
+						MessageBox::Show("Welcome " + userName);
+						facultyView^ facultyForm = gcnew facultyView(currentUser);
+						facultyForm->ShowDialog();
 					}
 				}
 				else {
@@ -212,13 +220,13 @@ namespace Group7FinalProject {
 
 		bool CheckRole(int id, String^ tableName, MySqlConnection^ conn) {
 			String^ idColumn = "";
-			if (tableName == "AdminStaff") { 
+			if (tableName == "adminstaff") { 
 				idColumn = "staffID"; 
 			}
-			else if (tableName == "Student") { 
+			else if (tableName == "student") { 
 				idColumn = "studentID"; 
 			}
-			else if (tableName == "Faculty") { 
+			else if (tableName == "faculty") { 
 				idColumn = "facultyID"; 
 			}
 

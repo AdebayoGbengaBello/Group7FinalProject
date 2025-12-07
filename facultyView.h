@@ -1,6 +1,7 @@
 #pragma once
 #include "myCourses.h"
 #include "gradeSub.h"
+#include "users.h"
 
 
 namespace Group7FinalProject {
@@ -17,13 +18,15 @@ namespace Group7FinalProject {
 	/// </summary>
 	public ref class facultyView : public System::Windows::Forms::Form
 	{
+		User^ currentUser;
 	public:
-		facultyView(void)
+		facultyView(User^ user)
 		{
 			InitializeComponent();
 			//
 			//TODO: Add the constructor code here
 			//
+			currentUser = user;
 		}
 
 	protected:
@@ -341,7 +344,7 @@ namespace Group7FinalProject {
 private: System::Void toolStripMenuItem5_Click(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void checkCoursesToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-	myCourses^ page = gcnew myCourses();
+	myCourses^ page = gcnew myCourses(currentUser);
 	page->ShowDialog();
 	this->Hide();
 
@@ -350,7 +353,7 @@ private: System::Void checkCoursesToolStripMenuItem_Click(System::Object^ sender
 
 
 private: System::Void checkGradesToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-	gradeSub^ page = gcnew gradeSub();
+	gradeSub^ page = gcnew gradeSub(currentUser);
 	page->ShowDialog();
 	this->Hide();
 }

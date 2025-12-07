@@ -114,13 +114,13 @@
       <EntryPointSymbol>Main</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
+	<ItemGroup>
+		<ClInclude Include="users.h" />
+	</ItemGroup>
   <ItemGroup>
-  <ClInclude Include="mainLogin.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
-    <ClInclude Include="users.h" />
-  </ItemGroup>
-  <ItemGroup>
+	<Reference Include="MySql.Data">
+		<HintPath>..\..\..\Documents\Libraries\v45\mysql.data.dll</HintPath>
+	</Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -151,21 +151,6 @@
     <EmbeddedResource Include="mainLogin.resx">
       <DependentUpon>mainLogin.h</DependentUpon>
     </EmbeddedResource>
-    <Reference Include="MySql.Data">
-      <HintPath>..\..\..\Documents\Libraries\v45\mysql.data.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="facultyDashboard.cpp" />
-    <ClCompile Include="facultyView.cpp" />
-    <ClCompile Include="gradeSub.cpp" />
-    <ClCompile Include="mainProgram.cpp" />
-    <ClCompile Include="myCourses.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="facultyDashboard.h">
@@ -182,39 +167,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="facultyDashboard.resx">
-      <DependentUpon>facultyDashboard.h</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="facultyView.resx">
-      <DependentUpon>facultyView.h</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="gradeSub.resx">
-      <DependentUpon>gradeSub.h</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="myCourses.resx">
-      <DependentUpon>myCourses.h</DependentUpon>
-    </EmbeddedResource>
     <ClInclude Include="mainLogin.h">
       <FileType>CppForm</FileType>
     </ClInclude>
-    <ClInclude Include="users.h" />
-  </ItemGroup>
-  <ItemGroup>
-
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="mainLogin.cpp" />
-    <ClCompile Include="mainProgram.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="mainLogin.resx">
-      <DependentUpon>mainLogin.h</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

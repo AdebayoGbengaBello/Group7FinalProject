@@ -1,4 +1,5 @@
 #pragma once
+#include "users.h"
 
 namespace Group7FinalProject {
 
@@ -8,19 +9,23 @@ namespace Group7FinalProject {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace MySql::Data::MySqlClient;
+
 
 	/// <summary>
 	/// Summary for myCourses
 	/// </summary>
 	public ref class myCourses : public System::Windows::Forms::Form
 	{
+		User^ currentUser;
 	public:
-		myCourses(void)
+		myCourses(User^ user)
 		{
 			InitializeComponent();
 			//
 			//TODO: Add the constructor code here
 			//
+			currentUser = user;
 		}
 
 	protected:
@@ -106,6 +111,7 @@ namespace Group7FinalProject {
 			this->comboBoxCourse->Name = L"comboBoxCourse";
 			this->comboBoxCourse->Size = System::Drawing::Size(233, 21);
 			this->comboBoxCourse->TabIndex = 2;
+			this->comboBoxCourse->SelectedIndexChanged += gcnew System::EventHandler(this, &myCourses::comboBoxCourse_SelectedIndexChanged);
 			// 
 			// button1
 			// 
@@ -167,7 +173,133 @@ namespace Group7FinalProject {
 
 		}
 #pragma endregion
-	private: System::Void myCourses_Load(System::Object^ sender, System::EventArgs^ e) {
+		// Replace all instances of SqlConnection, SqlCommand, and SqlDataAdapter with MySqlConnection, MySqlCommand, and MySqlDataAdapter
+
+private: void LoadLecturerCourses() {
+	String^ connStr = "datasource=localhost;port=3306;username=root;password="";database=universitydb";
+
+	try
+	{
+		int lecturerDbId = 0;
+		try
+		{
+			lecturerDbId = safe_cast<int>(currentUser->dbID);
+		}
+		catch (Exception^)
+		{
+			MessageBox::Show(
+				"Unable to read current user's DB id. Check your User class property name.",
+				"Error",
+				MessageBoxButtons::OK,
+				MessageBoxIcon::Error
+			);
+			return;
+		}
+
+		String^ sql =
+			"SELECT courseID, courseCode, courseTitle "
+			"FROM course WHERE facultyID = @facultyID";
+
+		System::Data::DataTable^ dt = gcnew System::Data::DataTable();
+
+
+		// Use 'using' to ensure connection is closed/disposed
+		{
+			MySqlConnection^ conn = gcnew MySqlConnection(connStr);
+			MySqlCommand^ cmd = gcnew MySqlCommand(sql, conn);
+			cmd->Parameters->AddWithValue("@facultyID", lecturerDbId);
+
+			MySqlDataAdapter^ da = gcnew MySqlDataAdapter(cmd);
+			da->Fill(dt);
+		}
+
+		// Add display column
+		if (!dt->Columns->Contains("display"))
+		{
+			dt->Columns->Add("display", String::typeid);
+
+			for each (System::Data::DataRow^ row in dt->Rows)
+			{
+				String^ code = row["courseCode"]->ToString();
+				String^ title = row["courseTitle"]->ToString();
+				row["display"] = code + " - " + title;
+			}
+		}
+
+		// Temporarily detach event to prevent premature firing
+		comboBoxCourse->SelectedIndexChanged -= gcnew System::EventHandler(this, &myCourses::comboBoxCourse_SelectedIndexChanged);
+
+		comboBoxCourse->DisplayMember = "display";
+		comboBoxCourse->ValueMember = "courseID";
+		comboBoxCourse->DataSource = dt;
+
+		comboBoxCourse->SelectedIndexChanged += gcnew System::EventHandler(this, &myCourses::comboBoxCourse_SelectedIndexChanged);
+
+		dataGridView1->DataSource = nullptr;
 	}
+	catch (Exception^ ex)
+	{
+		MessageBox::Show(
+			"Error loading courses:\n" + ex->Message,
+			"Database Error",
+			MessageBoxButtons::OK,
+			MessageBoxIcon::Error
+		);
+	}
+}
+	private: System::Void myCourses_Load(System::Object^ sender, System::EventArgs^ e) {
+		LoadLecturerCourses();
+	}
+private: System::Void comboBoxCourse_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
+	if (comboBoxCourse->SelectedValue == nullptr) return;
+	if (comboBoxCourse->DataSource == nullptr) return;
+
+	int courseId = 0;
+	try
+	{
+		courseId = Convert::ToInt32(comboBoxCourse->SelectedValue);
+	}
+	catch (Exception^)
+	{
+		return;
+	}
+
+	String^ connStr = "datasource=localhost;port=3306;username=root;password=;database=universitydb";
+
+	String^ sql =
+		"SELECT u.dbID AS StudentDbID, u.firstName, u.lastName, "
+		"s.currentLevel, cr.semester, cr.status "
+		"FROM courseregistration cr "
+		"INNER JOIN student s ON cr.studentID = s.studentID "
+		"INNER JOIN user u ON s.studentID = u.dbID "
+		"WHERE cr.courseID = @courseID;";
+
+	try
+	{
+		DataTable^ dt = gcnew DataTable();
+
+		// Use 'using' for safe disposal
+		{
+			MySqlConnection^ conn = gcnew MySqlConnection(connStr);
+			MySqlCommand^ cmd = gcnew MySqlCommand(sql, conn);
+			cmd->Parameters->AddWithValue("@courseID", courseId);
+
+			MySqlDataAdapter^ da = gcnew MySqlDataAdapter(cmd);
+			da->Fill(dt);
+		}
+
+		// Rename column safely
+		if (dt->Columns->Contains("StudentDbID"))
+			dt->Columns["StudentDbID"]->ColumnName = "Student ID";
+
+		dataGridView1->AutoGenerateColumns = true;
+		dataGridView1->DataSource = dt;
+	}
+	catch (Exception^ ex)
+	{
+		MessageBox::Show("Error loading enrolled students:\n" + ex->Message,
+			"Database Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+	}
+}
 };
 }
