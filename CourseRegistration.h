@@ -282,6 +282,21 @@ namespace Group7FinalProject {
 			MessageBox::Show("Successfully registered for: " + courseTitle);
 			lblStatus->Text = "Last Action: Registered for " + courseTitle;
 
+			String^ updateCreditQuery =
+				"UPDATE Students "
+				"SET creditEarned = ("
+				"    SELECT COALESCE(SUM(c.credit), 0) "
+				"    FROM CourseRegistration cr "
+				"    JOIN Course c ON cr.courseID = c.courseID "
+				"    WHERE cr.studentID = @sid"
+				") "
+				"WHERE studentID = @sid";
+
+			db->sqlCmd->CommandText = updateCreditQuery;
+			db->sqlCmd->Parameters->Clear();
+			db->sqlCmd->Parameters->AddWithValue("@sid", this->currentStudentID);
+
+			db->sqlCmd->ExecuteNonQuery();
 			db->Close();
 		}
 		catch (Exception^ ex) {
