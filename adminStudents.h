@@ -502,7 +502,7 @@ namespace Group7FinalProject {
 			this->panel2->Dock = System::Windows::Forms::DockStyle::Top;
 			this->panel2->Location = System::Drawing::Point(279, 0);
 			this->panel2->Name = L"panel2";
-			this->panel2->Size = System::Drawing::Size(1876, 80);
+			this->panel2->Size = System::Drawing::Size(1878, 80);
 			this->panel2->TabIndex = 67;
 			// 
 			// lblWelcome
@@ -695,7 +695,7 @@ namespace Group7FinalProject {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(12, 25);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(2155, 1355);
+			this->ClientSize = System::Drawing::Size(2157, 1355);
 			this->Controls->Add(this->btnYear);
 			this->Controls->Add(this->LevelBox);
 			this->Controls->Add(this->txtGraduation);

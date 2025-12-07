@@ -4,6 +4,7 @@
 #include "adminProgrammes.h"
 #include "adminFaculty.h"
 #include "adminStudents.h"
+#include "adminEnrollment.h"
 
 namespace Group7FinalProject {
 
@@ -38,6 +39,12 @@ namespace Group7FinalProject {
         this->Hide();
         adminStudents^ studentForm = gcnew adminStudents(this->currentUser);
         studentForm->ShowDialog();
+	}
+    System::Void adminDashboard::btnEnrollment_Click(System::Object^ sender, System::EventArgs^ e)
+    {
+        this->Hide();
+        adminEnrollment^ enrollmentForm = gcnew adminEnrollment(this->currentUser);
+        enrollmentForm->ShowDialog();
 	}
 }
 

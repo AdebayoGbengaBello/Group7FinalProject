@@ -249,6 +249,7 @@ namespace Group7FinalProject {
 			this->Program->Size = System::Drawing::Size(195, 37);
 			this->Program->TabIndex = 42;
 			this->Program->Text = L"Course Credits:";
+			this->Program->Click += gcnew System::EventHandler(this, &adminCourses::Program_Click);
 			// 
 			// txtCourseCode
 			// 
@@ -430,11 +431,11 @@ namespace Group7FinalProject {
 			this->lblWelcome->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->lblWelcome->ForeColor = System::Drawing::Color::Maroon;
-			this->lblWelcome->Location = System::Drawing::Point(369, 18);
+			this->lblWelcome->Location = System::Drawing::Point(450, 19);
 			this->lblWelcome->Name = L"lblWelcome";
-			this->lblWelcome->Size = System::Drawing::Size(405, 45);
+			this->lblWelcome->Size = System::Drawing::Size(330, 45);
 			this->lblWelcome->TabIndex = 0;
-			this->lblWelcome->Text = L"Programme Management";
+			this->lblWelcome->Text = L"Course Management";
 			this->lblWelcome->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			// 
 			// panel1
@@ -875,5 +876,7 @@ namespace Group7FinalProject {
 			MessageBox::Show(ex->Message, L"Error:", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 	}
+private: System::Void Program_Click(System::Object^ sender, System::EventArgs^ e) {
+}
 };
 }
