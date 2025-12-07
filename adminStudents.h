@@ -21,6 +21,7 @@ namespace Group7FinalProject {
 	private: System::Windows::Forms::Button^ btnPayments;
 	private: System::Windows::Forms::Button^ btnEnrollment;
 	private: System::Windows::Forms::Button^ btnDepartment;
+	private: System::Windows::Forms::Button^ btnTranscript;
 		   int globalStudentID = -1;
 	public:
 		adminStudents(User^ user)
@@ -183,6 +184,7 @@ namespace Group7FinalProject {
 			this->label9 = (gcnew System::Windows::Forms::Label());
 			this->LevelBox = (gcnew System::Windows::Forms::ComboBox());
 			this->btnYear = (gcnew System::Windows::Forms::Button());
+			this->btnTranscript = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->panel2->SuspendLayout();
 			this->panel1->SuspendLayout();
@@ -455,7 +457,7 @@ namespace Group7FinalProject {
 			this->btnDelete->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->btnDelete->ForeColor = System::Drawing::Color::White;
-			this->btnDelete->Location = System::Drawing::Point(1730, 702);
+			this->btnDelete->Location = System::Drawing::Point(1515, 702);
 			this->btnDelete->Name = L"btnDelete";
 			this->btnDelete->Size = System::Drawing::Size(182, 56);
 			this->btnDelete->TabIndex = 66;
@@ -473,7 +475,7 @@ namespace Group7FinalProject {
 			this->btnUpdate->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->btnUpdate->ForeColor = System::Drawing::Color::White;
-			this->btnUpdate->Location = System::Drawing::Point(1093, 702);
+			this->btnUpdate->Location = System::Drawing::Point(824, 702);
 			this->btnUpdate->Name = L"btnUpdate";
 			this->btnUpdate->Size = System::Drawing::Size(182, 56);
 			this->btnUpdate->TabIndex = 64;
@@ -734,11 +736,30 @@ namespace Group7FinalProject {
 			this->btnYear->UseVisualStyleBackColor = false;
 			this->btnYear->Click += gcnew System::EventHandler(this, &adminStudents::btnYear_Click);
 			// 
+			// btnTranscript
+			// 
+			this->btnTranscript->BackColor = System::Drawing::Color::Maroon;
+			this->btnTranscript->FlatAppearance->BorderColor = System::Drawing::Color::Maroon;
+			this->btnTranscript->FlatAppearance->BorderSize = 0;
+			this->btnTranscript->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnTranscript->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnTranscript->ForeColor = System::Drawing::Color::White;
+			this->btnTranscript->Location = System::Drawing::Point(1139, 702);
+			this->btnTranscript->Name = L"btnTranscript";
+			this->btnTranscript->Size = System::Drawing::Size(182, 56);
+			this->btnTranscript->TabIndex = 102;
+			this->btnTranscript->Text = L"Transcript";
+			this->btnTranscript->TextAlign = System::Drawing::ContentAlignment::TopCenter;
+			this->btnTranscript->UseVisualStyleBackColor = false;
+			this->btnTranscript->Click += gcnew System::EventHandler(this, &adminStudents::btnTranscript_Click);
+			// 
 			// adminStudents
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(12, 25);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(2157, 1355);
+			this->Controls->Add(this->btnTranscript);
 			this->Controls->Add(this->btnYear);
 			this->Controls->Add(this->LevelBox);
 			this->Controls->Add(this->txtGraduation);
@@ -1027,5 +1048,21 @@ namespace Group7FinalProject {
 	private: System::Void btnProgrammes_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void btnEnrollment_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void btnPayments_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void btnTranscript_Click(System::Object^ sender, System::EventArgs^ e) {
+		try {
+			db->Open();
+			db->sqlCmd->CommandText = "INSERT INTO transcript(studentID, cgpa) SELECT s.studentID, 0 FROM Student s LEFT JOIN Transcript t ON s.studentID = t.studentID WHERE t.studentID IS NULL;";
+			db->sqlCmd->ExecuteNonQuery();
+			db->sqlCmd->Parameters->Clear();
+			db->sqlCmd->CommandText = "UPDATE transcript t INNER JOIN(SELECT g.studentID, AVG(CASE WHEN g.letterGrade = 'A+' THEN 4.0 WHEN g.letterGrade = 'A'  THEN 4.0 WHEN g.letterGrade = 'B+' THEN 3.5 WHEN g.letterGrade = 'B'  THEN 3.0 WHEN g.letterGrade = 'C+' THEN 2.5 WHEN g.letterGrade = 'C'  THEN 2.0 WHEN g.letterGrade = 'D+' THEN 1.5 WHEN g.letterGrade = 'D'  THEN 1.0 WHEN g.letterGrade = 'E'  THEN 0.0 WHEN g.letterGrade = 'F'  THEN 0.0 ELSE 0 END) AS calculatedCGPA FROM grade g GROUP BY g.studentID) AS calculations ON t.studentID = calculations.studentID SET t.cgpa = calculations.calculatedCGPA";
+			db->sqlCmd->ExecuteNonQuery();
+			db->Close();
+
+			MessageBox::Show("Transcripts generated and updated successfully.");
+		}
+		catch (Exception^ ex) {
+			MessageBox::Show("Error: " + ex->Message);
+		}
+	}
 };
 }
