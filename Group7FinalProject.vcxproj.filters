@@ -15,7 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <ClInclude Include="users.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -32,14 +31,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="adminProgrammes.h">
-=======
+		<Filter>Header Files</Filter>
+	</ClInclude>
     <ClCompile Include="SudentDashboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TranscriptView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="mainProgram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PaymentView.cpp">
@@ -69,13 +66,11 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Course.h">
->>>>>>> Student_View
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Database.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="mainLogin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -134,9 +129,6 @@
     <ClCompile Include="myCourses.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mainProgram.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="gradeSub.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -152,7 +144,8 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gradeSub.h">
-=======
+		<Filter>Header Files</Filter>
+	</ClInclude>
     <ClInclude Include="Grade.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -172,7 +165,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CourseRegistration.h">
->>>>>>> Student_View
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

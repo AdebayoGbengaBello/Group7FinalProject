@@ -18,72 +18,6 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="MySql.Data">
-      <HintPath>..\..\..\Downloads\mysql-for-visualstudio-2.0.5-noinstall (1)\v46\mysql.data.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="CourseRegistration.cpp" />
-    <ClCompile Include="mainProgram.cpp" />
-    <ClCompile Include="PaymentView.cpp" />
-    <ClCompile Include="StudentCourses.cpp" />
-    <ClCompile Include="StudentLoginForm.cpp" />
-    <ClCompile Include="StudentMain.cpp" />
-    <ClCompile Include="StudentProfile.cpp" />
-    <ClCompile Include="StudentSignupForm.cpp" />
-    <ClCompile Include="SudentDashboard.cpp" />
-    <ClCompile Include="TranscriptView.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Course.h" />
-    <ClInclude Include="CourseRegistration.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
-    <ClInclude Include="Database.h" />
-    <ClInclude Include="Grade.h" />
-    <ClInclude Include="PaymentView.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
-    <ClInclude Include="Student.h" />
-    <ClInclude Include="StudentCourses.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
-    <ClInclude Include="StudentMain.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
-    <ClInclude Include="StudentProfile.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
-    <ClInclude Include="TranscriptView.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="CourseRegistration.resx">
-      <DependentUpon>CourseRegistration.h</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PaymentView.resx">
-      <DependentUpon>PaymentView.h</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StudentCourses.resx">
-      <DependentUpon>StudentCourses.h</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StudentMain.resx">
-      <DependentUpon>StudentMain.h</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StudentProfile.resx">
-      <DependentUpon>StudentProfile.h</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TranscriptView.resx">
-      <DependentUpon>TranscriptView.h</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <ProjectGuid>{63B0D5E4-3842-1DAC-F5BF-219F4C864E60}</ProjectGuid>
@@ -180,7 +114,6 @@
       <EntryPointSymbol>Main</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
-<<<<<<< HEAD
   <ItemGroup>
     <ClInclude Include="adminCourses.h">
       <FileType>CppForm</FileType>
@@ -291,8 +224,60 @@
       <FileType>CppForm</FileType>
     </ClInclude>
   </ItemGroup>
-=======
->>>>>>> Student_View
+	<ItemGroup>
+		<ClCompile Include="CourseRegistration.cpp" />
+		<ClCompile Include="PaymentView.cpp" />
+		<ClCompile Include="StudentCourses.cpp" />
+		<ClCompile Include="StudentLoginForm.cpp" />
+		<ClCompile Include="StudentMain.cpp" />
+		<ClCompile Include="StudentProfile.cpp" />
+		<ClCompile Include="StudentSignupForm.cpp" />
+		<ClCompile Include="SudentDashboard.cpp" />
+		<ClCompile Include="TranscriptView.cpp" />
+	</ItemGroup>
+	<ItemGroup>
+		<ClInclude Include="Course.h" />
+		<ClInclude Include="CourseRegistration.h">
+			<FileType>CppForm</FileType>
+		</ClInclude>
+		<ClInclude Include="Grade.h" />
+		<ClInclude Include="PaymentView.h">
+			<FileType>CppForm</FileType>
+		</ClInclude>
+		<ClInclude Include="Student.h" />
+		<ClInclude Include="StudentCourses.h">
+			<FileType>CppForm</FileType>
+		</ClInclude>
+		<ClInclude Include="StudentMain.h">
+			<FileType>CppForm</FileType>
+		</ClInclude>
+		<ClInclude Include="StudentProfile.h">
+			<FileType>CppForm</FileType>
+		</ClInclude>
+		<ClInclude Include="TranscriptView.h">
+			<FileType>CppForm</FileType>
+		</ClInclude>
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="CourseRegistration.resx">
+			<DependentUpon>CourseRegistration.h</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Include="PaymentView.resx">
+			<DependentUpon>PaymentView.h</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Include="StudentCourses.resx">
+			<DependentUpon>StudentCourses.h</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Include="StudentMain.resx">
+			<DependentUpon>StudentMain.h</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Include="StudentProfile.resx">
+			<DependentUpon>StudentProfile.h</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Include="TranscriptView.resx">
+			<DependentUpon>TranscriptView.h</DependentUpon>
+		</EmbeddedResource>
+	</ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
