@@ -197,8 +197,9 @@
     <EmbeddedResource Include="adminProgrammes.resx">
       <DependentUpon>adminProgrammes.h</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="adminStudents.resx">
-      <DependentUpon>adminStudents.h</DependentUpon>
+	<EmbeddedResource Include="adminStudents.resx">
+	 <DependentUpon>adminStudents.h</DependentUpon>
+	</EmbeddedResource>
     <EmbeddedResource Include="facultyDashboard.resx">
       <DependentUpon>facultyDashboard.h</DependentUpon>
     </EmbeddedResource>
