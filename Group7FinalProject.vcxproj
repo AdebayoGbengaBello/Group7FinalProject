@@ -114,11 +114,7 @@
       <EntryPointSymbol>Main</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
-	<ItemGroup>
-		<ClInclude Include="users.h" />
-	</ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <ClInclude Include="adminCourses.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -153,11 +149,6 @@
     <Reference Include="MySql.Data">
       <HintPath>..\..\..\..\..\mysql-for-visualstudio-2.0.5-noinstall\v461\mysql.data.dll</HintPath>
     </Reference>
-=======
-	<Reference Include="MySql.Data">
-		<HintPath>..\..\..\Documents\Libraries\v45\mysql.data.dll</HintPath>
-	</Reference>
->>>>>>> origin/Faculty
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -166,7 +157,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <ClCompile Include="adminCourses.cpp" />
     <ClCompile Include="adminDepartment.cpp" />
     <ClCompile Include="adminEnrollment.cpp" />
@@ -175,17 +165,14 @@
     <ClCompile Include="adminProgrammes.cpp" />
     <ClCompile Include="adminStudents.cpp" />
     <ClCompile Include="Database.cpp" />
-=======
     <ClCompile Include="facultyDashboard.cpp" />
     <ClCompile Include="facultyView.cpp" />
     <ClCompile Include="gradeSub.cpp" />
->>>>>>> origin/Faculty
     <ClCompile Include="mainLogin.cpp" />
     <ClCompile Include="mainProgram.cpp" />
     <ClCompile Include="myCourses.cpp" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <ClCompile Include="adminDashboard.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -212,7 +199,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="adminStudents.resx">
       <DependentUpon>adminStudents.h</DependentUpon>
-=======
     <EmbeddedResource Include="facultyDashboard.resx">
       <DependentUpon>facultyDashboard.h</DependentUpon>
     </EmbeddedResource>
@@ -224,7 +210,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="myCourses.resx">
       <DependentUpon>myCourses.h</DependentUpon>
->>>>>>> origin/Faculty
     </EmbeddedResource>
     <EmbeddedResource Include="mainLogin.resx">
       <DependentUpon>mainLogin.h</DependentUpon>
