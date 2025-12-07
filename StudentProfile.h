@@ -644,8 +644,6 @@ private: void LoadProfileData() {
 		}
 		db->Close();
 
-		// 2. QUERY: Get Program Name 
-
 		db->Open();
 		String^ progQuery = "SELECT p.progName FROM CourseRegistration cr "
 			"JOIN Course c ON cr.courseID = c.courseID "

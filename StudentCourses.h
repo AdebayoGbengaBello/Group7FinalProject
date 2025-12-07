@@ -52,7 +52,7 @@ namespace Group7FinalProject {
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -79,7 +79,8 @@ namespace Group7FinalProject {
 			this->cmbSemester->Name = L"cmbSemester";
 			this->cmbSemester->Size = System::Drawing::Size(189, 38);
 			this->cmbSemester->TabIndex = 13;
-			this->cmbSemester->Text = L"  Fall 2025";
+			this->cmbSemester->Text = L" Fall 2025";
+			this->cmbSemester->SelectedIndexChanged += gcnew System::EventHandler(this, &StudentCourses::cmbSemester_SelectedIndexChanged);
 			// 
 			// txtSearch
 			// 
@@ -91,6 +92,7 @@ namespace Group7FinalProject {
 			this->txtSearch->Size = System::Drawing::Size(384, 39);
 			this->txtSearch->TabIndex = 12;
 			this->txtSearch->Text = L" Search courses..";
+			this->txtSearch->Click += gcnew System::EventHandler(this, &StudentCourses::txtSearch_Click);
 			this->txtSearch->TextChanged += gcnew System::EventHandler(this, &StudentCourses::txtSearch_TextChanged);
 			// 
 			// label1
@@ -151,8 +153,10 @@ namespace Group7FinalProject {
 			db->Open();
 
 			// Join Registration -> Course -> Faculty -> User (to get Instructor Name)
+			// Added 'c.semester' to the query so we can filter by it
 			String^ query = "SELECT c.courseCode AS 'Course Code', c.courseTitle AS 'Title', "
 				"CONCAT(u.firstName, ' ', u.lastName) AS 'Instructor', "
+				"c.semester AS 'Semester', "
 				"c.credit AS 'Credits', cr.status AS 'Grade' "
 				"FROM CourseRegistration cr "
 				"JOIN Course c ON cr.courseID = c.courseID "
@@ -167,6 +171,9 @@ namespace Group7FinalProject {
 			// Bind to Grid
 			dataGridView1->DataSource = dtCourses;
 
+			// Populate the semester dropdown after loading data
+			PopulateSemesters();
+
 			db->Close();
 		}
 		catch (Exception^ ex) {
@@ -174,23 +181,74 @@ namespace Group7FinalProject {
 			if (db->sqlConn->State == ConnectionState::Open) db->Close();
 		}
 	}
-private: System::Void txtSearch_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	try {
-		String^ searchValue = txtSearch->Text->Trim();
 
-		// If search is "Search courses.." placeholder, do nothing
-		if (searchValue == "Search courses.." || String::IsNullOrEmpty(searchValue)) {
-			(safe_cast<DataTable^>(dataGridView1->DataSource))->DefaultView->RowFilter = "";
+	private: void PopulateSemesters() {
+		cmbSemester->Items->Clear();
+
+		// Add default option
+		cmbSemester->Items->Add("All Semesters");
+
+		// List to track unique semesters
+		System::Collections::Generic::List<String^>^ uniqueSemesters = gcnew System::Collections::Generic::List<String^>();
+
+		for each (DataRow ^ row in dtCourses->Rows) {
+			String^ sem = row["Semester"]->ToString();
+			if (!uniqueSemesters->Contains(sem)) {
+				uniqueSemesters->Add(sem);
+				cmbSemester->Items->Add(sem);
+			}
 		}
-		else {
-			// Filter by Course Code OR Title
-			String^ filter = "[Course Code] LIKE '%" + searchValue + "%' OR [Title] LIKE '%" + searchValue + "%'";
+
+		// Select "All Semesters" by default
+		if (cmbSemester->Items->Count > 0) {
+			cmbSemester->SelectedIndex = 0;
+		}
+	}
+
+	private: void ApplyFilters() {
+		try {
+			String^ filter = "";
+
+			// 1. Handle Text Search
+			String^ searchValue = txtSearch->Text->Trim();
+			if (searchValue != "Search courses.." && !String::IsNullOrEmpty(searchValue)) {
+				filter = "([Course Code] LIKE '%" + searchValue + "%' OR [Title] LIKE '%" + searchValue + "%')";
+			}
+
+			// 2. Handle Semester Dropdown
+			if (cmbSemester->SelectedItem != nullptr) {
+				String^ selectedSem = cmbSemester->SelectedItem->ToString();
+
+				if (selectedSem != "All Semesters") {
+					// Add AND if a text filter already exists
+					if (filter->Length > 0) {
+						filter += " AND ";
+					}
+					// Add exact match for semester
+					filter += "[Semester] = '" + selectedSem + "'";
+				}
+			}
+
+			// 3. Apply combined filter
 			(safe_cast<DataTable^>(dataGridView1->DataSource))->DefaultView->RowFilter = filter;
 		}
+		catch (Exception^ ex) {
+			Console::WriteLine(ex->Message);
+		}
 	}
-	catch (Exception^) {
-		// Ignore errors during typing
+
+	private: System::Void txtSearch_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		ApplyFilters();
 	}
-}
-};
+
+	private: System::Void cmbSemester_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
+		ApplyFilters();
+	}
+
+	private: System::Void txtSearch_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (txtSearch->Text == " Search courses..") {
+			txtSearch->Text = "";
+		}
+	}
+	};
 }

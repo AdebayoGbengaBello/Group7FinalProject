@@ -21,12 +21,10 @@ namespace Group7FinalProject {
 	public:
 		// Create the database instance
 		Database^ db = gcnew Database();
+		int currentStudentID;
 	private: System::Windows::Forms::ToolStripMenuItem^ courseRegistrationToolStripMenuItem;
 	public:
-
-		// Hardcoded for now to show User 1 (Alex)
-		// In the future, you will pass this ID from the Login screen
-		int currentStudentID; 
+		
 
 		StudentMain(int userID)
 		{
@@ -59,7 +57,7 @@ namespace Group7FinalProject {
 	private: System::Windows::Forms::ToolStripMenuItem^ toolStripMenuItem2;
 	private: System::Windows::Forms::ToolStripMenuItem^ toolStripMenuItem3;
 	private: System::Windows::Forms::ToolStripMenuItem^ profileToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^ systemSetUpToolStripMenuItem;
+
 	private: System::Windows::Forms::Label^ txtSemester2;
 	private: System::Windows::Forms::Panel^ panel4;
 	private: System::Windows::Forms::Label^ txtUserName;
@@ -91,7 +89,6 @@ namespace Group7FinalProject {
 			this->toolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->toolStripMenuItem2 = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->toolStripMenuItem3 = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->systemSetUpToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->txtSemester2 = (gcnew System::Windows::Forms::Label());
 			this->panel4 = (gcnew System::Windows::Forms::Panel());
 			this->txtUserName = (gcnew System::Windows::Forms::Label());
@@ -124,9 +121,9 @@ namespace Group7FinalProject {
 			this->menuStrip1->BackColor = System::Drawing::SystemColors::ButtonFace;
 			this->menuStrip1->GripMargin = System::Windows::Forms::Padding(2, 2, 0, 2);
 			this->menuStrip1->ImageScalingSize = System::Drawing::Size(28, 28);
-			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(6) {
+			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(5) {
 				this->profileToolStripMenuItem,
-					this->courseRegistrationToolStripMenuItem, this->toolStripMenuItem1, this->toolStripMenuItem2, this->toolStripMenuItem3, this->systemSetUpToolStripMenuItem
+					this->courseRegistrationToolStripMenuItem, this->toolStripMenuItem1, this->toolStripMenuItem2, this->toolStripMenuItem3
 			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
@@ -168,12 +165,6 @@ namespace Group7FinalProject {
 			this->toolStripMenuItem3->Size = System::Drawing::Size(178, 34);
 			this->toolStripMenuItem3->Text = L"💳Fee Payment";
 			this->toolStripMenuItem3->Click += gcnew System::EventHandler(this, &StudentMain::toolStripMenuItem3_Click);
-			// 
-			// systemSetUpToolStripMenuItem
-			// 
-			this->systemSetUpToolStripMenuItem->Name = L"systemSetUpToolStripMenuItem";
-			this->systemSetUpToolStripMenuItem->Size = System::Drawing::Size(134, 34);
-			this->systemSetUpToolStripMenuItem->Text = L"⚙️Settings";
 			// 
 			// txtSemester2
 			// 
