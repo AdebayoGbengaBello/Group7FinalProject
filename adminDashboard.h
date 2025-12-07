@@ -138,10 +138,12 @@ namespace Group7FinalProject {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^ chartArea2 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^ legend2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^ series2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^ chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^ legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^ series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
+			this->btnPayments = (gcnew System::Windows::Forms::Button());
+			this->btnEnrollment = (gcnew System::Windows::Forms::Button());
 			this->btnProgrammes = (gcnew System::Windows::Forms::Button());
 			this->lblUser = (gcnew System::Windows::Forms::Label());
 			this->btnCourses = (gcnew System::Windows::Forms::Button());
@@ -161,8 +163,6 @@ namespace Group7FinalProject {
 			this->panel4 = (gcnew System::Windows::Forms::Panel());
 			this->lblStudentCount = (gcnew System::Windows::Forms::Label());
 			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->btnPayments = (gcnew System::Windows::Forms::Button());
-			this->btnEnrollment = (gcnew System::Windows::Forms::Button());
 			this->panel1->SuspendLayout();
 			this->panel2->SuspendLayout();
 			this->panel3->SuspendLayout();
@@ -189,6 +189,38 @@ namespace Group7FinalProject {
 			this->panel1->Size = System::Drawing::Size(280, 922);
 			this->panel1->TabIndex = 0;
 			this->panel1->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &adminDashboard::panel1_Paint);
+			// 
+			// btnPayments
+			// 
+			this->btnPayments->FlatAppearance->BorderSize = 0;
+			this->btnPayments->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnPayments->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnPayments->ForeColor = System::Drawing::Color::White;
+			this->btnPayments->Location = System::Drawing::Point(26, 661);
+			this->btnPayments->Name = L"btnPayments";
+			this->btnPayments->Size = System::Drawing::Size(228, 68);
+			this->btnPayments->TabIndex = 8;
+			this->btnPayments->Text = L"Payments";
+			this->btnPayments->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->btnPayments->UseVisualStyleBackColor = true;
+			this->btnPayments->Click += gcnew System::EventHandler(this, &adminDashboard::btnPayments_Click);
+			// 
+			// btnEnrollment
+			// 
+			this->btnEnrollment->FlatAppearance->BorderSize = 0;
+			this->btnEnrollment->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnEnrollment->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnEnrollment->ForeColor = System::Drawing::Color::White;
+			this->btnEnrollment->Location = System::Drawing::Point(26, 580);
+			this->btnEnrollment->Name = L"btnEnrollment";
+			this->btnEnrollment->Size = System::Drawing::Size(182, 75);
+			this->btnEnrollment->TabIndex = 7;
+			this->btnEnrollment->Text = L"Enrollment";
+			this->btnEnrollment->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->btnEnrollment->UseVisualStyleBackColor = true;
+			this->btnEnrollment->Click += gcnew System::EventHandler(this, &adminDashboard::btnEnrollment_Click);
 			// 
 			// btnProgrammes
 			// 
@@ -319,17 +351,17 @@ namespace Group7FinalProject {
 			// 
 			// chart1
 			// 
-			chartArea2->Name = L"ChartArea1";
-			this->chart1->ChartAreas->Add(chartArea2);
+			chartArea1->Name = L"ChartArea1";
+			this->chart1->ChartAreas->Add(chartArea1);
 			this->chart1->Dock = System::Windows::Forms::DockStyle::Bottom;
-			legend2->Name = L"Legend1";
-			this->chart1->Legends->Add(legend2);
+			legend1->Name = L"Legend1";
+			this->chart1->Legends->Add(legend1);
 			this->chart1->Location = System::Drawing::Point(0, 370);
 			this->chart1->Name = L"chart1";
-			series2->ChartArea = L"ChartArea1";
-			series2->Legend = L"Legend1";
-			series2->Name = L"Series1";
-			this->chart1->Series->Add(series2);
+			series1->ChartArea = L"ChartArea1";
+			series1->Legend = L"Legend1";
+			series1->Name = L"Series1";
+			this->chart1->Series->Add(series1);
 			this->chart1->Size = System::Drawing::Size(1258, 472);
 			this->chart1->TabIndex = 3;
 			this->chart1->Text = L"chart1";
@@ -437,37 +469,6 @@ namespace Group7FinalProject {
 			this->label1->TabIndex = 0;
 			this->label1->Text = L"Total Enrollment";
 			// 
-			// btnPayments
-			// 
-			this->btnPayments->FlatAppearance->BorderSize = 0;
-			this->btnPayments->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnPayments->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->btnPayments->ForeColor = System::Drawing::Color::White;
-			this->btnPayments->Location = System::Drawing::Point(26, 661);
-			this->btnPayments->Name = L"btnPayments";
-			this->btnPayments->Size = System::Drawing::Size(228, 68);
-			this->btnPayments->TabIndex = 8;
-			this->btnPayments->Text = L"Payments";
-			this->btnPayments->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
-			this->btnPayments->UseVisualStyleBackColor = true;
-			// 
-			// btnEnrollment
-			// 
-			this->btnEnrollment->FlatAppearance->BorderSize = 0;
-			this->btnEnrollment->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnEnrollment->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->btnEnrollment->ForeColor = System::Drawing::Color::White;
-			this->btnEnrollment->Location = System::Drawing::Point(26, 580);
-			this->btnEnrollment->Name = L"btnEnrollment";
-			this->btnEnrollment->Size = System::Drawing::Size(182, 75);
-			this->btnEnrollment->TabIndex = 7;
-			this->btnEnrollment->Text = L"Enrollment";
-			this->btnEnrollment->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
-			this->btnEnrollment->UseVisualStyleBackColor = true;
-			this->btnEnrollment->Click += gcnew System::EventHandler(this, &adminDashboard::btnEnrollment_Click);
-			// 
 			// adminDashboard
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(12, 25);
@@ -518,5 +519,6 @@ namespace Group7FinalProject {
 		private: System::Void panel1_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 		}
 		private: System::Void btnEnrollment_Click(System::Object^ sender, System::EventArgs^ e); 
-	};
+		private: System::Void btnPayments_Click(System::Object^ sender, System::EventArgs^ e);
+};
 }

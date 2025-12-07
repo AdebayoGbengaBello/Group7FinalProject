@@ -20,6 +20,10 @@ namespace Group7FinalProject {
 	private: System::Windows::Forms::TextBox^ txtPosition;
 	private: System::Windows::Forms::Label^ Position;
 		   User^ currentUser;
+	private: System::Windows::Forms::Button^ btnPayments;
+	private: System::Windows::Forms::Button^ btnEnrollment;
+	private: System::Windows::Forms::Button^ btnDepartments;
+
 		   int globalFacultyID = -1;
 	public:
 		adminFaculty(User^ user)
@@ -99,7 +103,7 @@ namespace Group7FinalProject {
 	private: System::Windows::Forms::Label^ lblUser;
 	private: System::Windows::Forms::Button^ btnCourses;
 	private: System::Windows::Forms::Button^ btnDashboard;
-	private: System::Windows::Forms::Button^ btnFaculty;
+
 	private: System::Windows::Forms::Button^ btnStudents;
 	private: System::Windows::Forms::TextBox^ txtLastName;
 
@@ -157,11 +161,13 @@ namespace Group7FinalProject {
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
 			this->lblWelcome = (gcnew System::Windows::Forms::Label());
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
+			this->btnDepartments = (gcnew System::Windows::Forms::Button());
+			this->btnPayments = (gcnew System::Windows::Forms::Button());
+			this->btnEnrollment = (gcnew System::Windows::Forms::Button());
 			this->btnProgrammes = (gcnew System::Windows::Forms::Button());
 			this->lblUser = (gcnew System::Windows::Forms::Label());
 			this->btnCourses = (gcnew System::Windows::Forms::Button());
 			this->btnDashboard = (gcnew System::Windows::Forms::Button());
-			this->btnFaculty = (gcnew System::Windows::Forms::Button());
 			this->btnStudents = (gcnew System::Windows::Forms::Button());
 			this->txtLastName = (gcnew System::Windows::Forms::TextBox());
 			this->label4 = (gcnew System::Windows::Forms::Label());
@@ -392,17 +398,67 @@ namespace Group7FinalProject {
 			// panel1
 			// 
 			this->panel1->BackColor = System::Drawing::Color::Maroon;
+			this->panel1->Controls->Add(this->btnDepartments);
+			this->panel1->Controls->Add(this->btnPayments);
+			this->panel1->Controls->Add(this->btnEnrollment);
 			this->panel1->Controls->Add(this->btnProgrammes);
 			this->panel1->Controls->Add(this->lblUser);
 			this->panel1->Controls->Add(this->btnCourses);
 			this->panel1->Controls->Add(this->btnDashboard);
-			this->panel1->Controls->Add(this->btnFaculty);
 			this->panel1->Controls->Add(this->btnStudents);
 			this->panel1->Dock = System::Windows::Forms::DockStyle::Left;
 			this->panel1->Location = System::Drawing::Point(0, 0);
 			this->panel1->Name = L"panel1";
 			this->panel1->Size = System::Drawing::Size(279, 1284);
 			this->panel1->TabIndex = 31;
+			// 
+			// btnDepartments
+			// 
+			this->btnDepartments->FlatAppearance->BorderSize = 0;
+			this->btnDepartments->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnDepartments->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnDepartments->ForeColor = System::Drawing::Color::White;
+			this->btnDepartments->Location = System::Drawing::Point(27, 417);
+			this->btnDepartments->Name = L"btnDepartments";
+			this->btnDepartments->Size = System::Drawing::Size(228, 64);
+			this->btnDepartments->TabIndex = 11;
+			this->btnDepartments->Text = L"Departments";
+			this->btnDepartments->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->btnDepartments->UseVisualStyleBackColor = true;
+			this->btnDepartments->Click += gcnew System::EventHandler(this, &adminFaculty::btnDepartments_Click);
+			// 
+			// btnPayments
+			// 
+			this->btnPayments->FlatAppearance->BorderSize = 0;
+			this->btnPayments->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnPayments->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnPayments->ForeColor = System::Drawing::Color::White;
+			this->btnPayments->Location = System::Drawing::Point(27, 830);
+			this->btnPayments->Name = L"btnPayments";
+			this->btnPayments->Size = System::Drawing::Size(228, 68);
+			this->btnPayments->TabIndex = 10;
+			this->btnPayments->Text = L"Payments";
+			this->btnPayments->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->btnPayments->UseVisualStyleBackColor = true;
+			this->btnPayments->Click += gcnew System::EventHandler(this, &adminFaculty::btnPayments_Click);
+			// 
+			// btnEnrollment
+			// 
+			this->btnEnrollment->FlatAppearance->BorderSize = 0;
+			this->btnEnrollment->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnEnrollment->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->btnEnrollment->ForeColor = System::Drawing::Color::White;
+			this->btnEnrollment->Location = System::Drawing::Point(27, 749);
+			this->btnEnrollment->Name = L"btnEnrollment";
+			this->btnEnrollment->Size = System::Drawing::Size(182, 75);
+			this->btnEnrollment->TabIndex = 9;
+			this->btnEnrollment->Text = L"Enrollment";
+			this->btnEnrollment->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->btnEnrollment->UseVisualStyleBackColor = true;
+			this->btnEnrollment->Click += gcnew System::EventHandler(this, &adminFaculty::btnEnrollment_Click);
 			// 
 			// btnProgrammes
 			// 
@@ -411,13 +467,14 @@ namespace Group7FinalProject {
 			this->btnProgrammes->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->btnProgrammes->ForeColor = System::Drawing::Color::White;
-			this->btnProgrammes->Location = System::Drawing::Point(27, 639);
+			this->btnProgrammes->Location = System::Drawing::Point(27, 624);
 			this->btnProgrammes->Name = L"btnProgrammes";
 			this->btnProgrammes->Size = System::Drawing::Size(206, 80);
 			this->btnProgrammes->TabIndex = 6;
 			this->btnProgrammes->Text = L"Programmes";
 			this->btnProgrammes->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			this->btnProgrammes->UseVisualStyleBackColor = true;
+			this->btnProgrammes->Click += gcnew System::EventHandler(this, &adminFaculty::btnProgrammes_Click);
 			// 
 			// lblUser
 			// 
@@ -438,13 +495,14 @@ namespace Group7FinalProject {
 			this->btnCourses->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->btnCourses->ForeColor = System::Drawing::Color::White;
-			this->btnCourses->Location = System::Drawing::Point(27, 538);
+			this->btnCourses->Location = System::Drawing::Point(27, 523);
 			this->btnCourses->Name = L"btnCourses";
 			this->btnCourses->Size = System::Drawing::Size(182, 50);
 			this->btnCourses->TabIndex = 4;
 			this->btnCourses->Text = L"Courses";
 			this->btnCourses->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			this->btnCourses->UseVisualStyleBackColor = true;
+			this->btnCourses->Click += gcnew System::EventHandler(this, &adminFaculty::btnCourses_Click);
 			// 
 			// btnDashboard
 			// 
@@ -460,21 +518,7 @@ namespace Group7FinalProject {
 			this->btnDashboard->Text = L"Dashboard";
 			this->btnDashboard->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			this->btnDashboard->UseVisualStyleBackColor = true;
-			// 
-			// btnFaculty
-			// 
-			this->btnFaculty->FlatAppearance->BorderSize = 0;
-			this->btnFaculty->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnFaculty->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.875F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->btnFaculty->ForeColor = System::Drawing::Color::White;
-			this->btnFaculty->Location = System::Drawing::Point(27, 409);
-			this->btnFaculty->Name = L"btnFaculty";
-			this->btnFaculty->Size = System::Drawing::Size(182, 86);
-			this->btnFaculty->TabIndex = 2;
-			this->btnFaculty->Text = L"Faculty";
-			this->btnFaculty->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
-			this->btnFaculty->UseVisualStyleBackColor = true;
+			this->btnDashboard->Click += gcnew System::EventHandler(this, &adminFaculty::btnDashboard_Click);
 			// 
 			// btnStudents
 			// 
@@ -490,6 +534,7 @@ namespace Group7FinalProject {
 			this->btnStudents->Text = L"Students";
 			this->btnStudents->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			this->btnStudents->UseVisualStyleBackColor = true;
+			this->btnStudents->Click += gcnew System::EventHandler(this, &adminFaculty::btnStudents_Click);
 			// 
 			// txtLastName
 			// 
@@ -920,5 +965,12 @@ namespace Group7FinalProject {
 				MessageBoxIcon::Warning);
 		}
 	}
+	private: System::Void btnDashboard_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void btnStudents_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void btnDepartments_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void btnCourses_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void btnProgrammes_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void btnEnrollment_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void btnPayments_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }

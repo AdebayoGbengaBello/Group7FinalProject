@@ -8,54 +8,54 @@
 #include "adminPayments.h"
 
 namespace Group7FinalProject {
-	System::Void adminStudents::btnDashboard_Click(System::Object^ sender, System::EventArgs^ e)
+	System::Void adminPayments::btnDashboard_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		this->Hide();
 		adminDashboard^ dashboardForm = gcnew adminDashboard(currentUser);
 		dashboardForm->ShowDialog();
 		this->Close();
 	}
-	System::Void adminStudents::btnCourses_Click(System::Object^ sender, System::EventArgs^ e)
+	System::Void adminPayments::btnCourses_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		this->Hide();
 		adminCourses^ coursesForm = gcnew adminCourses(currentUser);
 		coursesForm->ShowDialog();
 		this->Close();
 	}
-	System::Void adminStudents::btnDepartment_Click(System::Object^ sender, System::EventArgs^ e)
+	System::Void adminPayments::btnDepartment_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		this->Hide();
 		adminDepartment^ departmentForm = gcnew adminDepartment(currentUser);
 		departmentForm->ShowDialog();
 		this->Close();
 	}
-	System::Void adminStudents::btnProgrammes_Click(System::Object^ sender, System::EventArgs^ e)
+	System::Void adminPayments::btnProgrammes_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		this->Hide();
 		adminProgrammes^ programmesForm = gcnew adminProgrammes(currentUser);
 		programmesForm->ShowDialog();
 		this->Close();
 	}
-	System::Void adminStudents::btnFaculty_Click(System::Object^ sender, System::EventArgs^ e)
+	System::Void adminPayments::btnFaculty_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		this->Hide();
 		adminFaculty^ facultyForm = gcnew adminFaculty(currentUser);
 		facultyForm->ShowDialog();
 		this->Close();
 	}
-	System::Void adminStudents::btnPayments_Click(System::Object^ sender, System::EventArgs^ e)
+	System::Void adminPayments::btnStudents_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		this->Hide();
-		adminPayments^ paymentsForm = gcnew adminPayments(currentUser);
-		paymentsForm->ShowDialog();
+		adminStudents^ studentsForm = gcnew adminStudents(currentUser);
+		studentsForm->ShowDialog();
 		this->Close();
 	}
-	System::Void adminStudents::btnEnrollment_Click(System::Object^ sender, System::EventArgs^ e)
+	System::Void adminPayments::btnEnrollment_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		this->Hide();
 		adminEnrollment^ enrollmentForm = gcnew adminEnrollment(currentUser);
 		enrollmentForm->ShowDialog();
 		this->Close();
 	}
-
 }
+
