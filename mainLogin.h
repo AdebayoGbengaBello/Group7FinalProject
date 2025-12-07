@@ -1,5 +1,9 @@
 #pragma once
+<<<<<<< HEAD
 #include "adminDashboard.h"
+=======
+#include "facultyView.h"
+>>>>>>> origin/Faculty
 #include "users.h"
 
 namespace Group7FinalProject {
@@ -180,7 +184,11 @@ namespace Group7FinalProject {
 			MySqlConnection^ conn = gcnew MySqlConnection(connString);
 			try {
 				conn->Open();
+<<<<<<< HEAD
 				String^ query = "SELECT dbID, firstname FROM User WHERE email=@e AND password=@p";
+=======
+				String^ query = "SELECT dbID, firstName FROM User WHERE email=@e AND password=@p";
+>>>>>>> origin/Faculty
 				MySqlCommand^ cmd = gcnew MySqlCommand(query, conn);
 				cmd->Parameters->AddWithValue("@e", email);
 				cmd->Parameters->AddWithValue("@p", pass);
@@ -189,10 +197,18 @@ namespace Group7FinalProject {
 
 				if (reader->Read()) {
 					int userID = Convert::ToInt32(reader["dbID"]);
+<<<<<<< HEAD
 					String^ userName = reader["firstname"]->ToString();
 					User^ user = gcnew User();
 					user->dbID = userID;
 					user->name = userName;
+=======
+					String^ userName = reader["firstName"]->ToString();
+					User^ currentUser = gcnew User();
+					currentUser->dbID = userID;
+					currentUser->name = userName;
+					
+>>>>>>> origin/Faculty
 					reader->Close(); 
 
 					if (CheckRole(userID, "adminstaff", conn)) {
@@ -208,6 +224,11 @@ namespace Group7FinalProject {
 					}
 					else if (CheckRole(userID, "faculty", conn)) {
 						MessageBox::Show("Welcome " + userName);
+<<<<<<< HEAD
+=======
+						facultyView^ facultyForm = gcnew facultyView(currentUser);
+						facultyForm->ShowDialog();
+>>>>>>> origin/Faculty
 					}
 				}
 				else {

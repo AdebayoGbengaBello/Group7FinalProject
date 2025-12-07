@@ -9,7 +9,6 @@ void Main(array<String^>^ args) {
 	Application::SetCompatibleTextRenderingDefault(false);
 	User^ user= gcnew User();
 
-
 	Group7FinalProject::mainLogin form;
 	Application::Run(% form);
 }
